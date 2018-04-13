@@ -4,101 +4,6 @@
 Here's a description
 
 
-## AbstractDocument
-
-
-The AbstractDocument contract is found within the documents-commons bundle.
-
-### AbstractDocument >> addVersion(string)
-
-
-Adds the specified hash as a new version of the document. The msg.sender is registered as owner and the version creation date is set to now.
-
-```endpoint
-CALL addVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the version hash
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR, BaseErrors.INSUFFICIENT_PRIVILEGES (as determined by calling canAddVersion(), or BaseErrors.RESOURCE_ALREADY_EXISTS if the version has been added before.
-```
-
-### AbstractDocument >> getName()
-
-
-Returns the document's name
-
-```endpoint
-CALL getName()
-```
-
-### AbstractDocument >> getNumberOfVersions()
-
-
-Returns the number of versions of this document
-
-```endpoint
-CALL getNumberOfVersions()
-```
-
-#### Return
-
-```json
-the number of versions
-```
-
-### AbstractDocument >> getVersionCreated(string)
-
-
-Returns the creation date of the specified version hash.
-
-```endpoint
-CALL getVersionCreated(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creation date, or 0 if the version does not exist
-```
-
-### AbstractDocument >> getVersionCreator(string)
-
-
-Returns the address registered as the creator of the specified version hash.
-
-```endpoint
-CALL getVersionCreator(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creator address, or 0x0 if the version does not exist
-```
-
 ## AbstractEventListener
 
 
@@ -503,6 +408,688 @@ the creator
 
 ```
 
+### ActiveAgreement Interface >> getDataIdAtIndex(uint256)
+
+
+Returns the data id at the given index
+
+```endpoint
+CALL getDataIdAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // the index of the data
+
+```
+
+#### Return
+
+```json
+error uint error code id bytes32 id of the data
+```
+
+### ActiveAgreement Interface >> getDataType(bytes32)
+
+
+Returns the data type of the Data object identified by the given id
+
+```endpoint
+CALL getDataType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint8 the DataType
+```
+
+### ActiveAgreement Interface >> getDataValueAsAddress(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsAddress(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+address the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsAddressArray(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsAddressArray(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+address[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBool(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBool(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bool the bool value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes32 the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes16Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes16[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes1Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes1Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes1[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes20Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes20Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes20[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes24Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes24Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes24[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes28Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes28Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes28[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes2Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes2Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes2[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes32Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes32[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes3Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes3Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes3[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes4Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes4Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes4[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsBytes8Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes8[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt128Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt128Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int128[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt16Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int16[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt256Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt256Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int256[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt32Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int32[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt64Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt64Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int64[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsInt8Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int8[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsString(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsString(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+string the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint128Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint128Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint128[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint16Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint16[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint256Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint256Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint256[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint32Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint32[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint64Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint64Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint64[100] the value of the data
+```
+
+### ActiveAgreement Interface >> getDataValueAsUint8Array(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint8[100] the value of the data
+```
+
 ### ActiveAgreement Interface >> getHoardAddress()
 
 
@@ -571,6 +1158,21 @@ _index // index
 error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of boundsparty party
 ```
 
+### ActiveAgreement Interface >> getSize()
+
+
+Returns the size of the DataMap
+
+```endpoint
+CALL getSize()
+```
+
+#### Return
+
+```json
+uint the size
+```
+
 ### ActiveAgreement Interface >> gethoardSecret()
 
 
@@ -599,6 +1201,575 @@ CALL isPrivate()
 
 ```json
 the private flag 
+```
+
+### ActiveAgreement Interface >> removeData(bytes32)
+
+
+Removes the Data identified by the id from the DataMap
+
+```endpoint
+CALL removeData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint error code
+```
+
+### ActiveAgreement Interface >> setDataValueAsAddress(bytes32,address)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsAddress(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the address value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsAddressArray(bytes32,address[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsAddressArray(bytes32,address[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the address[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBool(bytes32,bool)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBool(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bool value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes(bytes32,bytes32,uint8)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes(bytes32,bytes32,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 data type of the value denoting the bytes size
+_id // the id of the data
+_value // the bytes16 value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes16Array(bytes32,bytes16[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes16Array(bytes32,bytes16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes16[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes1Array(bytes32,bytes1[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes1Array(bytes32,bytes1[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes1[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes20Array(bytes32,bytes20[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes20Array(bytes32,bytes20[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes20[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes24Array(bytes32,bytes24[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes24Array(bytes32,bytes24[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes24[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes28Array(bytes32,bytes28[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes28Array(bytes32,bytes28[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes28[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes2Array(bytes32,bytes2[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes2Array(bytes32,bytes2[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes2[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes32(bytes32,bytes32)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes32(bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes32 value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes32Array(bytes32,bytes32[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes32Array(bytes32,bytes32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes32[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes3Array(bytes32,bytes3[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes3Array(bytes32,bytes3[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes3[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes4Array(bytes32,bytes4[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes4Array(bytes32,bytes4[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes4[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsBytes8Array(bytes32,bytes8[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes8Array(bytes32,bytes8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes8[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt(bytes32,int256,uint8)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt(bytes32,int256,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 DataType denoting the size
+_id // the id of the data
+_value // the int value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt128Array(bytes32,int128[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt128Array(bytes32,int128[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int128[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt16Array(bytes32,int16[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt16Array(bytes32,int16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int16[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt256(bytes32,int256)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt256(bytes32,int256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt256Array(bytes32,int256[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt256Array(bytes32,int256[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int256[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt32Array(bytes32,int32[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt32Array(bytes32,int32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int32[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt64Array(bytes32,int64[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt64Array(bytes32,int64[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int64[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsInt8Array(bytes32,int8[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt8Array(bytes32,int8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int8[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsString(bytes32,string)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsString(bytes32,string)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the string value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint(bytes32,uint256,uint8)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint(bytes32,uint256,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 DataType denoting the size
+_id // the id of the data
+_value // the uint value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint128Array(bytes32,uint128[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint128Array(bytes32,uint128[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint128[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint16Array(bytes32,uint16[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint16Array(bytes32,uint16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint16[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint256(bytes32,uint256)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint256(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint256Array(bytes32,uint256[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint256Array(bytes32,uint256[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint256[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint32Array(bytes32,uint32[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint32Array(bytes32,uint32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint32[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint64Array(bytes32,uint64[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint64Array(bytes32,uint64[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint64[100] value of the data
+
+```
+
+### ActiveAgreement Interface >> setDataValueAsUint8Array(bytes32,uint8[100])
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint8Array(bytes32,uint8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint8[100] value of the data
+
 ```
 
 ### ActiveAgreement Interface >> setName(bytes32)
@@ -800,266 +1971,6 @@ _name // name
 
 ```json
 error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if runtime error
-```
-
-## Agreement
-
-
-The Agreement contract is found within the documents-commons bundle.
-
-### Agreement >> addSignatories(address[])
-
-
-Adds the specified signatories to this agreement, if they are valid, and returns the number of added signatories. Empty addresses and already registered signatories are rejected.
-
-```endpoint
-CALL addSignatories(address[])
-```
-
-#### Parameters
-
-```solidity
-_addresses // the signatories
-
-```
-
-#### Return
-
-```json
-the number of added signatories
-```
-
-### Agreement >> addSignatory(address)
-
-
-Adds a single signatory to this agreement
-
-```endpoint
-CALL addSignatory(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the address to add
-
-```
-
-#### Return
-
-```json
-NO_ERROR, INVALID_PARAM_VALUE if address is empty, RESOURCE_ALREADY_EXISTS if address has already been registered
-```
-
-### Agreement >> addVersion(string)
-
-
-Adds the specified hash as a new version of the document. The msg.sender is registered as owner and the version creation date is set to now.
-
-```endpoint
-CALL addVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the version hash
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR, BaseErrors.INSUFFICIENT_PRIVILEGES (as determined by calling canAddVersion(), or BaseErrors.RESOURCE_ALREADY_EXISTS if the version has been added before.
-```
-
-### Agreement >> confirmExecutionVersion(string)
-
-
-Registers the msg.sender as having confirmed/endorsed the specified document version as the execution version.
-
-```endpoint
-CALL confirmExecutionVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_version // the version
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR(), BaseErrors.INVALID_PARAM_VALUE() if given version is empty, or BaseErrors.RESOURCE_NOT_FOUND() if the version does not exist
-```
-
-### Agreement >> getConfirmedVersion()
-
-
-Returns the confirmed version of this agreement, if it has been set.
-
-```endpoint
-CALL getConfirmedVersion()
-```
-
-### Agreement >> getEndorsedVersion(address)
-
-
-Get the document version endorsed by the specified signatory.
-
-```endpoint
-CALL getEndorsedVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_signatory // the signatory
-
-```
-
-#### Return
-
-```json
-the version hash, if an endorsed version exists, or an uninitialized string
-```
-
-### Agreement >> getName()
-
-
-Returns the document's name
-
-```endpoint
-CALL getName()
-```
-
-### Agreement >> getNumberOfVersions()
-
-
-Returns the number of versions of this document
-
-```endpoint
-CALL getNumberOfVersions()
-```
-
-#### Return
-
-```json
-the number of versions
-```
-
-### Agreement >> getSignatoriesSize()
-
-
-Returns the number of signatories of this agreement.
-
-```endpoint
-CALL getSignatoriesSize()
-```
-
-#### Return
-
-```json
-the number of signatories
-```
-
-### Agreement >> getVersionCreated(string)
-
-
-Returns the creation date of the specified version hash.
-
-```endpoint
-CALL getVersionCreated(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creation date, or 0 if the version does not exist
-```
-
-### Agreement >> getVersionCreator(string)
-
-
-Returns the address registered as the creator of the specified version hash.
-
-```endpoint
-CALL getVersionCreator(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creator address, or 0x0 if the version does not exist
-```
-
-### Agreement >> isConfirmedVersion(string)
-
-
-Verify if the specified version hash is the confirmed version.
-
-```endpoint
-CALL isConfirmedVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_version // the version
-
-```
-
-#### Return
-
-```json
-true if the version matches the confirmed one, false otherwise
-```
-
-### Agreement >> isEffective()
-
-
-Returns whether this agreement is effective or not
-
-```endpoint
-CALL isEffective()
-```
-
-### Agreement >> isFullyConfirmed(string)
-
-
-Determines if the submitted version has been signed by all signatories.
-
-```endpoint
-CALL isFullyConfirmed(string)
-```
-
-#### Parameters
-
-```solidity
-_version // the version
-
-```
-
-#### Return
-
-```json
-true if all configured signatories have signed that version, false otherwise
 ```
 
 ## Archetype Interface
@@ -3684,7 +4595,7 @@ CALL upgrade(address)
 ## DataStorage Interface
 
 
-The DataStorage Interface contract is found within the bpm-runtime bundle.
+The DataStorage Interface contract is found within the agreements bundle.
 
 ### DataStorage Interface >> getDataIdAtIndex(uint256)
 
@@ -4192,6 +5103,28 @@ _id // the id of the data
 int8[100] the value of the data
 ```
 
+### DataStorage Interface >> getDataValueAsString(bytes32)
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsString(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+string the value of the data
+```
+
 ### DataStorage Interface >> getDataValueAsUint(bytes32)
 
 
@@ -4434,23 +5367,6 @@ _value // the bool value of the data
 
 ```
 
-### DataStorage Interface >> setDataValueAsBytes(bytes32,bytes32)
-
-
-Creates a Data object with the given value and inserts it into the DataMap
-
-```endpoint
-CALL setDataValueAsBytes(bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the id of the data
-_value // the bytes32 value of the data
-
-```
-
 ### DataStorage Interface >> setDataValueAsBytes(bytes32,bytes32,uint8)
 
 
@@ -4571,6 +5487,23 @@ _value // the bytes2[100] value of the data
 
 ```
 
+### DataStorage Interface >> setDataValueAsBytes32(bytes32,bytes32)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes32(bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes32 value of the data
+
+```
+
 ### DataStorage Interface >> setDataValueAsBytes32Array(bytes32,bytes32[100])
 
 
@@ -4639,23 +5572,6 @@ _value // the bytes8[100] value of the data
 
 ```
 
-### DataStorage Interface >> setDataValueAsInt(bytes32,int256)
-
-
-Creates a Data object with the given value and inserts it into the DataMap
-
-```endpoint
-CALL setDataValueAsInt(bytes32,int256)
-```
-
-#### Parameters
-
-```solidity
-_id // the id of the data
-_value // the int value of the data
-
-```
-
 ### DataStorage Interface >> setDataValueAsInt(bytes32,int256,uint8)
 
 
@@ -4705,6 +5621,23 @@ CALL setDataValueAsInt16Array(bytes32,int16[100])
 ```solidity
 _id // the id of the data
 _value // the int16[100] value of the data
+
+```
+
+### DataStorage Interface >> setDataValueAsInt256(bytes32,int256)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt256(bytes32,int256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int value of the data
 
 ```
 
@@ -4776,20 +5709,20 @@ _value // the int8[100] value of the data
 
 ```
 
-### DataStorage Interface >> setDataValueAsUint(bytes32,uint256)
+### DataStorage Interface >> setDataValueAsString(bytes32,string)
 
 
 Creates a Data object with the given value and inserts it into the DataMap
 
 ```endpoint
-CALL setDataValueAsUint(bytes32,uint256)
+CALL setDataValueAsString(bytes32,string)
 ```
 
 #### Parameters
 
 ```solidity
 _id // the id of the data
-_value // the uint value of the data
+_value // the string value of the data
 
 ```
 
@@ -4842,6 +5775,23 @@ CALL setDataValueAsUint16Array(bytes32,uint16[100])
 ```solidity
 _id // the id of the data
 _value // the uint16[100] value of the data
+
+```
+
+### DataStorage Interface >> setDataValueAsUint256(bytes32,uint256)
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint256(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint value of the data
 
 ```
 
@@ -4916,7 +5866,7 @@ _value // the uint8[100] value of the data
 ## DataStorageUtils Library
 
 
-The DataStorageUtils Library contract is found within the bpm-runtime bundle.
+The DataStorageUtils Library contract is found within the agreements bundle.
 
 ### DataStorageUtils Library >> remove(DataStorageUtils.DataMap storage,bytes32)
 
@@ -7399,101 +8349,6 @@ Checks the version and invokes migrateTo and migrateTo in order to transfer stat
 
 ```endpoint
 CALL upgrade(address)
-```
-
-## DefaultDocument
-
-
-The DefaultDocument contract is found within the documents-commons bundle.
-
-### DefaultDocument >> addVersion(string)
-
-
-Adds the specified hash as a new version of the document. The msg.sender is registered as owner and the version creation date is set to now.
-
-```endpoint
-CALL addVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the version hash
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR, BaseErrors.INSUFFICIENT_PRIVILEGES (as determined by calling canAddVersion(), or BaseErrors.RESOURCE_ALREADY_EXISTS if the version has been added before.
-```
-
-### DefaultDocument >> getName()
-
-
-Returns the document's name
-
-```endpoint
-CALL getName()
-```
-
-### DefaultDocument >> getNumberOfVersions()
-
-
-Returns the number of versions of this document
-
-```endpoint
-CALL getNumberOfVersions()
-```
-
-#### Return
-
-```json
-the number of versions
-```
-
-### DefaultDocument >> getVersionCreated(string)
-
-
-Returns the creation date of the specified version hash.
-
-```endpoint
-CALL getVersionCreated(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creation date, or 0 if the version does not exist
-```
-
-### DefaultDocument >> getVersionCreator(string)
-
-
-Returns the address registered as the creator of the specified version hash.
-
-```endpoint
-CALL getVersionCreator(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version hash
-
-```
-
-#### Return
-
-```json
-the creator address, or 0x0 if the version does not exist
 ```
 
 ## DefaultEcosystem
@@ -10448,130 +11303,6 @@ _organization // the organization's address with which to associate this user ac
 
 ```json
 BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
-```
-
-## Destructible
-
-
-The Destructible contract is found within the commons-base bundle.
-
-### Destructible >> destroy()
-
-
-Transfers this contract's value to the owner and frees up storage
-
-```endpoint
-CALL destroy()
-```
-
-### Destructible >> isDestructible()
-
-
-Function that can be actively checked to detect if the contract is a destructible contract.
-
-```endpoint
-CALL isDestructible()
-```
-
-## Document Interface
-
-
-The Document Interface contract is found within the documents-commons bundle.
-
-### Document Interface >> addVersion(string)
-
-
-Registers a new document version
-
-```endpoint
-CALL addVersion(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the hash representing the version being added
-
-```
-
-#### Return
-
-```json
-an error code in case of problems
-```
-
-### Document Interface >> getName()
-
-
-Returns the document's name
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the name
-```
-
-### Document Interface >> getNumberOfVersions()
-
-
-Returns the number of versions of this document
-
-```endpoint
-CALL getNumberOfVersions()
-```
-
-#### Return
-
-```json
-the number of versions
-```
-
-### Document Interface >> getVersionCreated(string)
-
-
-Returns the creation date of the specified version hash
-
-```endpoint
-CALL getVersionCreated(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version
-
-```
-
-#### Return
-
-```json
-the creation date, if the version exists
-```
-
-### Document Interface >> getVersionCreator(string)
-
-
-Returns the account of the entity that created the specified version hash
-
-```endpoint
-CALL getVersionCreator(string)
-```
-
-#### Parameters
-
-```solidity
-_hash // the desired version
-
-```
-
-#### Return
-
-```json
-the creator's address, if the version exists
 ```
 
 ## Ecosystem Interface
@@ -15275,2569 +16006,6 @@ _map // the map
 errorvaluenextIndex the next index, if there is one
 ```
 
-## Mappings API Library
-
-
-The Mappings API Library contract is found within the commons-collections bundle.
-
-### Mappings API Library >> addToArray(Mappings.AddressAddressArrayMap storage,address,address,bool)
-
-
-Adds the specified value to the array that is stored in the map under the given key. The boolean parameter can be used to avoid duplicate values in the array.Note that the array will be automatically initiated even if there was no prior entry at the specified key. If you want to make sure the key is valid, use exists(key).
-
-```endpoint
-CALL addToArray(Mappings.AddressAddressArrayMap storage,address,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_key // the key for the array
-_map // the map
-_unique // set to true if the value should only be added if it does not already exist in the array
-_value // the value to store in the array
-
-```
-
-#### Return
-
-```json
-the length of the array after the operation
-```
-
-### Mappings API Library >> addToArray(Mappings.AddressBytes32ArrayMap storage,address,bytes32,bool)
-
-
-Adds the specified value to the array that is stored in the map under the given key. The boolean parameter can be used to avoid duplicate values in the array.Note that the array will be automatically initiated even if there was no prior entry at the specified key. If you want to make sure the key is valid, use exists(key).
-
-```endpoint
-CALL addToArray(Mappings.AddressBytes32ArrayMap storage,address,bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_key // the key for the array
-_map // the map
-_unique // set to true if the value should only be added if it does not already exist in the array
-_value // the value to store in the array
-
-```
-
-#### Return
-
-```json
-the length of the array after the operation
-```
-
-### Mappings API Library >> addToArray(Mappings.Bytes32AddressArrayMap storage,bytes32,address,bool)
-
-
-Adds the specified value to the array that is stored in the map under the given key. The boolean parameter can be used to avoid duplicate values in the array.Note that the array will be automatically initiated even if there was no prior entry at the specified key. If you want to make sure the key is valid, use exists(key).
-
-```endpoint
-CALL addToArray(Mappings.Bytes32AddressArrayMap storage,bytes32,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_key // the key for the array
-_map // the map
-_unique // set to true if the value should only be added if it does not already exist in the array
-_value // the value to store in the array
-
-```
-
-#### Return
-
-```json
-the length of the array after the operation
-```
-
-### Mappings API Library >> addToArray(Mappings.UintAddressArrayMap storage,uint256,address,bool)
-
-
-Adds the specified value to the array that is stored in the map under the given key. The boolean parameter can be used to avoid duplicate values in the array.Note that the array will be automatically initiated even if there was no prior entry at the specified key. If you want to make sure the key is valid, use exists(key).
-
-```endpoint
-CALL addToArray(Mappings.UintAddressArrayMap storage,uint256,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_key // the key for the array
-_map // the map
-_unique // set to true if the value should only be added if it does not already exist in the array
-_value // the value to store in the array
-
-```
-
-#### Return
-
-```json
-the length of the array after the operation
-```
-
-### Mappings API Library >> addToArray(Mappings.UintBytes32ArrayMap storage,uint256,bytes32,bool)
-
-
-Adds the specified value to the array that is stored in the map under the given key. The boolean parameter can be used to avoid duplicate values in the array.Note that the array will be automatically initiated even if there was no prior entry at the specified key. If you want to make sure the key is valid, use exists(key).
-
-```endpoint
-CALL addToArray(Mappings.UintBytes32ArrayMap storage,uint256,bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_key // the key for the array
-_map // the map
-_unique // set to true if the value should only be added if it does not already exist in the array
-_value // the value to store in the array
-
-```
-
-#### Return
-
-```json
-the length of the array after the operation
-```
-
-### Mappings API Library >> clear(Mappings.AddressAddressArrayMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.AddressAddressArrayMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.AddressAddressMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.AddressAddressMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.AddressBytes32ArrayMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.AddressBytes32ArrayMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the AddressBytes32ArrayMap
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.AddressBytes32Map storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.AddressBytes32Map storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.Bytes32AddressArrayMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.Bytes32AddressArrayMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.Bytes32AddressMap storage)
-
-
-Removes all entries stored in the map.
-
-```endpoint
-CALL clear(Mappings.Bytes32AddressMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.Bytes32Bytes32Map storage)
-
-
-Removes all entries stored in the map.
-
-```endpoint
-CALL clear(Mappings.Bytes32Bytes32Map storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the Bytes32Bytes32Map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.Bytes32UintMap storage)
-
-
-Removes all entries stored in the map.
-
-```endpoint
-CALL clear(Mappings.Bytes32UintMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.UintAddressArrayMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.UintAddressArrayMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.UintAddressMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.UintAddressMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the map
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> clear(Mappings.UintBytes32ArrayMap storage)
-
-
-Removes all entries stored in the mapping.
-
-```endpoint
-CALL clear(Mappings.UintBytes32ArrayMap storage)
-```
-
-#### Parameters
-
-```solidity
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the number of removed entries
-```
-
-### Mappings API Library >> exists(Mappings.AddressAddressArrayMap storage,address)
-
-```endpoint
-CALL exists(Mappings.AddressAddressArrayMap storage,address)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.AddressAddressMap storage,address)
-
-```endpoint
-CALL exists(Mappings.AddressAddressMap storage,address)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.AddressBytes32ArrayMap storage,address)
-
-```endpoint
-CALL exists(Mappings.AddressBytes32ArrayMap storage,address)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.AddressBytes32Map storage,address)
-
-```endpoint
-CALL exists(Mappings.AddressBytes32Map storage,address)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.Bytes32AddressArrayMap storage,bytes32)
-
-```endpoint
-CALL exists(Mappings.Bytes32AddressArrayMap storage,bytes32)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.Bytes32AddressMap storage,bytes32)
-
-
-Convenience function to return the row[_key].exists value.
-
-```endpoint
-CALL exists(Mappings.Bytes32AddressMap storage,bytes32)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.Bytes32Bytes32Map storage,bytes32)
-
-
-Convenience function to return the row[_key].exists value.
-
-```endpoint
-CALL exists(Mappings.Bytes32Bytes32Map storage,bytes32)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.Bytes32UintMap storage,bytes32)
-
-
-Convenience function to return the row[_key].exists value.
-
-```endpoint
-CALL exists(Mappings.Bytes32UintMap storage,bytes32)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.UintAddressArrayMap storage,uint256)
-
-```endpoint
-CALL exists(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.UintAddressMap storage,uint256)
-
-```endpoint
-CALL exists(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> exists(Mappings.UintBytes32ArrayMap storage,uint256)
-
-```endpoint
-CALL exists(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Return
-
-```json
-true if the map contains valid values at the specified key, false otherwise.
-```
-
-### Mappings API Library >> get(Mappings.AddressAddressArrayMap storage,address)
-
-
-Retrieves the address array in the map at the specified key.
-
-```endpoint
-CALL get(Mappings.AddressAddressArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the addresses array value registered at the specified key, or empty address[] if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.AddressAddressMap storage,address)
-
-```endpoint
-CALL get(Mappings.AddressAddressMap storage,address)
-```
-
-#### Return
-
-```json
-the value registered at the specified key, or 0x0 if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.AddressBytes32ArrayMap storage,address)
-
-
-Retrieves the bytes32 array in the map at the specified key.
-
-```endpoint
-CALL get(Mappings.AddressBytes32ArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressBytes32ArrayMap
-
-```
-
-#### Return
-
-```json
-the addresses array value registered at the specified key, or empty bytes32[] if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.AddressBytes32Map storage,address)
-
-```endpoint
-CALL get(Mappings.AddressBytes32Map storage,address)
-```
-
-#### Return
-
-```json
-the value registered at the specified key, or an empty bytes32 if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.Bytes32AddressArrayMap storage,bytes32)
-
-
-Retrieves the address array in the map at the specified key.
-
-```endpoint
-CALL get(Mappings.Bytes32AddressArrayMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the addresses array value registered at the specified key, or empty address[] if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.Bytes32AddressMap storage,bytes32)
-
-```endpoint
-CALL get(Mappings.Bytes32AddressMap storage,bytes32)
-```
-
-#### Return
-
-```json
-the value registered at the specified key, or 0x0 if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.Bytes32Bytes32Map storage,bytes32)
-
-```endpoint
-CALL get(Mappings.Bytes32Bytes32Map storage,bytes32)
-```
-
-#### Return
-
-```json
-the value registered at the specified key, or 0x0 if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.Bytes32UintMap storage,bytes32)
-
-```endpoint
-CALL get(Mappings.Bytes32UintMap storage,bytes32)
-```
-
-#### Return
-
-```json
-the value registered at the specified key
-```
-
-### Mappings API Library >> get(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Retrieves the address array in the map at the specified key.
-
-```endpoint
-CALL get(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the addresses array value registered at the specified key, or empty address[] if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.UintAddressMap storage,uint256)
-
-```endpoint
-CALL get(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Return
-
-```json
-the value registered at the specified key, or 0x0 if it doesn't exist
-```
-
-### Mappings API Library >> get(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Retrieves the address array in the map at the specified key.
-
-```endpoint
-CALL get(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the addresses array value registered at the specified key, or empty bytes32[] if it doesn't exist
-```
-
-### Mappings API Library >> insert(Mappings.AddressAddressArrayMap storage,address,address[])
-
-
-Inserts the given address array value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.AddressAddressArrayMap storage,address,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS()
-```
-
-### Mappings API Library >> insert(Mappings.AddressAddressMap storage,address,address)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.AddressAddressMap storage,address,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.AddressBytes32ArrayMap storage,address,bytes32[])
-
-
-Inserts the given bytes32 array value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.AddressBytes32ArrayMap storage,address,bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS()
-```
-
-### Mappings API Library >> insert(Mappings.AddressBytes32Map storage,address,bytes32)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.AddressBytes32Map storage,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.Bytes32AddressArrayMap storage,bytes32,address[])
-
-
-Inserts the given address array value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.Bytes32AddressArrayMap storage,bytes32,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS()
-```
-
-### Mappings API Library >> insert(Mappings.Bytes32AddressMap storage,bytes32,address)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.Bytes32AddressMap storage,bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressMap
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.Bytes32Bytes32Map storage,bytes32,bytes32)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.Bytes32Bytes32Map storage,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Bytes32Bytes32Map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.Bytes32UintMap storage,bytes32,uint256)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.Bytes32UintMap storage,bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Uint Map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.UintAddressArrayMap storage,uint256,address[])
-
-
-Inserts the given address array value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.UintAddressArrayMap storage,uint256,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS()
-```
-
-### Mappings API Library >> insert(Mappings.UintAddressMap storage,uint256,address)
-
-
-Inserts the given value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.UintAddressMap storage,uint256,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_ALREADY_EXISTS
-```
-
-### Mappings API Library >> insert(Mappings.UintBytes32ArrayMap storage,uint256,bytes32[])
-
-
-Inserts the given bytes32 array value at the specified key in the provided map, but only if the key does not exist, yet. The `insert` function essentially behaves like a database insert in that it avoids entering duplicate keys. In most cases you'd want to use `insertOrUpdate(...)`
-
-```endpoint
-CALL insert(Mappings.UintBytes32ArrayMap storage,uint256,bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS()
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.AddressAddressArrayMap storage,address,address[])
-
-
-Inserts or updates the given address array value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.AddressAddressArrayMap storage,address,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.AddressAddressMap storage,address,address)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.AddressAddressMap storage,address,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.AddressBytes32ArrayMap storage,address,bytes32[])
-
-
-Inserts or updates the given address array value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.AddressBytes32ArrayMap storage,address,bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.AddressBytes32Map storage,address,bytes32)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.AddressBytes32Map storage,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.Bytes32AddressArrayMap storage,bytes32,address[])
-
-
-Inserts or updates the given address array value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.Bytes32AddressArrayMap storage,bytes32,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.Bytes32AddressMap storage,bytes32,address)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.Bytes32AddressMap storage,bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressMap
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.Bytes32Bytes32Map storage,bytes32,bytes32)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.Bytes32Bytes32Map storage,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Bytes32Bytes32Map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.Bytes32UintMap storage,bytes32,uint256)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.Bytes32UintMap storage,bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Uint Map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.UintAddressArrayMap storage,uint256,address[])
-
-
-Inserts or updates the given address array value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.UintAddressArrayMap storage,uint256,address[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.UintAddressMap storage,uint256,address)
-
-
-Inserts or updates the given value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.UintAddressMap storage,uint256,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> insertOrUpdate(Mappings.UintBytes32ArrayMap storage,uint256,bytes32[])
-
-
-Inserts or updates the given address array value at the specified key in the provided map.
-
-```endpoint
-CALL insertOrUpdate(Mappings.UintBytes32ArrayMap storage,uint256,bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-_value // the value
-
-```
-
-#### Return
-
-```json
-the size of the map after the operation
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.AddressAddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.AddressAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.AddressAddressMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.AddressAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), 0x0)
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.AddressBytes32ArrayMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.AddressBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressBytes32ArrayMap
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.AddressBytes32Map storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.AddressBytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), 0x0)
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.Bytes32AddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.Bytes32AddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.Bytes32AddressMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.Bytes32AddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.Bytes32Bytes32Map storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.Bytes32Bytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the Bytes32Bytes32Map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.Bytes32UintMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.Bytes32UintMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.UintAddressMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), uint(-1))
-```
-
-### Mappings API Library >> keyAtIndex(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Retrieves the key at the given index, if it exists.
-
-```endpoint
-CALL keyAtIndex(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-(BaseErrors.NO_ERROR(), key) or (BaseErrors.INDEX_OUT_OF_BOUNDS(), "")
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.AddressAddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.AddressAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or 0x0nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.AddressAddressMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.AddressAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or 0x0nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.AddressBytes32ArrayMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.AddressBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or uint(-1)nextIndex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.AddressBytes32Map storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.AddressBytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or 0x0nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.Bytes32AddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.Bytes32AddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or ""nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.Bytes32AddressMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.Bytes32AddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or ""nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.Bytes32Bytes32Map storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.Bytes32Bytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the Bytes32Bytes32Map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or ""nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.Bytes32UintMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.Bytes32UintMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or ""nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or uint(-1)nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.UintAddressMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or uint(-1)nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyAtIndexHasNext(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Retrieves the key at the given index position and the index of the next artifact.
-
-```endpoint
-CALL keyAtIndexHasNext(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS()key the key or uint(-1)nextindex the next index if there is one or 0
-```
-
-### Mappings API Library >> keyIndex(Mappings.AddressAddressArrayMap storage,address)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.AddressAddressArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.AddressAddressMap storage,address)
-
-```endpoint
-CALL keyIndex(Mappings.AddressAddressMap storage,address)
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.AddressBytes32ArrayMap storage,address)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.AddressBytes32ArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressBytes32ArrayMap
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.AddressBytes32Map storage,address)
-
-```endpoint
-CALL keyIndex(Mappings.AddressBytes32Map storage,address)
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.Bytes32AddressArrayMap storage,bytes32)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.Bytes32AddressArrayMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.Bytes32AddressMap storage,bytes32)
-
-```endpoint
-CALL keyIndex(Mappings.Bytes32AddressMap storage,bytes32)
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.Bytes32Bytes32Map storage,bytes32)
-
-```endpoint
-CALL keyIndex(Mappings.Bytes32Bytes32Map storage,bytes32)
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.Bytes32UintMap storage,bytes32)
-
-```endpoint
-CALL keyIndex(Mappings.Bytes32UintMap storage,bytes32)
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.UintAddressMap storage,uint256)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> keyIndex(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Retrieves the index of the specified key.
-
-```endpoint
-CALL keyIndex(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-the index of the given key or int_constant uint(-1) if the key does not exist
-```
-
-### Mappings API Library >> remove(Mappings.AddressAddressArrayMap storage,address)
-
-
-Removes the address array registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.AddressAddressArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND().
-```
-
-### Mappings API Library >> remove(Mappings.AddressAddressMap storage,address)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.AddressAddressMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.AddressBytes32ArrayMap storage,address)
-
-
-Removes the bytes32 array registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.AddressBytes32ArrayMap storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND().
-```
-
-### Mappings API Library >> remove(Mappings.AddressBytes32Map storage,address)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.AddressBytes32Map storage,address)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.Bytes32AddressArrayMap storage,bytes32)
-
-
-Removes the address array registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.Bytes32AddressArrayMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND().
-```
-
-### Mappings API Library >> remove(Mappings.Bytes32AddressMap storage,bytes32)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.Bytes32AddressMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.Bytes32Bytes32Map storage,bytes32)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.Bytes32Bytes32Map storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Bytes32Bytes32Map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.Bytes32UintMap storage,bytes32)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.Bytes32UintMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the Uint Map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Removes the address array registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND().
-```
-
-### Mappings API Library >> remove(Mappings.UintAddressMap storage,uint256)
-
-
-Removes the entry registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-### Mappings API Library >> remove(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Removes the address array registered at the specified key in the provided map.the _map.keys array might get re-ordered by this operation: if the removed entry was not the last element in the map's keys, the last element will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND().
-```
-
-### Mappings API Library >> removeFromArray(Mappings.AddressAddressArrayMap storage,address,address,bool)
-
-
-Removes the given value from the inner array in the given map structure. The bool parameter controls if 'all' occurences of the value should be deleted.Searching for the value to be deleted starts at the end of the array, but LIFO is not guaranteed, because entries can be moved around as part of this function, i.e. when the deletion does not happen to be at the end of the array, the last entry is swapped into position of the deleted item and the array is truncated at the end.
-
-```endpoint
-CALL removeFromArray(Mappings.AddressAddressArrayMap storage,address,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_all // if true, the entire array will be traversed and all occurences deleted, if false only the first encountered one
-_key // the key for the array
-_map // the map
-_value // the value to be deleted in the array
-
-```
-
-#### Return
-
-```json
-the resulting array length
-```
-
-### Mappings API Library >> removeFromArray(Mappings.AddressBytes32ArrayMap storage,address,bytes32,bool)
-
-
-Removes the given value from the inner array in the given map structure. The bool parameter controls if 'all' occurences of the value should be deleted.Searching for the value to be deleted starts at the end of the array, but LIFO is not guaranteed, because entries can be moved around as part of this function, i.e. when the deletion does not happen to be at the end of the array, the last entry is swapped into position of the deleted item and the array is truncated at the end.
-
-```endpoint
-CALL removeFromArray(Mappings.AddressBytes32ArrayMap storage,address,bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_all // if true, the entire array will be traversed and all occurences deleted, if false only the first encountered one
-_key // the key for the array
-_map // the map
-_value // the value to be deleted in the array
-
-```
-
-#### Return
-
-```json
-the resulting array length
-```
-
-### Mappings API Library >> removeFromArray(Mappings.Bytes32AddressArrayMap storage,bytes32,address,bool)
-
-
-Removes the given value from the inner array in the given map structure. The bool parameter controls if 'all' occurences of the value should be deleted.Searching for the value to be deleted starts at the end of the array, but LIFO is not guaranteed, because entries can be moved around as part of this function, i.e. when the deletion does not happen to be at the end of the array, the last entry is swapped into position of the deleted item and the array is truncated at the end.
-
-```endpoint
-CALL removeFromArray(Mappings.Bytes32AddressArrayMap storage,bytes32,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_all // if true, the entire array will be traversed and all occurences deleted, if false only the first encountered one
-_key // the key for the array
-_map // the map
-_value // the value to be deleted in the array
-
-```
-
-#### Return
-
-```json
-the resulting array length
-```
-
-### Mappings API Library >> removeFromArray(Mappings.UintAddressArrayMap storage,uint256,address,bool)
-
-
-Removes the given value from the inner array in the given map structure. The bool parameter controls if 'all' occurences of the value should be deleted.Searching for the value to be deleted starts at the end of the array, but LIFO is not guaranteed, because entries can be moved around as part of this function, i.e. when the deletion does not happen to be at the end of the array, the last entry is swapped into position of the deleted item and the array is truncated at the end.
-
-```endpoint
-CALL removeFromArray(Mappings.UintAddressArrayMap storage,uint256,address,bool)
-```
-
-#### Parameters
-
-```solidity
-_all // if true, the entire array will be traversed and all occurences deleted, if false only the first encountered one
-_key // the key for the array
-_map // the map
-_value // the value to be deleted in the array
-
-```
-
-#### Return
-
-```json
-the resulting array length
-```
-
-### Mappings API Library >> removeFromArray(Mappings.UintBytes32ArrayMap storage,uint256,bytes32,bool)
-
-
-Removes the given value from the inner array in the given map structure. The bool parameter controls if 'all' occurences of the value should be deleted.Searching for the value to be deleted starts at the end of the array, but LIFO is not guaranteed, because entries can be moved around as part of this function, i.e. when the deletion does not happen to be at the end of the array, the last entry is swapped into position of the deleted item and the array is truncated at the end.
-
-```endpoint
-CALL removeFromArray(Mappings.UintBytes32ArrayMap storage,uint256,bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_all // if true, the entire array will be traversed and all occurences deleted, if false only the first encountered one
-_key // the key for the array
-_map // the map
-_value // the value to be deleted in the array
-
-```
-
-#### Return
-
-```json
-the resulting array length
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.AddressAddressArrayMap storage,uint256)
-
-
-Retrieves the array at the given index position and the index of the next array.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.AddressAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value or address[], and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.AddressAddressMap storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next address.
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.AddressAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.AddressBytes32ArrayMap storage,uint256)
-
-
-Retrieves the array at the given index position and the index of the next array.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.AddressBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value or bytes32[], and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.AddressBytes32Map storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next address.
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.AddressBytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.Bytes32AddressArrayMap storage,uint256)
-
-
-Retrieves the array at the given index position and the index of the next array.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.Bytes32AddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value or address[], and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.Bytes32AddressMap storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next address.
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.Bytes32AddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.Bytes32Bytes32Map storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next address.
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.Bytes32Bytes32Map storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the Bytes32Bytes32Map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.Bytes32UintMap storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next value.
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.Bytes32UintMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.UintAddressArrayMap storage,uint256)
-
-
-Retrieves the array at the given index position and the index of the next array.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.UintAddressArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value or address[], and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.UintAddressMap storage,uint256)
-
-
-Retrieves the value at the given index position and the index of the next address.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.UintAddressMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value, and nextIndex
-```
-
-### Mappings API Library >> valueAtIndexHasNext(Mappings.UintBytes32ArrayMap storage,uint256)
-
-
-Retrieves the array at the given index position and the index of the next array.Internal function to retrieve the value and nextIndex from a given Map
-
-```endpoint
-CALL valueAtIndexHasNext(Mappings.UintBytes32ArrayMap storage,uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index
-_map // the AddressArrayMap
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS(), value or bytes32[], and nextIndex
-```
-
 ## Migratable Interface
 
 
@@ -19891,33 +18059,6 @@ _permission // the permissions flags to unset for the account
 
 ```json
 result the effective permissions flags on the account after the call
-```
-
-## Signable
-
-
-The Signable contract is found within the documents-commons bundle.
-
-### Signable >> sign(address)
-
-
-Applies a signature. The implementing function has the provided address, the msg.sender, or the tx.origin at their disposal.
-
-```endpoint
-CALL sign(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the address to use as signature
-
-```
-
-#### Return
-
-```json
-a return code indicating success or type of failure
 ```
 
 ## SystemOwned
