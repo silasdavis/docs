@@ -29,6 +29,13 @@ test site:
     - build site
   script:
     - npm test
+  artifacts:
+    name: $CI_COMMIT_REF_SLUG
+    paths:
+    - content
+    - src
+    - build
+    when: on_failure
 
 # Deploy jobs
 deploy staging:
