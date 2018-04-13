@@ -1,6 +1,8 @@
-# Agreements Network REST API Documentation
+## Agreements Network REST API
 
-# Organizations
+This is the REST API group for the Agreements Network.
+
+## Organizations
 
 ### Create a New Organization
 
