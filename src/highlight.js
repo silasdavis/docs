@@ -19,6 +19,9 @@ hljs.registerLanguage('swift', swift);
 hljs.registerLanguage('java', java);
 hljs.registerLanguage('bash', bash);
 
+var hljsDefineSolidity = require('highlightjs-solidity');
+hljsDefineSolidity(hljs);
+
 /**
  * Adapted from remark-highlight.js
  * https://github.com/ben-eb/remark-highlight.js

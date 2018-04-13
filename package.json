@@ -6,10 +6,10 @@
   "scripts": {
     "start": "budo src/index.js --serve=bundle.js --live",
     "changelog": "standard-changelog -w CHANGELOG.md",
-    "test": "npm run test-unit && eslint src && npm run prerender -- /dev/null && rm -rf lib",
+    "test": "npm run test-unit && eslint src && npm run prerender -- /dev/null && rm -rf build/lib",
     "test-unit": "mocha --compilers js:babel-register test",
-    "prerender": "babel src --out-dir lib && node lib/render.js",
-    "build": "NODE_ENV=production browserify src/index.js | uglifyjs -c -m > bundle.js && npm run prerender -- index.html",
+    "prerender": "babel src --out-dir build/lib && node build/lib/render.js",
+    "build": "mkdir -p build && cp -r css build/. && NODE_ENV=production browserify src/index.js | uglifyjs -c -m > build/bundle.js && npm run prerender -- build/index.html",
     "release": "standard-version && git push --follow-tags origin master; npm publish"
   },
   "browserify": {
@@ -42,6 +42,7 @@
     "eslint-plugin-react": "^7.0.0",
     "github-slugger": "^1.0.1",
     "highlight.js": "^9.2.0",
+    "highlightjs-solidity": "^1.0.6",
     "isomorphic-fetch": "^2.2.0",
     "lodash.debounce": "^4.0.3",
     "minifyify": "^7.1.0",
