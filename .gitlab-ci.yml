@@ -63,7 +63,7 @@ deploy production:
   dependencies:
     - build site
   before_script:
-  - apk add --no-cache --update bash python curl
+  - apk add --no-cache --update bash python
   - |
     curl -sSL https://sdk.cloud.google.com | bash &>/dev/null
     # [csk] I know, I know, but you try it without.... ^^^
