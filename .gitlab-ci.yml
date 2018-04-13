@@ -48,7 +48,7 @@ deploy staging:
       git remote set-url origin "https://gitlab-ci-token:${CI_TAG_UPLOAD_TOKEN}@${url_host}"
   script:
     - git checkout production
-    - git merge --no-ff staging
+    - git merge -s ours staging
     - git push origin production
 
 deploy production:
