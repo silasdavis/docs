@@ -47,9 +47,7 @@ deploy staging:
       url_host=`git remote get-url origin | sed -e "s/https:\/\/gitlab-ci-token:.*@//g"` && \
       git remote set-url origin "https://gitlab-ci-token:${CI_TAG_UPLOAD_TOKEN}@${url_host}"
   script:
-    - git checkout production
-    - git merge staging -X theirs
-    - git push
+    - git push origin HEAD:production
 
 deploy production:
   stage: deploy
