@@ -48,7 +48,7 @@ deploy staging:
       git remote set-url origin "https://gitlab-ci-token:${CI_TAG_UPLOAD_TOKEN}@${url_host}"
   script:
     - git checkout production
-    - git merge -s ours staging
+    - git merge staging
     - git push origin production
 
 deploy production:
@@ -63,7 +63,7 @@ deploy production:
   dependencies:
     - build site
   before_script:
-  - apk add --no-cache --update bash curl python
+  - apk add --no-cache --update bash python
   - |
     curl -sSL https://sdk.cloud.google.com | bash &>/dev/null
     # [csk] I know, I know, but you try it without.... ^^^
