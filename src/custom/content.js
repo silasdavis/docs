@@ -10,6 +10,7 @@ var fs = require('fs');
  * browser: the content is read ahead-of-time and included in bundle.js.
  */
 module.exports =
+  '# REST API\n' +
   fs.readFileSync('./content/rest_api.md', 'utf8') + '\n' +
-  '# Agreements Network Contracts API\n' +
+  '# Contracts API\n' +
   fs.readFileSync('./content/smart_contracts.md', 'utf8');
