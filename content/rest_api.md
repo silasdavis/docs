@@ -1,4 +1,4 @@
-## Agreements Network REST API
+## 
 
 This is the REST API group for the Agreements Network.
 
@@ -19,6 +19,13 @@ POST /api/organizations
 | access-key | String | <p>Users unique access-key.</p>|
 
 
+
+
+#### Parameters
+
+| Parameter     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
