@@ -6255,6 +6255,28 @@ CALL getCreator()
 the creator address
 ```
 
+### DefaultActiveAgreement Interface >> getDataValueAsAddressArray(bytes32)
+
+
+Overriden method to get Address Array value from Data Storage
+
+```endpoint
+CALL getDataValueAsAddressArray(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the bytes32 id of the address array
+
+```
+
+#### Return
+
+```json
+the address array
+```
+
 ### DefaultActiveAgreement Interface >> getHoardAddress()
 
 
