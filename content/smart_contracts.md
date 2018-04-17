@@ -3,6 +3,33 @@
 
 Here's a description
 
+## AbstractDataStorage
+
+
+The AbstractDataStorage contract is found within the agreements bundle.
+
+### AbstractDataStorage >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_id // the key under which to find the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
+```
 
 ## AbstractEventListener
 
@@ -1119,6 +1146,29 @@ CALL getName()
 
 ```json
 the bytes32 name
+```
+
+### ActiveAgreement Interface >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_key // the key for the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
 ```
 
 ### ActiveAgreement Interface >> getNumberOfParties()
@@ -5279,6 +5329,29 @@ _id // the id of the data
 uint8[100] the value of the data
 ```
 
+### DataStorage Interface >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_key // the key for the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
+```
+
 ### DataStorage Interface >> getSize()
 
 
@@ -5868,6 +5941,85 @@ _value // the uint8[100] value of the data
 
 The DataStorageUtils Library contract is found within the agreements bundle.
 
+### DataStorageUtils Library >> getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
+
+
+Returns the number of non-default entries in the array-type field specified in the given DataMap. Empty values are: 0 for int/uint, 0x0 for address, "" for bytes32, etc.) Currently only DataTypes.ADDRESSARRAY() and DataTypes.BYTES32ARRAY() are supported by this function
+
+```endpoint
+CALL getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if true the array will be scanned to its end, otherwise the function returns on the first encountered default value
+_key // a key pointing to a supported array-type field
+_map // the DataMap
+
+```
+
+#### Return
+
+```json
+the number of non-default entries
+```
+
+### DataStorageUtils Library >> getNumberOfEntries(address[100],bool)
+
+
+Returns the number of non-default entries in the given array.
+
+```endpoint
+CALL getNumberOfEntries(address[100],bool)
+```
+
+#### Parameters
+
+```solidity
+_array // the array to scan
+_fullscan // whether to keep scanning to the end even if default values are encountered
+
+```
+
+#### Return
+
+```json
+the number of non-empty entries in the array
+```
+
+### DataStorageUtils Library >> getNumberOfEntries(bytes32[100],bool)
+
+
+Returns the number of non-default entries in the given array.
+
+```endpoint
+CALL getNumberOfEntries(bytes32[100],bool)
+```
+
+#### Parameters
+
+```solidity
+_array // the array to scan
+_fullscan // whether to keep scanning to the end even if default values are encountered
+
+```
+
+#### Return
+
+```json
+the number of non-empty entries in the array
+```
+
+### DataStorageUtils Library >> keyAtIndex(DataStorageUtils.DataMap storage,uint256)
+
+
+Returns the ID of the Data at the specified index in the given map
+
+```endpoint
+CALL keyAtIndex(DataStorageUtils.DataMap storage,uint256)
+```
+
 ### DataStorageUtils Library >> remove(DataStorageUtils.DataMap storage,bytes32)
 
 
@@ -6306,6 +6458,29 @@ CALL getName()
 
 ```json
 name name
+```
+
+### DefaultActiveAgreement Interface >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_id // the key under which to find the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
 ```
 
 ### DefaultActiveAgreement Interface >> getNumberOfParties()
@@ -10199,6 +10374,29 @@ CALL getNumberOfActivityInstances()
 
 ```json
 the number of activity instances
+```
+
+### DefaultProcessInstance >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_id // the key under which to find the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
 ```
 
 ### DefaultProcessInstance >> getProcessDefinition()
@@ -16870,6 +17068,29 @@ CALL getNumberOfActivityInstances()
 
 ```json
 the number of activity instances
+```
+
+### ProcessInstance Interface >> getNumberOfArrayEntries(bytes32,bool)
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_id // the key under which to find the array-type value
+
+```
+
+#### Return
+
+```json
+the number of non-default entries in the array
 ```
 
 ### ProcessInstance Interface >> getProcessDefinition()
