@@ -10757,16 +10757,16 @@ BaseErrors.RESOURCE_NOT_FOUND() if the specified interface cannot be located in 
 
 ---
 
-#### createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
+#### createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
 
 
-**createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)**
+**createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)**
 
 
 Creates a new activity definition with the specified parameters.
 
 ```endpoint
-CALL createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
+CALL createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
 ```
 
 #### Parameters
@@ -10774,7 +10774,6 @@ CALL createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
 ```solidity
 _activityType // the BpmModel.ActivityType
 _application // the application handling the execution of the activity
-_assignee // the address of an assignee (for interactive activities)
 _id // the activity ID
 _multiInstance // whether the activity represents multiple instances
 _taskType // the BpmModel.TaskType
@@ -10784,7 +10783,7 @@ _taskType // the BpmModel.TaskType
 #### Return
 
 ```json
-BaseErrors.RESOURCE_ALREADY_EXISTS() if an activity with the same ID already existsBaseErrors.RESOURCE_NOT_FOUND() if an application is specified, but does not exist in the modelBaseErrors.NO_ERROR() upon successful creation.
+BaseErrors.RESOURCE_ALREADY_EXISTS() if an activity with the same ID already existsBaseErrors.INVALID_PARAM_VALUE() if an assignee is specified, but the BpmModel.TaskType is not USERBaseErrors.NULL_PARAM_NOT_ALLOWED() if BpmModel.TaskType is USER, but no assignee was specifiedBaseErrors.RESOURCE_NOT_FOUND() if an application or an assignee is specified that does not exist in the modelBaseErrors.NO_ERROR() upon successful creation.
 ```
 
 
@@ -10813,7 +10812,7 @@ _targetActivity // the end of the transition
 #### Return
 
 ```json
-BaseErrors.RESOURCE_ALREADY_EXISTS() if a transition between the source and target already existsBaseErrors.NO_ERROR() upon successful creation.
+BaseErrors.RESOURCE_NOT_FOUND() if either the source or target activity does not existBaseErrors.RESOURCE_ALREADY_EXISTS() if a transition between the source and target already existsBaseErrors.NO_ERROR() upon successful creation.
 ```
 
 
@@ -10869,7 +10868,7 @@ _id // the bytes32 id of the activity definition
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -11216,7 +11215,7 @@ _type // the gateway type
 **validate()**
 
 
-Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag. Currently performed validation: 1. There must be exactly one start activity, i.e. one activity with no inputs 2. Activities with more than 1 inputs/outputs must have a supporting input/output gateway type (OR, XOR, AND).
+Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag. Currently performed validation: 1. There must be exactly one start activity, i.e. one activity with no inputs 2. Activities with more than 1 inputs/outputs must have a supporting input/output gateway type (OR, XOR, AND). 3. User task activities must have an assignee or conditional assignee configuration
 
 ```endpoint
 CALL validate()
@@ -11225,7 +11224,7 @@ CALL validate()
 #### Return
 
 ```json
-valid - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
+result - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
 ```
 
 
@@ -11276,6 +11275,38 @@ CALL addEventListener(bytes32,address)
 _event // the event to subscribe to
 _listener // the address of an EventListener
 
+```
+
+
+---
+
+#### addParticipant(bytes32,address,bytes32,bytes32,address)
+
+
+**addParticipant(bytes32,address,bytes32,bytes32,address)**
+
+
+Adds a participant with the specified ID and attributes to this ProcessModel
+
+```endpoint
+CALL addParticipant(bytes32,address,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_account // the address of a participant account
+_dataPath // the field key under which to locate the conditional participant
+_dataStorage // the address of a DataStorage contract to find a conditional participant
+_dataStorageId // a field key in a known DataStorage containing an address of another DataStorage contract
+_id // the participant ID
+
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_PARAM_VALUE() if both participant and conditional participant are being attempted to be set or if the config for a conditional participant is missing the _dataPathBaseErrors.NO_ERROR() if successful
 ```
 
 
@@ -11518,7 +11549,7 @@ _id // the application ID
 #### Return
 
 ```json
-location the applications contract addressmethod the function signature of the application
+applicationType the BpmModel.ApplicationType as uint8location the applications contract address, only available for a service applicationmethod the function signature of the application, only available for a service applicationwebForm the form identifier (formHash) of the web application, only available for a web application
 ```
 
 
@@ -11587,6 +11618,27 @@ the number of applications
 
 ---
 
+#### getNumberOfParticipants()
+
+
+**getNumberOfParticipants()**
+
+
+Returns the number of participants defined in this ProcessModel
+
+```endpoint
+CALL getNumberOfParticipants()
+```
+
+#### Return
+
+```json
+the number of participants
+```
+
+
+---
+
 #### getNumberOfProcessDefinitions()
 
 
@@ -11624,6 +11676,62 @@ CALL getNumberOfProcessInterfaces()
 
 ```json
 the number of process interfaces
+```
+
+
+---
+
+#### getParticipantAtIndex(uint256)
+
+
+**getParticipantAtIndex(uint256)**
+
+
+Returns the ID of the participant at the given index
+
+```endpoint
+CALL getParticipantAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+the participant ID, if it exists
+```
+
+
+---
+
+#### getParticipantData(bytes32)
+
+
+**getParticipantData(bytes32)**
+
+
+Returns information about the participant with the given ID
+
+```endpoint
+CALL getParticipantData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the participant ID
+
+```
+
+#### Return
+
+```json
+location the applications contract address, only available for a service participantmethod the function signature of the participant, only available for a service participantwebForm the form identifier (formHash) of the web participant, only available for a web participant
 ```
 
 
@@ -11750,6 +11858,34 @@ CALL hasApplication(bytes32)
 
 ```solidity
 _id // the application ID
+
+```
+
+#### Return
+
+```json
+true if it exists, false otherwise
+```
+
+
+---
+
+#### hasParticipant(bytes32)
+
+
+**hasParticipant(bytes32)**
+
+
+Returns whether a participant with the specified ID exists in this ProcessModel
+
+```endpoint
+CALL hasParticipant(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the participant ID
 
 ```
 
@@ -11941,70 +12077,6 @@ BaseErrors.RESOURCE_ALREADY_EXISTS() if a model with the same ID and version alr
 
 ---
 
-#### createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)
-
-
-**createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)**
-
-
-Creates a new activity definition on the given process definition with the specified parameters.
-
-```endpoint
-CALL createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityType // the BpmModel.ActivityType
-_address // process definition address
-_application // the application handling the execution of the activity
-_assignee // the address of an assignee (for interactive activities)
-_id // the activity ID
-_multiInstance // whether the activity represents multiple instances
-_taskType // the BpmModel.TaskType
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-#### createProcessDefinition(address,bytes32,bytes32)
-
-
-**createProcessDefinition(address,bytes32,bytes32)**
-
-
-Creates a new process definition with the given parameters within the given process model
-
-```endpoint
-CALL createProcessDefinition(address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_address // the process model
-_id // the process ID
-_name // the process name
-
-```
-
-#### Return
-
-```json
-error - BaseErrors.RESOURCE_ALREADY_EXISTS(), if a process definition with the same ID already exists, BaseErrors.NO_ERROR() otherwisenewAddress - the address of the new ProcessDefinition when successful
-```
-
-
----
-
 #### createProcessModel(bytes32,bytes32,uint8[3])
 
 
@@ -12024,36 +12096,6 @@ _id // the model ID
 _name // the model name
 _version // the model version
 
-```
-
-
----
-
-#### createTransition(address,bytes32,bytes32)
-
-
-**createTransition(address,bytes32,bytes32)**
-
-
-Creates a transition between the specified source and target activities within the given process definition.
-
-```endpoint
-CALL createTransition(address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_address // process definition address	 
-_sourceActivity // the start of the transition
-_targetActivity // the end of the transition
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
 ```
 
 
@@ -12232,7 +12274,7 @@ _processDefinition // a Process Definition address
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -12510,27 +12552,6 @@ _processDefinition // a ProcessDefinition address
 
 ```json
 id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the ProcessDefinition's first interface ID
-```
-
-
----
-
-#### validateProcessDefinition(bytes32,bytes32)
-
-
-**validateProcessDefinition(bytes32,bytes32)**
-
-
-Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag. Currently performed validation: 1. There must be exactly one start activity, i.e. one activity with no inputs 2. Activities with more than 1 inputs/outputs must have a supporting input/output gateway type (OR, XOR, AND).
-
-```endpoint
-CALL validateProcessDefinition(bytes32,bytes32)
-```
-
-#### Return
-
-```json
-valid - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
 ```
 
 
@@ -12837,16 +12858,16 @@ an error code signaling success or failure
 
 ---
 
-#### createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
+#### createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
 
 
-**createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)**
+**createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)**
 
 
 Creates a new activity definition with the specified parameters.
 
 ```endpoint
-CALL createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
+CALL createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
 ```
 
 #### Parameters
@@ -12854,7 +12875,7 @@ CALL createActivityDefinition(bytes32,uint8,uint8,address,bool,bytes32)
 ```solidity
 _activityType // the BpmModel.ActivityType
 _application // the application handling the execution of the activity
-_assignee // the address of an assignee (for interactive activities)
+_assignee // the ID of the participant performing the activity (for USER tasks only)
 _id // the activity ID
 _multiInstance // whether the activity represents multiple instances
 _taskType // the BpmModel.TaskType
@@ -12949,7 +12970,7 @@ _id // the bytes32 id of the activity definition
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -13361,6 +13382,38 @@ _listener // the address of an EventListener
 
 ---
 
+#### addParticipant(bytes32,address,bytes32,bytes32,address)
+
+
+**addParticipant(bytes32,address,bytes32,bytes32,address)**
+
+
+Adds a participant with the specified ID and attributes to this ProcessModel
+
+```endpoint
+CALL addParticipant(bytes32,address,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_account // the address of a participant account
+_dataPath // the field key under which to locate the conditional participant
+_dataStorage // the address of a DataStorage contract to find a conditional participant
+_dataStorageId // a field key in a known DataStorage containing an address of another DataStorage contract
+_id // the participant ID
+
+```
+
+#### Return
+
+```json
+an error code indicating success or failure
+```
+
+
+---
+
 #### addProcessInterface(bytes32)
 
 
@@ -13598,7 +13651,7 @@ _id // the application ID
 #### Return
 
 ```json
-location the applications contract address, only available for a service applicationmethod the function signature of the application, only available for a service applicationwebForm the form identifier (formHash) of the web application, only available for a web application
+applicationType the BpmModel.ApplicationType as uint8location the applications contract address, only available for a service applicationmethod the function signature of the application, only available for a service applicationwebForm the form identifier (formHash) of the web application, only available for a web application
 ```
 
 
@@ -13667,6 +13720,27 @@ the number of applications
 
 ---
 
+#### getNumberOfParticipants()
+
+
+**getNumberOfParticipants()**
+
+
+Returns the number of participants defined in this ProcessModel
+
+```endpoint
+CALL getNumberOfParticipants()
+```
+
+#### Return
+
+```json
+the number of participants
+```
+
+
+---
+
 #### getNumberOfProcessDefinitions()
 
 
@@ -13704,6 +13778,62 @@ CALL getNumberOfProcessInterfaces()
 
 ```json
 the number of process interfaces
+```
+
+
+---
+
+#### getParticipantAtIndex(uint256)
+
+
+**getParticipantAtIndex(uint256)**
+
+
+Returns the ID of the participant at the given index
+
+```endpoint
+CALL getParticipantAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+the participant ID, if it exists
+```
+
+
+---
+
+#### getParticipantData(bytes32)
+
+
+**getParticipantData(bytes32)**
+
+
+Returns information about the participant with the given ID
+
+```endpoint
+CALL getParticipantData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the participant ID
+
+```
+
+#### Return
+
+```json
+location the applications contract address, only available for a service participantmethod the function signature of the participant, only available for a service participantwebForm the form identifier (formHash) of the web participant, only available for a web participant
 ```
 
 
@@ -13830,6 +13960,34 @@ CALL hasApplication(bytes32)
 
 ```solidity
 _id // the application ID
+
+```
+
+#### Return
+
+```json
+true if it exists, false otherwise
+```
+
+
+---
+
+#### hasParticipant(bytes32)
+
+
+**hasParticipant(bytes32)**
+
+
+Returns whether a participant with the specified ID exists in this ProcessModel
+
+```endpoint
+CALL hasParticipant(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the participant ID
 
 ```
 
@@ -14021,70 +14179,6 @@ an error indicating success or failure
 
 ---
 
-#### createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)
-
-
-**createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)**
-
-
-Creates a new activity definition on the given process definition with the specified parameters.
-
-```endpoint
-CALL createActivityDefinition(address,bytes32,uint8,uint8,address,bool,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityType // the BpmModel.ActivityType
-_address // process definition address
-_application // the application handling the execution of the activity
-_assignee // the address of an assignee (for interactive activities)
-_id // the activity ID
-_multiInstance // whether the activity represents multiple instances
-_taskType // the BpmModel.TaskType
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-#### createProcessDefinition(address,bytes32,bytes32)
-
-
-**createProcessDefinition(address,bytes32,bytes32)**
-
-
-Creates a new process definition with the given parameters within the given process model
-
-```endpoint
-CALL createProcessDefinition(address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_address // the process model
-_id // the process ID
-_name // the process name
-
-```
-
-#### Return
-
-```json
-error - BaseErrors.RESOURCE_ALREADY_EXISTS(), if a process definition with the same ID already exists, BaseErrors.NO_ERROR() otherwisenewAddress - the address of the new ProcessDefinition when successful
-```
-
-
----
-
 #### createProcessModel(bytes32,bytes32,uint8[3])
 
 
@@ -14104,36 +14198,6 @@ _id // the model ID
 _name // the model name
 _version // the model version
 
-```
-
-
----
-
-#### createTransition(address,bytes32,bytes32)
-
-
-**createTransition(address,bytes32,bytes32)**
-
-
-Creates a transition between the specified source and target activities within the given process definition.
-
-```endpoint
-CALL createTransition(address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_address // process definition address	 
-_sourceActivity // the start of the transition
-_targetActivity // the end of the transition
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
 ```
 
 
@@ -14312,7 +14376,7 @@ _processDefinition // a Process Definition address
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -14595,27 +14659,6 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 
 ---
 
-#### validateProcessDefinition(bytes32,bytes32)
-
-
-**validateProcessDefinition(bytes32,bytes32)**
-
-
-Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag. Currently performed validation: 1. There must be exactly one start activity, i.e. one activity with no inputs 2. Activities with more than 1 inputs/outputs must have a supporting input/output gateway type (OR, XOR, AND).
-
-```endpoint
-CALL validateProcessDefinition(bytes32,bytes32)
-```
-
-#### Return
-
-```json
-valid - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
-```
-
-
----
-
 ### Versioned
 
 
@@ -14767,6 +14810,7 @@ CALL activateAndComplete(BpmRuntime.ActivityInstance storage,ProcessDefinition)
 
 ```solidity
 _activityInstance // the activity instance
+_processDefinition // a ProcessDefinition containing information about the activity
 
 ```
 
@@ -14779,16 +14823,16 @@ error code indicating success or failure
 
 ---
 
-#### addActivity(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+#### addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 
 
-**addActivity(BpmRuntime.ProcessRuntimeInstance storage,bytes32)**
+**addActivity(BpmRuntime.ProcessGraph storage,bytes32)**
 
 
 Adds an activity with the specified ID to the given process runtime graph.
 
 ```endpoint
-CALL addActivity(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+CALL addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 ```
 
 #### Parameters
@@ -14802,16 +14846,16 @@ _id // the activity ID to add
 
 ---
 
-#### addInputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)
+#### addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
 
 
-**addInputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)**
+**addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)**
 
 
 Adds an input arc to the given process runtime graph to connect from the provided activity to the provided transition.
 
 ```endpoint
-CALL addInputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)
+CALL addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
 ```
 
 #### Parameters
@@ -14826,16 +14870,16 @@ _transitionId // the ID of the transtion to which to connect
 
 ---
 
-#### addOutputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)
+#### addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
 
 
-**addOutputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)**
+**addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)**
 
 
 Adds an output arc to the given process runtime graph to connect from the provided transition to the provided activity.
 
 ```endpoint
-CALL addOutputArc(BpmRuntime.ProcessRuntimeInstance storage,bytes32,bytes32)
+CALL addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
 ```
 
 #### Parameters
@@ -14850,16 +14894,16 @@ _transitionId // the ID of the transtion from which to connect
 
 ---
 
-#### addTransition(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+#### addTransition(BpmRuntime.ProcessGraph storage,bytes32)
 
 
-**addTransition(BpmRuntime.ProcessRuntimeInstance storage,bytes32)**
+**addTransition(BpmRuntime.ProcessGraph storage,bytes32)**
 
 
 Adds a transition with the specified ID to the given process runtime graph.
 
 ```endpoint
-CALL addTransition(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+CALL addTransition(BpmRuntime.ProcessGraph storage,bytes32)
 ```
 
 #### Parameters
@@ -14873,23 +14917,23 @@ _id // the transition ID to add
 
 ---
 
-#### configure(BpmRuntime.ProcessRuntimeInstance storage,ProcessDefinition)
+#### configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)
 
 
-**configure(BpmRuntime.ProcessRuntimeInstance storage,ProcessDefinition)**
+**configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)**
 
 
-Configures a ProcessRuntimeIntance based on the provided ProcessDefinition. Note: Placing this function in the BpmRuntimeApi library avoids import dependencies of the runtime package by the model.
+Configures a ProcessRuntimeIntance based on the provided ProcessDefinition.
 
 ```endpoint
-CALL configure(BpmRuntime.ProcessRuntimeInstance storage,ProcessDefinition)
+CALL configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)
 ```
 
 #### Parameters
 
 ```solidity
+_graph // the runtime instance to configure
 _processDefinition // the process definition
-_runtimeInstance // the runtime instance to configure
 
 ```
 
@@ -14902,23 +14946,25 @@ an error code indicating success or failure
 
 ---
 
-#### execute(BpmRuntime.ActivityInstance storage,BpmRuntime.ActivityRuntimeInstance storage,ProcessDefinition)
+#### execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)
 
 
-**execute(BpmRuntime.ActivityInstance storage,BpmRuntime.ActivityRuntimeInstance storage,ProcessDefinition)**
+**execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)**
 
 
 Executes the given ActivityInstance based on the information in the provided ProcessDefinition.
 
 ```endpoint
-CALL execute(BpmRuntime.ActivityInstance storage,BpmRuntime.ActivityRuntimeInstance storage,ProcessDefinition)
+CALL execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)
 ```
 
 #### Parameters
 
 ```solidity
 _activityInstance // the ActivityInstance
+_instanceCounter // indicates the index position for multi-instance activities to support accessing array-based data mappings
 _processDefinition // a ProcessDefinition containing information how to execute the activity
+_rootDataStorage // a DataStorage that can be used to resolve process data (typically this is the ProcessInstance itself)
 
 ```
 
@@ -14931,16 +14977,16 @@ an error code indicating success or failure
 
 ---
 
-#### execute(BpmRuntime.ProcessRuntimeInstance storage)
+#### execute(BpmRuntime.ProcessGraph storage)
 
 
-**execute(BpmRuntime.ProcessRuntimeInstance storage)**
+**execute(BpmRuntime.ProcessGraph storage)**
 
 
-Executes a single iteration of the given ProcessRuntimeInstance, i.e. it goes over all transitions and attempts to fire them based on the current token state of the graph.
+Executes a single iteration of the given ProcessGraph, i.e. it goes over all transitions and attempts to fire them based on the current token state of the graph.
 
 ```endpoint
-CALL execute(BpmRuntime.ProcessRuntimeInstance storage)
+CALL execute(BpmRuntime.ProcessGraph storage)
 ```
 
 #### Parameters
@@ -14959,22 +15005,51 @@ the number of transitions that fired
 
 ---
 
-#### hasActivatableActivities(BpmRuntime.ProcessRuntimeInstance storage)
+#### execute(BpmRuntime.ProcessInstance storage,BpmService)
 
 
-**hasActivatableActivities(BpmRuntime.ProcessRuntimeInstance storage)**
+**execute(BpmRuntime.ProcessInstance storage,BpmService)**
 
 
-Determines whether the given runtime instance has any activities that are waiting to be activated.
+Executes the given ProcessInstance leveraging the given BpmService reference by looking for activities that are "ready" to be executed. Execution continues along the process graph until no more activities can be executed. This function implements a single transaction of all activities in a process flow until an asynchronous point in the flow is reached or the process has ended.
 
 ```endpoint
-CALL hasActivatableActivities(BpmRuntime.ProcessRuntimeInstance storage)
+CALL execute(BpmRuntime.ProcessInstance storage,BpmService)
 ```
 
 #### Parameters
 
 ```solidity
-_runtimeInstance // the ProcessRuntimeInstance
+_processInstance // the ProcessInstance to execute
+_service // the BpmService managing the ProcessInstance (used to register changes to the ProcessInstance and fire events)
+
+```
+
+#### Return
+
+```json
+an error code signaling success or failure
+```
+
+
+---
+
+#### hasActivatableActivities(BpmRuntime.ProcessGraph storage)
+
+
+**hasActivatableActivities(BpmRuntime.ProcessGraph storage)**
+
+
+Determines whether the given runtime instance has any activities that are waiting to be activated.
+
+```endpoint
+CALL hasActivatableActivities(BpmRuntime.ProcessGraph storage)
+```
+
+#### Parameters
+
+```solidity
+_graph // the ProcessGraph
 
 ```
 
@@ -14987,16 +15062,16 @@ true if at least one activatable activity was found, false otherwise
 
 ---
 
-#### isTransitionEnabled(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+#### isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)
 
 
-**isTransitionEnabled(BpmRuntime.ProcessRuntimeInstance storage,bytes32)**
+**isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)**
 
 
 Determines whether the conditions are met to fire the provided transition.
 
 ```endpoint
-CALL isTransitionEnabled(BpmRuntime.ProcessRuntimeInstance storage,bytes32)
+CALL isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)
 ```
 
 #### Parameters
@@ -15011,6 +15086,36 @@ _transitionId // the ID specifying the transition
 
 ```json
 true if the transitions can fire, false otherwise
+```
+
+
+---
+
+#### resolveParticipant(ProcessModel,DataStorage,bytes32)
+
+
+**resolveParticipant(ProcessModel,DataStorage,bytes32)**
+
+
+Provides runtime resolution capabilities to determine the account address or lookup location of an account for a participant in a given ProcessModel. This function supports dealing with concrete participants as well as conditional performers. Examples: Return value (FE80A3F6CDFEF73D4FACA7DBA1DFCF215299279D, "") => The address is a concrete (user) account and can be used directly Return value (AA194B34D18F710058C0B14CFDAD4FF0150856EA, "accountant") => The address is a DataStorage contract and the (user) account to use can be located using DataStorage(AA194B34D18F710058C0B14CFDAD4FF0150856EA).getDataValueAsAddress("accountant")
+
+```endpoint
+CALL resolveParticipant(ProcessModel,DataStorage,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_dataStorage // a concrete DataStorage instance supporting the lookup
+_participant // the ID of a participant in the given model
+_processModel // a ProcessModel
+
+```
+
+#### Return
+
+```json
+target - either the address of an account or the address of another DataStorage where the account can be founddataPath - empty bytes32 in case the returned target is already an identified account or a key where to retrieve the account if the target is another DataStorage
 ```
 
 
@@ -15236,7 +15341,7 @@ _piAddress // process instance address
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -15277,7 +15382,7 @@ the ActivityInstance ID
 **getActivityInstanceData(address,bytes32)**
 
 
-Returns ActivityInstance data for given ActivityInstance ID
+Returns ActivityInstance data for the given ActivityInstance ID
 
 ```endpoint
 CALL getActivityInstanceData(address,bytes32)
@@ -15287,7 +15392,7 @@ CALL getActivityInstanceData(address,bytes32)
 
 ```solidity
 _id // the global ID of the activity instance
-_processInstance // the process instance address
+_processInstance // the process instance address to which the ActivityInstance belongs
 
 ```
 
@@ -15569,7 +15674,7 @@ _piAddress // process instance address
 #### Return
 
 ```json
-assignee the address of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's application
+assignee the ID of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's application
 ```
 
 
@@ -15597,23 +15702,81 @@ _repository // - the address of the repository
 
 ---
 
-#### startProcess(bytes32,bytes32)
+#### startProcess(address)
 
 
-**startProcess(bytes32,bytes32)**
+**startProcess(address)**
 
 
-Registers the specified process and starts its execution.
+Creates a new ProcessInstance based on the specified ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcess(bytes32,bytes32)
+CALL startProcess(address)
+```
+
+#### Parameters
+
+```solidity
+_processDefinition // the address of a ProcessDefinition
+
+```
+
+#### Return
+
+```json
+error code indicating success or failureinstance the address of a ProcessInstance, if successful
+```
+
+
+---
+
+#### startProcessFromRepository(bytes32,bytes32)
+
+
+**startProcessFromRepository(bytes32,bytes32)**
+
+
+Creates a new ProcessInstance based on the specified IDs of a ProcessModel and ProcessDefinition and starts its execution
+
+```endpoint
+CALL startProcessFromRepository(bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
 _modelId // the model that qualifies the process ID, if multiple models are deployed, otherwise optional
-_processId // the process ID
+_processDefinitionId // the ID of the process definition
+
+```
+
+#### Return
+
+```json
+error code indicating success or failureinstance the address of a ProcessInstance, if successful
+```
+
+
+---
+
+#### startProcessWithData(address,bytes32,address)
+
+
+**startProcessWithData(address,bytes32,address)**
+
+
+Creates a new ProcessInstance based on the specified ProcessDefinition, populates the key/value address-type field and starts its execution
+
+```endpoint
+CALL startProcessWithData(address,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_addressKey // the key under which the value should be stored in the ProcessInstance
+_addressValue // an address value
+_processDefinition // the address of a ProcessDefinition
 
 ```
 
@@ -15831,7 +15994,7 @@ _piAddress // process instance address
 #### Return
 
 ```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the address of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -15872,7 +16035,7 @@ the ActivityInstance ID
 **getActivityInstanceData(address,bytes32)**
 
 
-Returns ActivityInstance data for given ActivityInstance ID
+Returns ActivityInstance data for given the ActivityInstance ID
 
 ```endpoint
 CALL getActivityInstanceData(address,bytes32)
@@ -15882,7 +16045,7 @@ CALL getActivityInstanceData(address,bytes32)
 
 ```solidity
 _id // the global ID of the activity instance
-_processInstance // the process instance address
+_processInstance // the process instance address to which the ActivityInstance belongs
 
 ```
 
@@ -16164,7 +16327,7 @@ _piAddress // process instance address
 #### Return
 
 ```json
-assignee the address of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+assignee the ID of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -16192,30 +16355,88 @@ _repository // - the address of the repository
 
 ---
 
-#### startProcess(bytes32,bytes32)
+#### startProcess(address)
 
 
-**startProcess(bytes32,bytes32)**
+**startProcess(address)**
 
 
-Registers the specified process and starts it by activating the first activity
+Creates a new ProcessInstance based on the specified ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcess(bytes32,bytes32)
+CALL startProcess(address)
 ```
 
 #### Parameters
 
 ```solidity
-_modelId // the model that qualifies the process ID, if multiple models are deployed, otherwise optional
-_processId // the process ID
+_processDefinition // the address of a ProcessDefinition
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.RESOURCE_NOT_FOUND() if the ProcessBaseErrors.NO_ERROR()the address of a ProcessInstance, if successful
+any error resulting from ProcessInstance.execute() or ProcessBaseErrors.NO_ERROR(), if successfulthe address of a ProcessInstance, if successful
+```
+
+
+---
+
+#### startProcessFromRepository(bytes32,bytes32)
+
+
+**startProcessFromRepository(bytes32,bytes32)**
+
+
+Creates a new ProcessInstance based on the specified IDs of a ProcessModel and ProcessDefinition and starts its execution
+
+```endpoint
+CALL startProcessFromRepository(bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_modelId // the model that qualifies the process ID, if multiple models are deployed, otherwise optional
+_processDefinitionId // the ID of the process definition
+
+```
+
+#### Return
+
+```json
+BaseErrors.RESOURCE_NOT_FOUND() if ProcessDefinition cannot be located in the ProcessModelRepositoryany error resulting from ProcessInstance.execute() or ProcessBaseErrors.NO_ERROR(), if successfulthe address of a ProcessInstance, if successful //TODO this function should be called startProcess(bytes32, bytes32), but our JS libs have a problem with polymorphism: AN-301
+```
+
+
+---
+
+#### startProcessWithData(address,bytes32,address)
+
+
+**startProcessWithData(address,bytes32,address)**
+
+
+Creates a new ProcessInstance based on the specified ProcessDefinition, populates the key/value address-type field and starts its execution
+
+```endpoint
+CALL startProcessWithData(address,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_addressKey // the key under which the value should be stored in the ProcessInstance
+_addressValue // an address value
+_processDefinition // the address of a ProcessDefinition
+
+```
+
+#### Return
+
+```json
+error code indicating success or failureinstance the address of a ProcessInstance, if successful
 ```
 
 
@@ -16352,7 +16573,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the activity instance
-_db // the BpmRuntimeDb required for changes to this ProcessInstance after the activity completes
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance after the activity completes)
 
 ```
 
@@ -16380,7 +16601,7 @@ CALL execute(address)
 #### Parameters
 
 ```solidity
-_db // a reference to the runtime DB in which this ProcessInstance is stored
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmRuntimeDb)
 
 ```
 
@@ -16443,7 +16664,7 @@ _id // the global ID of the activity instance
 #### Return
 
 ```json
-activityId - the ID of the activity as defined by the process definitionstate - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
+created - the creation timestampcompleted - the completion timestampperformer - the account who is performing the activity (for interactive activities only)completedBy - the account who completed the activity (for interactive activities only) activityId - the ID of the activity as defined by the process definitionstate - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
 ```
 
 
@@ -16584,7 +16805,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the activity instance
-_db // the BpmRuntimeDb required for changes to this ProcessInstance after the activity completes
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance after the activity completes)
 
 ```
 
@@ -16612,7 +16833,7 @@ CALL execute(address)
 #### Parameters
 
 ```solidity
-_db // a reference to the runtime DB in which this ProcessInstance is stored
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmRuntimeDb)
 
 ```
 
@@ -16675,7 +16896,875 @@ _id // the global ID of the activity instance
 #### Return
 
 ```json
-activityId - the ID of the activity as defined by the process definitionstate - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
+activityId - the ID of the activity as defined by the process definitioncreated - the creation timestampcompleted - the completion timestampperformer - the account who is performing the activity (for interactive activities only)completedBy - the account who completed the activity (for interactive activities only) state - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
+```
+
+
+---
+
+#### getDataIdAtIndex(uint256)
+
+
+**getDataIdAtIndex(uint256)**
+
+
+Returns the data id at the given index
+
+```endpoint
+CALL getDataIdAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // the index of the data
+
+```
+
+#### Return
+
+```json
+error uint error code id bytes32 id of the data
+```
+
+
+---
+
+#### getDataType(bytes32)
+
+
+**getDataType(bytes32)**
+
+
+Returns the data type of the Data object identified by the given id
+
+```endpoint
+CALL getDataType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint8 the DataType
+```
+
+
+---
+
+#### getDataValueAsAddress(bytes32)
+
+
+**getDataValueAsAddress(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsAddress(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+address the value of the data
+```
+
+
+---
+
+#### getDataValueAsAddressArray(bytes32)
+
+
+**getDataValueAsAddressArray(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsAddressArray(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+address[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBool(bytes32)
+
+
+**getDataValueAsBool(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBool(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bool the bool value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes(bytes32)
+
+
+**getDataValueAsBytes(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes32 the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes16Array(bytes32)
+
+
+**getDataValueAsBytes16Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes16[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes1Array(bytes32)
+
+
+**getDataValueAsBytes1Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes1Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes1[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes20Array(bytes32)
+
+
+**getDataValueAsBytes20Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes20Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes20[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes24Array(bytes32)
+
+
+**getDataValueAsBytes24Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes24Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes24[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes28Array(bytes32)
+
+
+**getDataValueAsBytes28Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes28Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes28[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes2Array(bytes32)
+
+
+**getDataValueAsBytes2Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes2Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes2[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes32Array(bytes32)
+
+
+**getDataValueAsBytes32Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes32[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes3Array(bytes32)
+
+
+**getDataValueAsBytes3Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes3Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes3[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes4Array(bytes32)
+
+
+**getDataValueAsBytes4Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes4Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes4[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsBytes8Array(bytes32)
+
+
+**getDataValueAsBytes8Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsBytes8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+bytes8[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt(bytes32)
+
+
+**getDataValueAsInt(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt128Array(bytes32)
+
+
+**getDataValueAsInt128Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt128Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int128[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt16Array(bytes32)
+
+
+**getDataValueAsInt16Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int16[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt256Array(bytes32)
+
+
+**getDataValueAsInt256Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt256Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int256[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt32Array(bytes32)
+
+
+**getDataValueAsInt32Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int32[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt64Array(bytes32)
+
+
+**getDataValueAsInt64Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt64Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int64[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsInt8Array(bytes32)
+
+
+**getDataValueAsInt8Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsInt8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+int8[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsString(bytes32)
+
+
+**getDataValueAsString(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsString(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+string the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint(bytes32)
+
+
+**getDataValueAsUint(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint128Array(bytes32)
+
+
+**getDataValueAsUint128Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint128Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint128[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint16Array(bytes32)
+
+
+**getDataValueAsUint16Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint16Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint16[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint256Array(bytes32)
+
+
+**getDataValueAsUint256Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint256Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint256[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint32Array(bytes32)
+
+
+**getDataValueAsUint32Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint32Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint32[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint64Array(bytes32)
+
+
+**getDataValueAsUint64Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint64Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint64[100] the value of the data
+```
+
+
+---
+
+#### getDataValueAsUint8Array(bytes32)
+
+
+**getDataValueAsUint8Array(bytes32)**
+
+
+Gets the value of the Data object identified by the given id
+
+```endpoint
+CALL getDataValueAsUint8Array(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint8[100] the value of the data
 ```
 
 
@@ -16718,7 +17807,7 @@ CALL getNumberOfArrayEntries(bytes32,bool)
 
 ```solidity
 _fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
-_id // the key under which to find the array-type value
+_key // the key for the array-type value
 
 ```
 
@@ -16747,6 +17836,27 @@ CALL getProcessDefinition()
 
 ```json
 the address of a ProcessDefinition
+```
+
+
+---
+
+#### getSize()
+
+
+**getSize()**
+
+
+Returns the size of the DataMap
+
+```endpoint
+CALL getSize()
+```
+
+#### Return
+
+```json
+uint the size
 ```
 
 
@@ -16789,6 +17899,773 @@ CALL initRuntime()
 
 ```json
 error code indicating success or failure
+```
+
+
+---
+
+#### removeData(bytes32)
+
+
+**removeData(bytes32)**
+
+
+Removes the Data identified by the id from the DataMap
+
+```endpoint
+CALL removeData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+
+```
+
+#### Return
+
+```json
+uint error code
+```
+
+
+---
+
+#### setDataValueAsAddress(bytes32,address)
+
+
+**setDataValueAsAddress(bytes32,address)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsAddress(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the address value of the data
+
+```
+
+
+---
+
+#### setDataValueAsAddressArray(bytes32,address[100])
+
+
+**setDataValueAsAddressArray(bytes32,address[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsAddressArray(bytes32,address[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the address[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBool(bytes32,bool)
+
+
+**setDataValueAsBool(bytes32,bool)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBool(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bool value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes(bytes32,bytes32,uint8)
+
+
+**setDataValueAsBytes(bytes32,bytes32,uint8)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes(bytes32,bytes32,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 data type of the value denoting the bytes size
+_id // the id of the data
+_value // the bytes16 value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes16Array(bytes32,bytes16[100])
+
+
+**setDataValueAsBytes16Array(bytes32,bytes16[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes16Array(bytes32,bytes16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes16[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes1Array(bytes32,bytes1[100])
+
+
+**setDataValueAsBytes1Array(bytes32,bytes1[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes1Array(bytes32,bytes1[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes1[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes20Array(bytes32,bytes20[100])
+
+
+**setDataValueAsBytes20Array(bytes32,bytes20[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes20Array(bytes32,bytes20[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes20[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes24Array(bytes32,bytes24[100])
+
+
+**setDataValueAsBytes24Array(bytes32,bytes24[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes24Array(bytes32,bytes24[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes24[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes28Array(bytes32,bytes28[100])
+
+
+**setDataValueAsBytes28Array(bytes32,bytes28[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes28Array(bytes32,bytes28[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes28[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes2Array(bytes32,bytes2[100])
+
+
+**setDataValueAsBytes2Array(bytes32,bytes2[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes2Array(bytes32,bytes2[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes2[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes32(bytes32,bytes32)
+
+
+**setDataValueAsBytes32(bytes32,bytes32)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes32(bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes32 value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes32Array(bytes32,bytes32[100])
+
+
+**setDataValueAsBytes32Array(bytes32,bytes32[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes32Array(bytes32,bytes32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes32[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes3Array(bytes32,bytes3[100])
+
+
+**setDataValueAsBytes3Array(bytes32,bytes3[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes3Array(bytes32,bytes3[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes3[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes4Array(bytes32,bytes4[100])
+
+
+**setDataValueAsBytes4Array(bytes32,bytes4[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes4Array(bytes32,bytes4[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes4[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsBytes8Array(bytes32,bytes8[100])
+
+
+**setDataValueAsBytes8Array(bytes32,bytes8[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsBytes8Array(bytes32,bytes8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the bytes8[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt(bytes32,int256,uint8)
+
+
+**setDataValueAsInt(bytes32,int256,uint8)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt(bytes32,int256,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 DataType denoting the size
+_id // the id of the data
+_value // the int value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt128Array(bytes32,int128[100])
+
+
+**setDataValueAsInt128Array(bytes32,int128[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt128Array(bytes32,int128[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int128[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt16Array(bytes32,int16[100])
+
+
+**setDataValueAsInt16Array(bytes32,int16[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt16Array(bytes32,int16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int16[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt256(bytes32,int256)
+
+
+**setDataValueAsInt256(bytes32,int256)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt256(bytes32,int256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt256Array(bytes32,int256[100])
+
+
+**setDataValueAsInt256Array(bytes32,int256[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt256Array(bytes32,int256[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int256[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt32Array(bytes32,int32[100])
+
+
+**setDataValueAsInt32Array(bytes32,int32[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt32Array(bytes32,int32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int32[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt64Array(bytes32,int64[100])
+
+
+**setDataValueAsInt64Array(bytes32,int64[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt64Array(bytes32,int64[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int64[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsInt8Array(bytes32,int8[100])
+
+
+**setDataValueAsInt8Array(bytes32,int8[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsInt8Array(bytes32,int8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the int8[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsString(bytes32,string)
+
+
+**setDataValueAsString(bytes32,string)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsString(bytes32,string)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the string value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint(bytes32,uint256,uint8)
+
+
+**setDataValueAsUint(bytes32,uint256,uint8)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint(bytes32,uint256,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // the uint8 DataType denoting the size
+_id // the id of the data
+_value // the uint value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint128Array(bytes32,uint128[100])
+
+
+**setDataValueAsUint128Array(bytes32,uint128[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint128Array(bytes32,uint128[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint128[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint16Array(bytes32,uint16[100])
+
+
+**setDataValueAsUint16Array(bytes32,uint16[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint16Array(bytes32,uint16[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint16[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint256(bytes32,uint256)
+
+
+**setDataValueAsUint256(bytes32,uint256)**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint256(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint256Array(bytes32,uint256[100])
+
+
+**setDataValueAsUint256Array(bytes32,uint256[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint256Array(bytes32,uint256[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint256[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint32Array(bytes32,uint32[100])
+
+
+**setDataValueAsUint32Array(bytes32,uint32[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint32Array(bytes32,uint32[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint32[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint64Array(bytes32,uint64[100])
+
+
+**setDataValueAsUint64Array(bytes32,uint64[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint64Array(bytes32,uint64[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint64[100] value of the data
+
+```
+
+
+---
+
+#### setDataValueAsUint8Array(bytes32,uint8[100])
+
+
+**setDataValueAsUint8Array(bytes32,uint8[100])**
+
+
+Creates a Data object with the given value and inserts it into the DataMap
+
+```endpoint
+CALL setDataValueAsUint8Array(bytes32,uint8[100])
+```
+
+#### Parameters
+
+```solidity
+_id // the id of the data
+_value // the uint8[100] value of the data
+
 ```
 
 
@@ -16857,7 +18734,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService requried for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
 
 ```
 
@@ -16981,7 +18858,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService requried for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
 
 ```
 
