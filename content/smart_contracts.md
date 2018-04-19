@@ -5308,35 +5308,6 @@ name name
 
 ---
 
-#### getNumberOfArrayEntries(bytes32,bool)
-
-
-**getNumberOfArrayEntries(bytes32,bool)**
-
-
-Returns the number of non-default entries in the specified array-type DataStorage field
-
-```endpoint
-CALL getNumberOfArrayEntries(bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
-_id // the key under which to find the array-type value
-
-```
-
-#### Return
-
-```json
-the number of non-default entries in the array
-```
-
-
----
-
 #### getNumberOfParties()
 
 
