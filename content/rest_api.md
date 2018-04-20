@@ -9,7 +9,7 @@ This is the REST API group for the Agreements Network.
 
 
 ```endpoint
-POST /api/agreements
+POST /agreements
 ```
 
 
@@ -32,7 +32,7 @@ POST /api/agreements
 
 
 ```curl
-curl -iX POST /api/agreements
+curl -iX POST /agreements
 ```
 
 
@@ -57,7 +57,7 @@ curl -iX POST /api/agreements
 <p>Retrieves Active Agreement information for a single Agreement. Note: if the password provided is incorrect or a hoard reference which does not exist was passed to the posted Active Agreement this get will return a <code>401</code>.</p>
 
 ```endpoint
-GET /api/agreements/:address
+GET /agreements/:address
 ```
 
 
@@ -74,7 +74,7 @@ GET /api/agreements/:address
 
 
 ```curl
-curl -i /api/agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
+curl -i /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
 ```
 
 
@@ -116,7 +116,7 @@ Success Object
 <p>Retrieves Active Agreement information.</p>
 
 ```endpoint
-GET /api/agreements
+GET /agreements
 ```
 
 
@@ -126,7 +126,7 @@ GET /api/agreements
 
 
 ```curl
-curl -i /api/agreements
+curl -i /agreements
 ```
 
 
@@ -171,7 +171,7 @@ Success Objects Array
 <p>Note: <code>fields</code> and <code>documents</code> are optional in the POST and can be added later via the below PUT requests.</p>
 
 ```endpoint
-POST /api/archetypes
+POST /archetypes
 ```
 
 
@@ -199,7 +199,7 @@ POST /api/archetypes
 
 
 ```curl
-curl -iX POST /api/archetypes
+curl -iX POST /archetypes
 ```
 
 
@@ -224,7 +224,7 @@ curl -iX POST /api/archetypes
 <p>Retrieves archetype information for a single Archetype. Note: if the password provided is incorrect or a hoard reference which does not exist was passed to the posted archetype this get will return a <code>401</code>.</p>
 
 ```endpoint
-GET /api/archetypes/:address
+GET /archetypes/:address
 ```
 
 
@@ -241,7 +241,7 @@ GET /api/archetypes/:address
 
 
 ```curl
-curl -i /api/archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
+curl -i /archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
 ```
 
 
@@ -292,7 +292,7 @@ Success Object
 <p>Retrieves archetype information. Within the Agreements Network, Archetypes are the fundamental, top level objects. They are holders for a set of information which allows users to creat Active Agreements within the Platform.</p>
 
 ```endpoint
-GET /api/archetypes
+GET /archetypes
 ```
 
 
@@ -302,7 +302,7 @@ GET /api/archetypes
 
 
 ```curl
-curl -i /api/archetypes
+curl -i /archetypes
 ```
 
 
@@ -347,7 +347,7 @@ Success Objects Array
 <p>Note that the object sent should meet the definition located in the CreateOrganization section and should match the configurationSection endpoint given. Currently the following configurationFields are the <strong>only</strong> fields which can be updated</p> <ul> <li>configuration</li> <li>fields</li> <li>documents</li> </ul>
 
 ```endpoint
-PUT /api/archetypes/:address/:configurationSection
+PUT /archetypes/:address/:configurationSection
 ```
 
 
@@ -365,7 +365,7 @@ PUT /api/archetypes/:address/:configurationSection
 
 
 ```curl
-curl -iX PUT /api/archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/fields
+curl -iX PUT /archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/fields
 ```
 
 
@@ -392,7 +392,7 @@ curl -iX PUT /api/archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/fields
 
 
 ```endpoint
-POST /api/login
+POST /login
 ```
 
 
@@ -411,7 +411,7 @@ POST /api/login
 
 
 ```curl
-curl -iX POST /api/login
+curl -iX POST /login
 ```
 
 
@@ -451,7 +451,7 @@ Success Object
 
 
 ```endpoint
-POST /api/register
+POST /register
 ```
 
 
@@ -470,7 +470,7 @@ POST /api/register
 
 
 ```curl
-curl -iX POST /api/register
+curl -iX POST /register
 ```
 
 
@@ -497,7 +497,7 @@ curl -iX POST /api/register
 
 
 ```endpoint
-POST /api/dummy
+POST /dummy
 ```
 
 
@@ -514,7 +514,7 @@ POST /api/dummy
 
 
 ```curl
-curl -iX POST /api/dummy
+curl -iX POST /dummy
 ```
 
 
@@ -533,7 +533,7 @@ curl -iX POST /api/dummy
 
 
 ```endpoint
-GET /api/hoard
+GET /hoard
 ```
 
 
@@ -543,7 +543,7 @@ GET /api/hoard
 
 
 ```curl
-curl -i /api/hoard
+curl -i /hoard
 ```
 
 
@@ -558,7 +558,7 @@ curl -i /api/hoard
 
 
 ```endpoint
-POST /api/models
+POST /models
 ```
 
 
@@ -575,7 +575,7 @@ POST /api/models
 
 
 ```curl
-curl -iX POST /api/models
+curl -iX POST /models
 ```
 
 
@@ -594,7 +594,7 @@ curl -iX POST /api/models
 <p>Read all the activities for a given process instance</p>
 
 ```endpoint
-GET /api/activites/:piAddress
+GET /activites/:piAddress
 ```
 
 
@@ -604,7 +604,7 @@ GET /api/activites/:piAddress
 
 
 ```curl
-curl -i /api/activites/:piAddress
+curl -i /activites/:piAddress
 ```
 
 
@@ -617,7 +617,7 @@ curl -i /api/activites/:piAddress
 
 
 ```endpoint
-GET /api/definitions
+GET /definitions
 ```
 
 
@@ -627,7 +627,7 @@ GET /api/definitions
 
 
 ```curl
-curl -i /api/definitions
+curl -i /definitions
 ```
 
 
@@ -668,7 +668,7 @@ Success Objects Array
 
 
 ```endpoint
-GET /api/datatypes/:id
+GET /datatypes/:id
 ```
 
 
@@ -678,7 +678,7 @@ GET /api/datatypes/:id
 
 
 ```curl
-curl -i /api/datatypes/:id
+curl -i /datatypes/:id
 ```
 
 
@@ -691,7 +691,7 @@ curl -i /api/datatypes/:id
 
 
 ```endpoint
-GET /api/datatypes
+GET /datatypes
 ```
 
 
@@ -701,7 +701,7 @@ GET /api/datatypes
 
 
 ```curl
-curl -i /api/datatypes
+curl -i /datatypes
 ```
 
 
@@ -714,7 +714,7 @@ curl -i /api/datatypes
 
 
 ```endpoint
-GET /api/definitions/execution
+GET /definitions/execution
 ```
 
 
@@ -724,7 +724,7 @@ GET /api/definitions/execution
 
 
 ```curl
-curl -i /api/definitions/execution
+curl -i /definitions/execution
 ```
 
 
@@ -737,7 +737,7 @@ curl -i /api/definitions/execution
 
 
 ```endpoint
-GET /api/definitions/formation
+GET /definitions/formation
 ```
 
 
@@ -747,7 +747,7 @@ GET /api/definitions/formation
 
 
 ```curl
-curl -i /api/definitions/formation
+curl -i /definitions/formation
 ```
 
 
@@ -782,7 +782,7 @@ Success Objects Array
 
 
 ```endpoint
-GET /api/processInstanceCount
+GET /processInstanceCount
 ```
 
 
@@ -792,7 +792,7 @@ GET /api/processInstanceCount
 
 
 ```curl
-curl -i /api/processInstanceCount
+curl -i /processInstanceCount
 ```
 
 
@@ -805,7 +805,7 @@ curl -i /api/processInstanceCount
 
 
 ```endpoint
-GET /api/models
+GET /models
 ```
 
 
@@ -815,7 +815,7 @@ GET /api/models
 
 
 ```curl
-curl -iX POST /api/models
+curl -iX POST /models
 ```
 
 
@@ -858,7 +858,7 @@ Success Object Array
 <p>Retrieves an array of tasks assigned to the user at address provided in the route.</p>
 
 ```endpoint
-GET /api/tasks
+GET /tasks
 ```
 
 
@@ -875,7 +875,7 @@ GET /api/tasks
 
 
 ```curl
-curl -i /api/tasks
+curl -i /tasks
 ```
 
 
@@ -918,7 +918,7 @@ Success Objects Array
 
 
 ```endpoint
-POST /api/startProcess
+POST /startProcess
 ```
 
 
@@ -935,7 +935,7 @@ POST /api/startProcess
 
 
 ```curl
-curl -iX POST /api/startProcess
+curl -iX POST /startProcess
 ```
 
 
@@ -954,7 +954,7 @@ curl -iX POST /api/startProcess
 
 
 ```endpoint
-POST /api/validateProcess
+POST /validateProcess
 ```
 
 
@@ -971,7 +971,7 @@ POST /api/validateProcess
 
 
 ```curl
-curl -iX POST /api/validateProcess
+curl -iX POST /validateProcess
 ```
 
 
@@ -992,7 +992,7 @@ curl -iX POST /api/validateProcess
 <p>Creating a new organization also established the primary administrators for that organization If no approvers are provided for the organization, then the currently logged-in user will be registered as an approver.</p>
 
 ```endpoint
-POST /api/organizations
+POST /organizations
 ```
 
 
@@ -1012,7 +1012,7 @@ POST /api/organizations
 
 
 ```curl
-curl -iX POST /api/organizations
+curl -iX POST /organizations
 ```
 
 
@@ -1037,7 +1037,7 @@ curl -iX POST /api/organizations
 
 
 ```endpoint
-GET /api/organizations
+GET /organizations
 ```
 
 
@@ -1054,7 +1054,7 @@ GET /api/organizations
 
 
 ```curl
-curl -i /api/organizations
+curl -i /organizations
 ```
 
 
@@ -1085,7 +1085,7 @@ Success Objects Array
 
 
 ```endpoint
-GET /api/organizations/:address/users
+GET /organizations/:address/users
 ```
 
 
@@ -1102,7 +1102,7 @@ GET /api/organizations/:address/users
 
 
 ```curl
-curl -i /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users
+curl -i /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users
 ```
 
 
@@ -1143,7 +1143,7 @@ Success Objects Array
 
 
 ```endpoint
-GET /api/organizations/:address
+GET /organizations/:address
 ```
 
 
@@ -1153,7 +1153,7 @@ GET /api/organizations/:address
 
 
 ```curl
-curl -i /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E
+curl -i /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E
 ```
 
 
@@ -1182,7 +1182,7 @@ Success Object
 
 
 ```endpoint
-DELETE /api/organizations/:orgid/users/:userAccount
+DELETE /organizations/:orgid/users/:userAccount
 ```
 
 
@@ -1199,7 +1199,7 @@ DELETE /api/organizations/:orgid/users/:userAccount
 
 
 ```curl
-curl -iX DELETE /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7307DA7E74BC54D1E829764E2DE7AD0D8DBB4
+curl -iX DELETE /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7307DA7E74BC54D1E829764E2DE7AD0D8DBB4
 ```
 
 
@@ -1224,7 +1224,7 @@ curl -iX DELETE /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/user
 
 
 ```endpoint
-PUT /api/organizations/:orgid/users/:userAccount
+PUT /organizations/:orgid/users/:userAccount
 ```
 
 
@@ -1241,7 +1241,7 @@ PUT /api/organizations/:orgid/users/:userAccount
 
 
 ```curl
-curl -iX PUT /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7307DA7E74BC54D1E829764E2DE7AD0D8DBB4
+curl -iX PUT /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7307DA7E74BC54D1E829764E2DE7AD0D8DBB4
 ```
 
 
@@ -1268,7 +1268,7 @@ curl -iX PUT /api/organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/1
 
 
 ```endpoint
-GET /api/iso/countries
+GET /iso/countries
 ```
 
 
@@ -1278,7 +1278,7 @@ GET /api/iso/countries
 
 
 ```curl
-curl -i /api/iso/countries
+curl -i /iso/countries
 ```
 
 
@@ -1313,7 +1313,7 @@ Success Objects Array
 <p>Retrieves the country whose <code>alpha2</code> code matches the one passed as parameter.</p>
 
 ```endpoint
-GET /api/iso/countries/:alpha2
+GET /iso/countries/:alpha2
 ```
 
 
@@ -1323,7 +1323,7 @@ GET /api/iso/countries/:alpha2
 
 
 ```curl
-curl -i /api/iso/countries/:alpha2
+curl -i /iso/countries/:alpha2
 ```
 
 
@@ -1356,7 +1356,7 @@ Success Object
 
 
 ```endpoint
-GET /api/iso/currencies
+GET /iso/currencies
 ```
 
 
@@ -1366,7 +1366,7 @@ GET /api/iso/currencies
 
 
 ```curl
-curl -i /api/iso/currencies
+curl -i /iso/currencies
 ```
 
 
@@ -1406,7 +1406,7 @@ Success Objects Array
 <p>Retrieves the currency whose <code>alpha3</code> code matches the one passed as parameter.</p>
 
 ```endpoint
-GET /api/iso/currencies/:alpha3
+GET /iso/currencies/:alpha3
 ```
 
 
@@ -1416,7 +1416,7 @@ GET /api/iso/currencies/:alpha3
 
 
 ```curl
-curl -i /api/iso/currencies/:alpha3
+curl -i /iso/currencies/:alpha3
 ```
 
 
@@ -1448,7 +1448,7 @@ Success Objects Array
 <p>Retrieves an array of regions belonging to the country whose <code>alpha2</code> code matches the one passed as parameter. Note that a region may have its <code>code2</code> OR <code>code3</code> property populated, NOT both. Thus to represent regions in the UI dropdown, we can use <code>&lt;alpha2&gt;-&lt;code2 or code3&gt;</code> followed by the name.</p>
 
 ```endpoint
-GET /api/iso/countries/:alpha2/regions
+GET /iso/countries/:alpha2/regions
 ```
 
 
@@ -1458,7 +1458,7 @@ GET /api/iso/countries/:alpha2/regions
 
 
 ```curl
-curl -i /api/iso/countries/:alpha2/regions
+curl -i /iso/countries/:alpha2/regions
 ```
 
 
@@ -1504,7 +1504,7 @@ Success Objects Array
 <p>Retrieves a single users information.</p>
 
 ```endpoint
-GET /api/users
+GET /users
 ```
 
 
@@ -1514,7 +1514,7 @@ GET /api/users
 
 
 ```curl
-curl -i /api/users/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E
+curl -i /users/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E
 ```
 
 
@@ -1551,7 +1551,7 @@ Success Object
 <p>Retrieves user information. The <code>organization</code> query parameter is optional. It can be used to filter users belonging to a specific organization or retrieving users not belonging to an organization, yet (via <code>?organization=null</code>).</p> <p>Note: The organization address is returned as &quot;0000000000000000000000000000000000000000&quot; for user that do not belong to an organization.</p>
 
 ```endpoint
-GET /api/users
+GET /users
 ```
 
 
@@ -1568,7 +1568,7 @@ GET /api/users
 
 
 ```curl
-curl -i /api/users
+curl -i /users
 ```
 
 
@@ -1607,7 +1607,7 @@ Success Objects Array
 
 
 ```endpoint
-GET /api/users/:address/agreements
+GET /users/:address/agreements
 ```
 
 
@@ -1617,7 +1617,7 @@ GET /api/users/:address/agreements
 
 
 ```curl
-curl -iX POST /api/users/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/agreements
+curl -iX POST /users/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/agreements
 ```
 
 
