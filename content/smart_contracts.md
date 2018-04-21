@@ -14917,6 +14917,34 @@ an error code indicating success or failure
 
 ---
 
+#### continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)
+
+
+**continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)**
+
+
+Checks the given ProcessInstance for completeness and open activities. If activatable activities are detected, recursive execution is entered via execute(ProcessInstance). If the ProcessInstance is complete, its state is set to COMPLETED. Otherwise the function returns BaseErrors.NO_ERROR().
+
+```endpoint
+CALL continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_processInstance // the BpmRuntime.ProcessInstance
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if no errors were encountered during processing or no processing happenedany error code from entering into a recursive execute(ProcessInstance) and continuing to execute the process
+```
+
+
+---
+
 #### execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)
 
 
@@ -15028,6 +15056,34 @@ _graph // the ProcessGraph
 
 ```json
 true if at least one activatable activity was found, false otherwise
+```
+
+
+---
+
+#### isCompleted(BpmRuntime.ProcessGraph storage)
+
+
+**isCompleted(BpmRuntime.ProcessGraph storage)**
+
+
+Executes the given ProcessGraph and reports back on completeness and open activities. The following scenarios are possible: (completed, !readyActivities): the process is done, there are no more activities to process (!completed, readyActivities): the process is still active and there are activities ready for processing (!completed, !readyActivities): the process is still active, but no activities are ready to be processed (which means there must be instances waiting for asynchronous events)
+
+```endpoint
+CALL isCompleted(BpmRuntime.ProcessGraph storage)
+```
+
+#### Parameters
+
+```solidity
+_graph // the BpmRuntime.ProcessGraph
+
+```
+
+#### Return
+
+```json
+completed - if true, the graph cannot be executed any furtherreadyActivities - if true there are activities ready for processing, false otherwise
 ```
 
 
