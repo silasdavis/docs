@@ -14759,6 +14759,317 @@ CALL patch()
 
 ## bpm-runtime
 
+### AccountsManager Interface
+
+
+The AccountsManager Interface contract is found within the bpm-runtime bundle.
+
+#### addBusinessAccount(address)
+
+
+**addBusinessAccount(address)**
+
+
+Adds the specified BusinessAccount
+
+```endpoint
+CALL addBusinessAccount(address)
+```
+
+#### Return
+
+```json
+an error code
+```
+
+
+---
+
+#### addFunds(address,bytes32,uint256)
+
+
+**addFunds(address,bytes32,uint256)**
+
+
+Adds the specified fund amount to the specified organization's business account.
+
+```endpoint
+CALL addFunds(address,bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_funds // the amount to add
+_name // the business account name
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+error code
+```
+
+
+---
+
+#### addUserAccount(address)
+
+
+**addUserAccount(address)**
+
+
+Adds the specified UserAccount
+
+```endpoint
+CALL addUserAccount(address)
+```
+
+#### Return
+
+```json
+an error code
+```
+
+
+---
+
+#### addUserToOrganization(address,address)
+
+
+**addUserToOrganization(address,address)**
+
+
+Associates the given user with the specified organization.
+
+```endpoint
+CALL addUserToOrganization(address,address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization
+_userAccount // the user
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### businessAccountExists(address,bytes32)
+
+
+**businessAccountExists(address,bytes32)**
+
+
+Indicates whether the specified business account exists for the given organization ID
+
+```endpoint
+CALL businessAccountExists(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_name // businessAccount name
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+bool exists
+```
+
+
+---
+
+#### createUserAccount(address,bytes32,bytes32)
+
+
+**createUserAccount(address,bytes32,bytes32)**
+
+
+Creates and adds a user account
+
+```endpoint
+CALL createUserAccount(address,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // id (optional)
+_owner // owner (optional)
+_secret // secret
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if a runtime erroruserAccount user account
+```
+
+
+---
+
+#### getBusinessAccount(address,bytes32)
+
+
+**getBusinessAccount(address,bytes32)**
+
+
+Returns the business account address for the specified organization ID and business account name.
+
+```endpoint
+CALL getBusinessAccount(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_name // businessAccount name
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+(error, address)
+```
+
+
+---
+
+#### getBusinessAccount(bytes32)
+
+
+**getBusinessAccount(bytes32)**
+
+
+Returns the business account address for the specified business account ID.
+
+```endpoint
+CALL getBusinessAccount(bytes32)
+```
+
+
+---
+
+#### getUserAccount(bytes32)
+
+
+**getUserAccount(bytes32)**
+
+
+Returns the user account address for the specified user account ID.
+
+```endpoint
+CALL getUserAccount(bytes32)
+```
+
+
+---
+
+#### removeUserFromOrganization(address,address)
+
+
+**removeUserFromOrganization(address,address)**
+
+
+Removes (deactivates) the given user from the specified organization.
+
+```endpoint
+CALL removeUserFromOrganization(address,address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization
+_userAccount // the user
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### userAccountExists(bytes32)
+
+
+**userAccountExists(bytes32)**
+
+
+Indicates whether the specified user account exists for the given userAccount ID
+
+```endpoint
+CALL userAccountExists(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // userAccount ID
+
+```
+
+#### Return
+
+```json
+bool exists
+```
+
+
+---
+
+#### withdrawFunds(address,bytes32,uint256)
+
+
+**withdrawFunds(address,bytes32,uint256)**
+
+
+Subtracts the specified fund amount to the specified organization's business account.
+
+```endpoint
+CALL withdrawFunds(address,bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_funds // the amount to withdraw
+_name // the business account name
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+error code
+```
+
+
+---
+
 
 ### BpmApi Interface Library
 
@@ -15321,6 +15632,68 @@ _newOwner // The address to transfer ownership to.
 
 
 The BpmService Interface contract is found within the bpm-runtime bundle.
+
+#### createOrganization(address,bytes32,bytes32,address[10])
+
+
+**createOrganization(address,bytes32,bytes32,address[10])**
+
+
+Creates a new Organization with the specified parameters and adds it to this Ecosystem.
+
+```endpoint
+CALL createOrganization(address,bytes32,bytes32,address[10])
+```
+
+#### Parameters
+
+```solidity
+_approvers // the initial owners. If left empty, the msg.sender will be added as an owner.
+_ecosystem // the Ecosystem address
+_id // the organization's ID
+_name // the organization's name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()the address of the newly created Organization, or 0x0 if not successful
+```
+
+
+---
+
+#### createUserAccount(address,address,bytes32,bytes32)
+
+
+**createUserAccount(address,address,bytes32,bytes32)**
+
+
+Creates a user account account with the specified parameters and adds it to the AccountsManager
+
+```endpoint
+CALL createUserAccount(address,address,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_accountsManager // the AccountsManager address
+_id // id (optional)
+_owner // owner (optional)
+_secret // secret
+
+```
+
+#### Return
+
+```json
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
+```
+
+
+---
 
 #### fireActivityUpdateEvent(address,bytes32)
 
@@ -15975,6 +16348,68 @@ _funds // the amount to withdraw
 
 The DefaultBpmService contract is found within the bpm-runtime bundle.
 
+#### createOrganization(address,bytes32,bytes32,address[10])
+
+
+**createOrganization(address,bytes32,bytes32,address[10])**
+
+
+Creates a new Organization with the specified parameters and adds it to this Ecosystem.
+
+```endpoint
+CALL createOrganization(address,bytes32,bytes32,address[10])
+```
+
+#### Parameters
+
+```solidity
+_approvers // the initial owners. If left empty, the msg.sender will be added as an owner.
+_ecosystem // the Ecosystem address
+_id // the organization's ID
+_name // the organization's name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()the address of the newly created Organization, or 0x0 if not successful
+```
+
+
+---
+
+#### createUserAccount(address,address,bytes32,bytes32)
+
+
+**createUserAccount(address,address,bytes32,bytes32)**
+
+
+Creates a user account account with the specified parameters and adds it to the AccountsManager
+
+```endpoint
+CALL createUserAccount(address,address,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_accountsManager // the AccountsManager address
+_id // id (optional)
+_owner // owner (optional)
+_secret // secret
+
+```
+
+#### Return
+
+```json
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
+```
+
+
+---
+
 #### fireActivityUpdateEvent(address,bytes32)
 
 
@@ -16579,6 +17014,313 @@ CALL withdrawFunds(uint256)
 
 ---
 
+### DefaultOrganization
+
+
+The DefaultOrganization contract is found within the bpm-runtime bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### addUser(address)
+
+
+**addUser(address)**
+
+
+Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
+
+```endpoint
+CALL addUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user to add
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.
+```
+
+
+---
+
+#### getApproverAtIndex(uint256)
+
+
+**getApproverAtIndex(uint256)**
+
+
+Returns the approver's address at the given index position.
+
+```endpoint
+CALL getApproverAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+see NamedElement.getId()
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+see NamedElement.getName()
+
+```endpoint
+CALL getName()
+```
+
+
+---
+
+#### getNumberOfApprovers()
+
+
+**getNumberOfApprovers()**
+
+
+Returns the number of registered approvers.
+
+```endpoint
+CALL getNumberOfApprovers()
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfUsers()
+
+
+**getNumberOfUsers()**
+
+
+returns the number of users associated with this organization
+
+```endpoint
+CALL getNumberOfUsers()
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getUserAtIndex(uint256)
+
+
+**getUserAtIndex(uint256)**
+
+
+Returns the user's address at the given index position.
+
+```endpoint
+CALL getUserAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### isActiveUser(address)
+
+
+**isActiveUser(address)**
+
+
+Returns whether the given user account is valid in this organization
+
+```endpoint
+CALL isActiveUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user account
+
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeUser(address)
+
+
+**removeUser(address)**
+
+
+Removes / Deactivates the user in this organization.
+
+```endpoint
+CALL removeUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the account to deactivate
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
+```
+
+
+---
+
 ### DefaultProcessInstance
 
 
@@ -16805,6 +17547,918 @@ CALL initRuntime()
 
 ```json
 BaseErrors.INVALID_STATE() if the ProcessInstance is not in state CREATED.an error code if the runtime graph could not be created, e.g. if the process definition is corrupt.BaseErrors.NO_ERROR() otherwise
+```
+
+
+---
+
+### DefaultUserAccount
+
+
+The DefaultUserAccount contract is found within the bpm-runtime bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns this account's ID
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### secretIsValid(bytes32)
+
+
+**secretIsValid(bytes32)**
+
+
+Validates secret
+
+```endpoint
+CALL secretIsValid(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_secret // _secret
+
+```
+
+#### Return
+
+```json
+whether _secret is valid
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
+### Ecosystem Interface
+
+
+The Ecosystem Interface contract is found within the bpm-runtime bundle.
+
+#### addOrganization(address)
+
+
+**addOrganization(address)**
+
+
+Adds the organization at the specified address to this Ecosystem.
+
+```endpoint
+CALL addOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the Organization contract's address
+
+```
+
+#### Return
+
+```json
+error code
+```
+
+
+---
+
+#### createOrganization(bytes32,bytes32,address[10])
+
+
+**createOrganization(bytes32,bytes32,address[10])**
+
+
+Creates a new Organization with the specified parameters and adds it to this Ecosystem.
+
+```endpoint
+CALL createOrganization(bytes32,bytes32,address[10])
+```
+
+#### Parameters
+
+```solidity
+_approvers // the initial owners.
+_id // the organization's ID
+_name // the organization's name
+
+```
+
+#### Return
+
+```json
+error code and the address of the newly created organization, if successful
+```
+
+
+---
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+Invoked by an EventEmitter for a named event without any additional data.
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Invoked by an EventEmitter for a named event with an additional address payload.
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+Invoked by an EventEmitter for a named event with an additional string payload.
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+Invoked by an EventEmitter for a named event with an additional uint payload.
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### getApproverAtIndex(address,uint256)
+
+
+**getApproverAtIndex(address,uint256)**
+
+
+Returns the approver's address at the given index position of the specified organization.
+
+```endpoint
+CALL getApproverAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the approver's address, if the position exists
+```
+
+
+---
+
+#### getApproverData(address,address)
+
+
+**getApproverData(address,address)**
+
+
+Function supports SQLsol, but only returns the approver address parameter.
+
+```endpoint
+CALL getApproverData(address,address)
+```
+
+#### Parameters
+
+```solidity
+_approver // the approver's address
+_organization // the organization's address
+
+```
+
+
+---
+
+#### getNumberOfApprovers(address)
+
+
+**getNumberOfApprovers(address)**
+
+
+Returns the number of registered approvers in the specified organization.
+
+```endpoint
+CALL getNumberOfApprovers(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfOrganizations()
+
+
+**getNumberOfOrganizations()**
+
+
+Returns the number of registered organizations.
+
+```endpoint
+CALL getNumberOfOrganizations()
+```
+
+#### Return
+
+```json
+the number of organizations
+```
+
+
+---
+
+#### getNumberOfUsers(address)
+
+
+**getNumberOfUsers(address)**
+
+
+returns the number of users associated with the specified organization
+
+```endpoint
+CALL getNumberOfUsers(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getOrganization(bytes32)
+
+
+**getOrganization(bytes32)**
+
+
+Returns the address of the organization with the specified ID, if it exists
+
+```endpoint
+CALL getOrganization(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the organization's ID
+
+```
+
+#### Return
+
+```json
+the organization's address, if it exists
+```
+
+
+---
+
+#### getOrganizationAtIndex(uint256)
+
+
+**getOrganizationAtIndex(uint256)**
+
+
+Returns the organization at the specified index.
+
+```endpoint
+CALL getOrganizationAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address of the organization
+```
+
+
+---
+
+#### getOrganizationData(address)
+
+
+**getOrganizationData(address)**
+
+
+Returns the public data of the organization at the specified address
+
+```endpoint
+CALL getOrganizationData(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the address of an organization
+
+```
+
+#### Return
+
+```json
+the organization's ID and name
+```
+
+
+---
+
+#### getUserAtIndex(address,uint256)
+
+
+**getUserAtIndex(address,uint256)**
+
+
+Returns the user's address at the given index position in the specified organization.
+
+```endpoint
+CALL getUserAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### getUserData(address,address)
+
+
+**getUserData(address,address)**
+
+
+Returns information about the specified user in the context of the given organization
+
+```endpoint
+CALL getUserData(address,address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+_user // the user's address
+
+```
+
+#### Return
+
+```json
+active - whether the user is activated in the organization
+```
+
+
+---
+
+#### organizationExists(bytes32)
+
+
+**organizationExists(bytes32)**
+
+
+Indicates whether the specified organization exists for the given organization id
+
+```endpoint
+CALL organizationExists(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // organization ID
+
+```
+
+#### Return
+
+```json
+bool exists
+```
+
+
+---
+
+### Organization Interface
+
+
+The Organization Interface contract is found within the bpm-runtime bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### addUser(address)
+
+
+**addUser(address)**
+
+
+Adds the specified user to this organization
+
+```endpoint
+CALL addUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user to add
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### getApproverAtIndex(uint256)
+
+
+**getApproverAtIndex(uint256)**
+
+
+Returns the approver's address at the given index position.
+
+```endpoint
+CALL getApproverAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address, if the position exists
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+#### getNumberOfApprovers()
+
+
+**getNumberOfApprovers()**
+
+
+Returns the number of registered approvers.
+
+```endpoint
+CALL getNumberOfApprovers()
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfUsers()
+
+
+**getNumberOfUsers()**
+
+
+returns the number of users associated with this organization
+
+```endpoint
+CALL getNumberOfUsers()
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getUserAtIndex(uint256)
+
+
+**getUserAtIndex(uint256)**
+
+
+Returns the user's address at the given index position.
+
+```endpoint
+CALL getUserAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### isActiveUser(address)
+
+
+**isActiveUser(address)**
+
+
+Returns whether the given user account is active in this organization
+
+```endpoint
+CALL isActiveUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user account
+
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeUser(address)
+
+
+**removeUser(address)**
+
+
+Removes / Deactivates the user in this organization.
+
+```endpoint
+CALL removeUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the account to deactivate
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
 ```
 
 
@@ -18725,6 +20379,130 @@ _newOwner // The address to transfer ownership to.
 
 ---
 
+### UserAccount Interface
+
+
+The UserAccount Interface contract is found within the bpm-runtime bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+#### Return
+
+```json
+the owner address
+```
+
+
+---
+
+#### secretIsValid(bytes32)
+
+
+**secretIsValid(bytes32)**
+
+
+Validates secret
+
+```endpoint
+CALL secretIsValid(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_secret // _secret
+
+```
+
+#### Return
+
+```json
+whether _secret is valid
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
 ### WorkflowBusinessAccount
 
 
@@ -18864,6 +20642,342 @@ CALL withdrawFunds(uint256)
 
 ---
 
+### WorkflowUserAccount
+
+
+The WorkflowUserAccount contract is found within the bpm-runtime bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### addUser(address)
+
+
+**addUser(address)**
+
+
+Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
+
+```endpoint
+CALL addUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user to add
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.
+```
+
+
+---
+
+#### completeActivity(bytes32,address)
+
+
+**completeActivity(bytes32,address)**
+
+
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+
+```endpoint
+CALL completeActivity(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
+
+```
+
+#### Return
+
+```json
+error code if the completion failed
+```
+
+
+---
+
+#### getApproverAtIndex(uint256)
+
+
+**getApproverAtIndex(uint256)**
+
+
+Returns the approver's address at the given index position.
+
+```endpoint
+CALL getApproverAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+see NamedElement.getId()
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+see NamedElement.getName()
+
+```endpoint
+CALL getName()
+```
+
+
+---
+
+#### getNumberOfApprovers()
+
+
+**getNumberOfApprovers()**
+
+
+Returns the number of registered approvers.
+
+```endpoint
+CALL getNumberOfApprovers()
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfUsers()
+
+
+**getNumberOfUsers()**
+
+
+returns the number of users associated with this organization
+
+```endpoint
+CALL getNumberOfUsers()
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getUserAtIndex(uint256)
+
+
+**getUserAtIndex(uint256)**
+
+
+Returns the user's address at the given index position.
+
+```endpoint
+CALL getUserAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### isActiveUser(address)
+
+
+**isActiveUser(address)**
+
+
+Returns whether the given user account is valid in this organization
+
+```endpoint
+CALL isActiveUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user account
+
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeUser(address)
+
+
+**removeUser(address)**
+
+
+Removes / Deactivates the user in this organization.
+
+```endpoint
+CALL removeUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the account to deactivate
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
+```
+
+
+---
+
 ### WorkflowProxy
 
 
@@ -18898,318 +21012,148 @@ error code if the completion failed
 
 ---
 
+### WorkflowUserAccount
+
+
+The WorkflowUserAccount contract is found within the bpm-runtime bundle.
+
+#### completeActivity(bytes32,address)
+
+
+**completeActivity(bytes32,address)**
+
+
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+
+```endpoint
+CALL completeActivity(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
+
+```
+
+#### Return
+
+```json
+error code if the completion failed
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns this account's ID
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### secretIsValid(bytes32)
+
+
+**secretIsValid(bytes32)**
+
+
+Validates secret
+
+```endpoint
+CALL secretIsValid(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_secret // _secret
+
+```
+
+#### Return
+
+```json
+whether _secret is valid
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
 ## commons-auth
-
-### AccountsManager Interface
-
-
-The AccountsManager Interface contract is found within the commons-auth bundle.
-
-#### addBusinessAccount(address)
-
-
-**addBusinessAccount(address)**
-
-
-Adds the specified BusinessAccount
-
-```endpoint
-CALL addBusinessAccount(address)
-```
-
-#### Return
-
-```json
-an error code
-```
-
-
----
-
-#### addFunds(address,bytes32,uint256)
-
-
-**addFunds(address,bytes32,uint256)**
-
-
-Adds the specified fund amount to the specified organization's business account.
-
-```endpoint
-CALL addFunds(address,bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_funds // the amount to add
-_name // the business account name
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-error code
-```
-
-
----
-
-#### addUserAccount(address)
-
-
-**addUserAccount(address)**
-
-
-Adds the specified UserAccount
-
-```endpoint
-CALL addUserAccount(address)
-```
-
-#### Return
-
-```json
-an error code
-```
-
-
----
-
-#### addUserToOrganization(address,address)
-
-
-**addUserToOrganization(address,address)**
-
-
-Associates the given user with the specified organization.
-
-```endpoint
-CALL addUserToOrganization(address,address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization
-_userAccount // the user
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### businessAccountExists(address,bytes32)
-
-
-**businessAccountExists(address,bytes32)**
-
-
-Indicates whether the specified business account exists for the given organization ID
-
-```endpoint
-CALL businessAccountExists(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_name // businessAccount name
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-bool exists
-```
-
-
----
-
-#### createUserAccount(address,bytes32,bytes32)
-
-
-**createUserAccount(address,bytes32,bytes32)**
-
-
-Creates and adds a user account
-
-```endpoint
-CALL createUserAccount(address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // id (optional)
-_owner // owner (optional)
-_secret // secret
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if a runtime erroruserAccount user account
-```
-
-
----
-
-#### getBusinessAccount(address,bytes32)
-
-
-**getBusinessAccount(address,bytes32)**
-
-
-Returns the business account address for the specified organization ID and business account name.
-
-```endpoint
-CALL getBusinessAccount(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_name // businessAccount name
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-(error, address)
-```
-
-
----
-
-#### getBusinessAccount(bytes32)
-
-
-**getBusinessAccount(bytes32)**
-
-
-Returns the business account address for the specified business account ID.
-
-```endpoint
-CALL getBusinessAccount(bytes32)
-```
-
-
----
-
-#### getUserAccount(bytes32)
-
-
-**getUserAccount(bytes32)**
-
-
-Returns the user account address for the specified user account ID.
-
-```endpoint
-CALL getUserAccount(bytes32)
-```
-
-
----
-
-#### removeUserFromOrganization(address,address)
-
-
-**removeUserFromOrganization(address,address)**
-
-
-Removes (deactivates) the given user from the specified organization.
-
-```endpoint
-CALL removeUserFromOrganization(address,address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization
-_userAccount // the user
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### userAccountExists(bytes32)
-
-
-**userAccountExists(bytes32)**
-
-
-Indicates whether the specified user account exists for the given userAccount ID
-
-```endpoint
-CALL userAccountExists(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // userAccount ID
-
-```
-
-#### Return
-
-```json
-bool exists
-```
-
-
----
-
-#### withdrawFunds(address,bytes32,uint256)
-
-
-**withdrawFunds(address,bytes32,uint256)**
-
-
-Subtracts the specified fund amount to the specified organization's business account.
-
-```endpoint
-CALL withdrawFunds(address,bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_funds // the amount to withdraw
-_name // the business account name
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-error code
-```
-
-
----
 
 ### AuthorizationsManager
 
@@ -20553,1192 +22497,29 @@ active - whether the user is activated in the organization
 
 ---
 
-### DefaultOrganization
+#### organizationExists(bytes32)
 
 
-The DefaultOrganization contract is found within the commons-auth bundle.
-
-#### addEventListener(bytes32)
+**organizationExists(bytes32)**
 
 
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
+Indicates whether the specified organization exists for the given organization id
 
 ```endpoint
-CALL addEventListener(bytes32)
+CALL organizationExists(bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### addUser(address)
-
-
-**addUser(address)**
-
-
-Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
-
-```endpoint
-CALL addUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user to add
+_id // organization ID
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.NO_ERROR or BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.
-```
-
-
----
-
-#### getApproverAtIndex(uint256)
-
-
-**getApproverAtIndex(uint256)**
-
-
-Returns the approver's address at the given index position.
-
-```endpoint
-CALL getApproverAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-see NamedElement.getId()
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-see NamedElement.getName()
-
-```endpoint
-CALL getName()
-```
-
-
----
-
-#### getNumberOfApprovers()
-
-
-**getNumberOfApprovers()**
-
-
-Returns the number of registered approvers.
-
-```endpoint
-CALL getNumberOfApprovers()
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfUsers()
-
-
-**getNumberOfUsers()**
-
-
-returns the number of users associated with this organization
-
-```endpoint
-CALL getNumberOfUsers()
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getUserAtIndex(uint256)
-
-
-**getUserAtIndex(uint256)**
-
-
-Returns the user's address at the given index position.
-
-```endpoint
-CALL getUserAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### isActiveUser(address)
-
-
-**isActiveUser(address)**
-
-
-Returns whether the given user account is valid in this organization
-
-```endpoint
-CALL isActiveUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user account
-
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeUser(address)
-
-
-**removeUser(address)**
-
-
-Removes / Deactivates the user in this organization.
-
-```endpoint
-CALL removeUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the account to deactivate
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
-```
-
-
----
-
-### DefaultUserAccount
-
-
-The DefaultUserAccount contract is found within the commons-auth bundle.
-
-#### getId()
-
-
-**getId()**
-
-
-Returns this account's ID
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns this user account's organization, if it is associated with one.
-
-```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization's address or 0x0
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-
----
-
-#### secretIsValid(bytes32)
-
-
-**secretIsValid(bytes32)**
-
-
-Validates secret
-
-```endpoint
-CALL secretIsValid(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_secret // _secret
-
-```
-
-#### Return
-
-```json
-whether _secret is valid
-```
-
-
----
-
-#### setOrganization(address)
-
-
-**setOrganization(address)**
-
-
-Sets the organization of this user account
-
-```endpoint
-CALL setOrganization(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address with which to associate this user account
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
-```
-
-
----
-
-### Ecosystem Interface
-
-
-The Ecosystem Interface contract is found within the commons-auth bundle.
-
-#### addOrganization(address)
-
-
-**addOrganization(address)**
-
-
-Adds the organization at the specified address to this Ecosystem.
-
-```endpoint
-CALL addOrganization(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the Organization contract's address
-
-```
-
-#### Return
-
-```json
-error code
-```
-
-
----
-
-#### createOrganization(bytes32,bytes32,address[10])
-
-
-**createOrganization(bytes32,bytes32,address[10])**
-
-
-Creates a new Organization with the specified parameters and adds it to this Ecosystem.
-
-```endpoint
-CALL createOrganization(bytes32,bytes32,address[10])
-```
-
-#### Parameters
-
-```solidity
-_approvers // the initial owners.
-_id // the organization's ID
-_name // the organization's name
-
-```
-
-#### Return
-
-```json
-error code and the address of the newly created organization, if successful
-```
-
-
----
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-Invoked by an EventEmitter for a named event without any additional data.
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-Invoked by an EventEmitter for a named event with an additional address payload.
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-Invoked by an EventEmitter for a named event with an additional string payload.
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-Invoked by an EventEmitter for a named event with an additional uint payload.
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### getApproverAtIndex(address,uint256)
-
-
-**getApproverAtIndex(address,uint256)**
-
-
-Returns the approver's address at the given index position of the specified organization.
-
-```endpoint
-CALL getApproverAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the approver's address, if the position exists
-```
-
-
----
-
-#### getApproverData(address,address)
-
-
-**getApproverData(address,address)**
-
-
-Function supports SQLsol, but only returns the approver address parameter.
-
-```endpoint
-CALL getApproverData(address,address)
-```
-
-#### Parameters
-
-```solidity
-_approver // the approver's address
-_organization // the organization's address
-
-```
-
-
----
-
-#### getNumberOfApprovers(address)
-
-
-**getNumberOfApprovers(address)**
-
-
-Returns the number of registered approvers in the specified organization.
-
-```endpoint
-CALL getNumberOfApprovers(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfOrganizations()
-
-
-**getNumberOfOrganizations()**
-
-
-Returns the number of registered organizations.
-
-```endpoint
-CALL getNumberOfOrganizations()
-```
-
-#### Return
-
-```json
-the number of organizations
-```
-
-
----
-
-#### getNumberOfUsers(address)
-
-
-**getNumberOfUsers(address)**
-
-
-returns the number of users associated with the specified organization
-
-```endpoint
-CALL getNumberOfUsers(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getOrganization(bytes32)
-
-
-**getOrganization(bytes32)**
-
-
-Returns the address of the organization with the specified ID, if it exists
-
-```endpoint
-CALL getOrganization(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the organization's ID
-
-```
-
-#### Return
-
-```json
-the organization's address, if it exists
-```
-
-
----
-
-#### getOrganizationAtIndex(uint256)
-
-
-**getOrganizationAtIndex(uint256)**
-
-
-Returns the organization at the specified index.
-
-```endpoint
-CALL getOrganizationAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address of the organization
-```
-
-
----
-
-#### getOrganizationData(address)
-
-
-**getOrganizationData(address)**
-
-
-Returns the public data of the organization at the specified address
-
-```endpoint
-CALL getOrganizationData(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the address of an organization
-
-```
-
-#### Return
-
-```json
-the organization's ID and name
-```
-
-
----
-
-#### getUserAtIndex(address,uint256)
-
-
-**getUserAtIndex(address,uint256)**
-
-
-Returns the user's address at the given index position in the specified organization.
-
-```endpoint
-CALL getUserAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### getUserData(address,address)
-
-
-**getUserData(address,address)**
-
-
-Returns information about the specified user in the context of the given organization
-
-```endpoint
-CALL getUserData(address,address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_user // the user's address
-
-```
-
-#### Return
-
-```json
-active - whether the user is activated in the organization
-```
-
-
----
-
-### Organization Interface
-
-
-The Organization Interface contract is found within the commons-auth bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### addUser(address)
-
-
-**addUser(address)**
-
-
-Adds the specified user to this organization
-
-```endpoint
-CALL addUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user to add
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### getApproverAtIndex(uint256)
-
-
-**getApproverAtIndex(uint256)**
-
-
-Returns the approver's address at the given index position.
-
-```endpoint
-CALL getApproverAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address, if the position exists
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
-#### getNumberOfApprovers()
-
-
-**getNumberOfApprovers()**
-
-
-Returns the number of registered approvers.
-
-```endpoint
-CALL getNumberOfApprovers()
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfUsers()
-
-
-**getNumberOfUsers()**
-
-
-returns the number of users associated with this organization
-
-```endpoint
-CALL getNumberOfUsers()
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getUserAtIndex(uint256)
-
-
-**getUserAtIndex(uint256)**
-
-
-Returns the user's address at the given index position.
-
-```endpoint
-CALL getUserAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### isActiveUser(address)
-
-
-**isActiveUser(address)**
-
-
-Returns whether the given user account is active in this organization
-
-```endpoint
-CALL isActiveUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user account
-
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeUser(address)
-
-
-**removeUser(address)**
-
-
-Removes / Deactivates the user in this organization.
-
-```endpoint
-CALL removeUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the account to deactivate
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
+bool exists
 ```
 
 
@@ -21948,130 +22729,6 @@ _permission // the permissions flags to unset for the account
 
 ```json
 result the effective permissions flags on the account after the call
-```
-
-
----
-
-### UserAccount Interface
-
-
-The UserAccount Interface contract is found within the commons-auth bundle.
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns this user account's organization, if it is associated with one.
-
-```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization's address or 0x0
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-#### Return
-
-```json
-the owner address
-```
-
-
----
-
-#### secretIsValid(bytes32)
-
-
-**secretIsValid(bytes32)**
-
-
-Validates secret
-
-```endpoint
-CALL secretIsValid(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_secret // _secret
-
-```
-
-#### Return
-
-```json
-whether _secret is valid
-```
-
-
----
-
-#### setOrganization(address)
-
-
-**setOrganization(address)**
-
-
-Sets the organization of this user account
-
-```endpoint
-CALL setOrganization(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address with which to associate this user account
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
 ```
 
 
