@@ -20627,6 +20627,34 @@ CALL getOwner()
 
 ---
 
+#### signAgreement(address)
+
+
+**signAgreement(address)**
+
+
+Signs the agreement identified by the provided address
+
+```endpoint
+CALL signAgreement(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // the address of the agreement
+
+```
+
+#### Return
+
+```json
+error code if the signing process failed
+```
+
+
+---
+
 #### withdrawFunds(uint256)
 
 
@@ -20978,6 +21006,34 @@ BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does no
 
 ---
 
+#### signAgreement(address)
+
+
+**signAgreement(address)**
+
+
+Signs the agreement identified by the provided address
+
+```endpoint
+CALL signAgreement(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // the address of the agreement
+
+```
+
+#### Return
+
+```json
+error code if the signing process failed
+```
+
+
+---
+
 ### WorkflowProxy
 
 
@@ -21007,6 +21063,34 @@ _service // the BpmService required for lookup and access to the BpmRuntimeDb
 
 ```json
 error code if the completion failed
+```
+
+
+---
+
+#### signAgreement(address)
+
+
+**signAgreement(address)**
+
+
+Signs the agreement identified by the provided address
+
+```endpoint
+CALL signAgreement(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // the address of the agreement
+
+```
+
+#### Return
+
+```json
+error code if the signing process failed
 ```
 
 
@@ -21148,6 +21232,34 @@ _organization // the organization's address with which to associate this user ac
 
 ```json
 BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
+#### signAgreement(address)
+
+
+**signAgreement(address)**
+
+
+Signs the agreement identified by the provided address
+
+```endpoint
+CALL signAgreement(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // the address of the agreement
+
+```
+
+#### Return
+
+```json
+error code if the signing process failed
 ```
 
 
