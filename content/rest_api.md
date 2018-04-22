@@ -553,6 +553,47 @@ curl -i /hoard
 
 ## Models
 
+### Parse BPMN XML and from it create a process model and definition
+
+
+
+```endpoint
+POST /api/bpmn/model
+```
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /api/bpmn/model
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+    "modelAddress": "1EC5F9ABE8053D87526786F98957AC6631206E7C",
+    "processAddress": "150D431B160790B2462D8CC683C87FEA2F1C3C61",
+    "startActivityId": "Task_abc"
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| Address | Object | <p>of process model, process definition and start activity id</p>|
+
+
+
+
 ### Create Model
 
 
