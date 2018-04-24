@@ -42,10 +42,179 @@ the number of non-default entries in the array
 
 ---
 
+### AbstractEventListener
+
+
+The AbstractEventListener contract is found within the agreements bundle.
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+Invoked by an EventEmitter for a named event without any additional data.
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Invoked by an EventEmitter for a named event with an additional address payload.
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+Invoked by an EventEmitter for a named event with an additional string payload.
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+Invoked by an EventEmitter for a named event with an additional uint payload.
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
 ### ActiveAgreement Interface
 
 
 The ActiveAgreement Interface contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
 
 #### getArchetype()
 
@@ -1079,6 +1248,34 @@ error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of 
 
 ---
 
+#### getSignatureTimestamp(address)
+
+
+**getSignatureTimestamp(address)**
+
+
+Returns the timestamp of the signature of the given party.
+
+```endpoint
+CALL getSignatureTimestamp(address)
+```
+
+#### Parameters
+
+```solidity
+_party // the signing party
+
+```
+
+#### Return
+
+```json
+the timestamp or 0 if the address is not a party to this agreement or has not signed yet
+```
+
+
+---
+
 #### getSize()
 
 
@@ -1165,6 +1362,51 @@ _id // the id of the data
 
 ```json
 uint error code
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
 ```
 
 
@@ -1909,29 +2151,22 @@ _value // the uint8[100] value of the data
 
 ---
 
-#### setName(bytes32)
+#### sign()
 
 
-**setName(bytes32)**
+**sign()**
 
 
-Sets name
+Applies the msg.sender signature
 
 ```endpoint
-CALL setName(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_name // name
-
+CALL sign()
 ```
 
 #### Return
 
 ```json
-error BaseErrors.NO_ERROR()
+an error code indicating success or failure
 ```
 
 
@@ -1967,6 +2202,125 @@ _parties // parties
 
 ```json
 error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _name is null, or BaseErrors.RUNTIME_ERROR() if runtime errora return code indicating success or failure and the new activeAgreement's address, if successfully created
+```
+
+
+---
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+Invoked by an EventEmitter for a named event without any additional data.
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Invoked by an EventEmitter for a named event with an additional address payload.
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+Invoked by an EventEmitter for a named event with an additional string payload.
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+Invoked by an EventEmitter for a named event with an additional uint payload.
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
 ```
 
 
@@ -2129,36 +2483,7 @@ _party // party
 #### Return
 
 ```json
-bool placeholder
-```
-
-
----
-
-#### setName(address,bytes32)
-
-
-**setName(address,bytes32)**
-
-
-Sets name for given Active Agreement
-
-```endpoint
-CALL setName(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // Active Agreement
-_name // name
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if runtime error
+signatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
 ```
 
 
@@ -5195,6 +5520,51 @@ BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
 
 The DefaultActiveAgreement Interface contract is found within the agreements bundle.
 
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
 #### getArchetype()
 
 
@@ -5243,7 +5613,7 @@ the creator address
 **getDataValueAsAddressArray(bytes32)**
 
 
-Overriden method to get Address Array value from Data Storage
+Overriden method of DataStorage to return the agreement parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
 
 ```endpoint
 CALL getDataValueAsAddressArray(bytes32)
@@ -5252,7 +5622,7 @@ CALL getDataValueAsAddressArray(bytes32)
 #### Parameters
 
 ```solidity
-_id // the bytes32 id of the address array
+_id // the bytes32 ID of an address array
 
 ```
 
@@ -5308,6 +5678,35 @@ name name
 
 ---
 
+#### getNumberOfArrayEntries(bytes32,bool)
+
+
+**getNumberOfArrayEntries(bytes32,bool)**
+
+
+Overridden method of DataStorage to return the number of parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
+```
+
+#### Parameters
+
+```solidity
+_fullscan // whether to scan beyond non-default values
+_id // the ID of the data field
+
+```
+
+#### Return
+
+```json
+the size of the specified array
+```
+
+
+---
+
 #### getNumberOfParties()
 
 
@@ -5357,6 +5756,34 @@ error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of 
 
 ---
 
+#### getSignatureTimestamp(address)
+
+
+**getSignatureTimestamp(address)**
+
+
+Returns the timestamp of the signature of the given party.
+
+```endpoint
+CALL getSignatureTimestamp(address)
+```
+
+#### Parameters
+
+```solidity
+_party // the signing party
+
+```
+
+#### Return
+
+```json
+the timestamp or 0 if the address is not a party to this agreement or has not signed yet
+```
+
+
+---
+
 #### gethoardSecret()
 
 
@@ -5399,29 +5826,67 @@ the private flag
 
 ---
 
-#### setName(bytes32)
+#### removeEventListener(bytes32)
 
 
-**setName(bytes32)**
+**removeEventListener(bytes32)**
 
 
-Sets name
+Removes the msg.sender from the list of listeners for the specified event.
 
 ```endpoint
-CALL setName(bytes32)
+CALL removeEventListener(bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_name // name
+_event // the event to unsubscribe from
 
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### sign()
+
+
+**sign()**
+
+
+Applies the msg.sender signature. The timestamp of an already existing signature is not overwritten!
+
+```endpoint
+CALL sign()
 ```
 
 #### Return
 
 ```json
-error BaseErrors.NO_ERROR()
+an error code indicating success or failure
 ```
 
 
@@ -5459,6 +5924,116 @@ _parties // parties
 
 ```json
 error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype or _name is null, or BaseErrors.RUNTIME_ERROR() if runtime errora return code indicating success or failure and the new activeAgreement's address, if successfully created
+```
+
+
+---
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+Invoked by an EventEmitter for a named event without any additional data.
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Overwrites AbstractEventListener function to receive updates from ActiveAgreements. Currently supports AGREEMENT_SIGNATURE_ADDED
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+Invoked by an EventEmitter for a named event with an additional string payload.
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+Invoked by an EventEmitter for a named event with an additional uint payload.
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
 ```
 
 
@@ -5621,36 +6196,7 @@ _party // party
 #### Return
 
 ```json
-placeholder placeholder
-```
-
-
----
-
-#### setName(address,bytes32)
-
-
-**setName(address,bytes32)**
-
-
-Sets name for given Active Agreement
-
-```endpoint
-CALL setName(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // Active Agreement
-_name // name
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if runtime error
+signatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
 ```
 
 
@@ -6732,6 +7278,320 @@ _archetype // archetype address
 
 ```json
 the number of jurisdictions
+```
+
+
+---
+
+### DefaultEventEmitter
+
+
+The DefaultEventEmitter contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+### EventEmitter Interface
+
+
+The EventEmitter Interface contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+### EventListener
+
+
+The EventListener contract is found within the agreements bundle.
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+Invoked by an EventEmitter for a named event without any additional data.
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Invoked by an EventEmitter for a named event with an additional address payload.
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+Invoked by an EventEmitter for a named event with an additional string payload.
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+Invoked by an EventEmitter for a named event with an additional uint payload.
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_data // the payload
+_event // the event name
+_source // the source of the event
+
 ```
 
 
@@ -10400,130 +11260,6 @@ the bytes32 representation
 
 ## bpm-model
 
-### AbstractEventListener
-
-
-The AbstractEventListener contract is found within the bpm-model bundle.
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-Invoked by an EventEmitter for a named event without any additional data.
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-Invoked by an EventEmitter for a named event with an additional address payload.
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-Invoked by an EventEmitter for a named event with an additional string payload.
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-Invoked by an EventEmitter for a named event with an additional uint payload.
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
 ### AbstractNamedElement
 
 
@@ -10594,101 +11330,6 @@ CALL getId()
 
 ```json
 the bytes32 ID
-```
-
-
----
-
-### DefaultEventEmitter
-
-
-The DefaultEventEmitter contract is found within the bpm-model bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
 ```
 
 
@@ -12523,225 +13164,6 @@ _processDefinition // a ProcessDefinition address
 
 ```json
 id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the ProcessDefinition's first interface ID
-```
-
-
----
-
-### EventEmitter Interface
-
-
-The EventEmitter Interface contract is found within the bpm-model bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-### EventListener
-
-
-The EventListener contract is found within the bpm-model bundle.
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-Invoked by an EventEmitter for a named event without any additional data.
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-Invoked by an EventEmitter for a named event with an additional address payload.
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-Invoked by an EventEmitter for a named event with an additional string payload.
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-Invoked by an EventEmitter for a named event with an additional uint payload.
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
