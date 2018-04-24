@@ -11,7 +11,7 @@ Things to do.
 
 asdf
 
-### How to get started on the Agreements Network
+### Step by Step Guide
 
 asdf
 
