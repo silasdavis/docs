@@ -20670,10 +20670,10 @@ CALL withdrawFunds(uint256)
 
 ---
 
-### WorkflowUserAccount
+### WorkflowOrganizationAccount
 
 
-The WorkflowUserAccount contract is found within the bpm-runtime bundle.
+The WorkflowOrganizationAccount contract is found within the bpm-runtime bundle.
 
 #### addEventListener(bytes32)
 
