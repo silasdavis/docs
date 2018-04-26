@@ -5,8 +5,8 @@
  * media queries.
  */
 module.exports.brandNames = {
-  desktop: 'Agreements Network API Documentation',
-  tablet: 'AN API Documentation',
+  desktop: 'API Documentation',
+  tablet: 'API Docs',
   mobile: 'API Docs'
 };
 

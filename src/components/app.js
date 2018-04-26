@@ -150,12 +150,43 @@ export default class App extends React.PureComponent {
     return (<div className='container unlimiter'>
 
       {/* Content background */ }
-      {(!col1 && !queryMatches.mobile) && <div className={`fixed-top fixed-right ${queryMatches.desktop && 'space-left16'}`}>
-        <div className='fill-light col6 pin-right' />
+      {(!col1 && !queryMatches.mobile) && <div className={`fixed-top fixed-right ${queryMatches.desktop && 'space-left24'}`}>
+        <div className='fill-light col5 pin-right' />
       </div>}
 
+
+      {/* Header */ }
+      <div className={`fill-dark dark fixed-top ${queryMatches.tablet ? 'pad1y pad2x col7 z2 AN-tablet-titlebar' : 'pad1 width24  AN-titlebar'}`}>
+        <div className={`${queryMatches.desktop ? 'clearfix' : ''}`}>
+          <a href='/' className={`width16`} title={`${queryMatches.desktop ? brandNames.desktop : queryMatches.mobile ? brandNames.mobile : brandNames.tablet}`}>
+            <img src="/images/AgreementsNetwork_logo.png" alt={`${queryMatches.desktop ? brandNames.desktop : queryMatches.mobile ? brandNames.mobile : brandNames.tablet}`}/>
+          </a>
+        </div>
+        <div className={`strong small AN-title
+          ${queryMatches.mobile ? 'space-left3' : ''}
+          ${queryMatches.tablet ? '' : 'line-height15' }`}>
+          {queryMatches.desktop ? brandNames.desktop :
+            queryMatches.mobile ? brandNames.mobile : brandNames.tablet}
+        </div>
+        {queryMatches.tablet && <div>
+          <button
+            onClick={this.toggleNav}
+            className={`short quiet pin-topright button rcon ${showNav ? 'caret-up' : 'caret-down'} space-right1`}>
+            <span className='micro'>{activeSection}</span>
+          </button>
+          {showNav && <div
+            className={`${queryMatches.tablet ? 'AN-tablet-sidebar' : 'AN-mobile-sidebar'} fixed-left fill-dark pin-left col7 scroll-styled space-top5`}>
+              <Navigation
+                navigationItemClicked={this.navigationItemClicked}
+                activeSection={activeSection}
+                ast={ast} />
+            </div>}
+          </div>}
+      </div>
+
+
       {/* Desktop nav */ }
-      {queryMatches.desktop && <div className='space-top5 scroll-styled overflow-auto pad1 width16 sidebar fixed-left fill-dark dark'>
+      {queryMatches.desktop && <div className='space-top8 scroll-styled overflow-auto width24 sidebar fixed-left fill-dark dark AN-sidebar'>
         <Navigation
           navigationItemClicked={this.navigationItemClicked}
           activeSection={activeSection}
@@ -163,19 +194,19 @@ export default class App extends React.PureComponent {
       </div>}
 
       {/* Content */ }
-      <div className={`${queryMatches.desktop && 'space-left16'}`}>
+      <div className={`${queryMatches.desktop && 'space-left24'}`}>
         <div className={col1 ? 'col8 margin1' : ''}>
           <Content
-            leftClassname={col1 ? 'space-bottom4 pad2x prose clip' : 'space-bottom8 col6 pad2x prose clip'}
-            rightClassname={col1 ? 'space-bottom2 pad2 prose clip fill-light space-top5' : 'space-bottom4 col6 pad2 prose clip fill-light space-top5'}
+            leftClassname={col1 ? 'space-bottom4 pad2x prose clip' : 'space-bottom8 col7 pad2x prose clip'}
+            rightClassname={col1 ? 'space-bottom2 pad2 prose clip fill-light space-top5' : 'space-bottom4 col5 pad2 prose clip fill-light space-top5'}
             ast={ast}
             language={this.state.language}/>
         </div>
       </div>
 
       {/* Language toggle */ }
-      <div className={`fixed-top ${queryMatches.desktop && 'space-left16'}`}>
-        <div className={`events fill-light bottom-shadow pad1 ${col1 ? '' : 'col6 pin-topright'} ${queryMatches.tablet ? 'dark fill-blue' : ''} ${queryMatches.mobile ? 'space-top5 fixed-topright' : ''}`}>
+      <div className={`fixed-top ${queryMatches.desktop && 'space-left24'}`}>
+        <div className={`events fill-light bottom-shadow pad2x pad1y ${queryMatches.desktop && 'AN-desktop-language-slide'} ${col1 ? '' : 'col5 pin-topright'} ${queryMatches.tablet ? 'AN-tablet-language-slide' : ''} ${queryMatches.mobile ? 'space-top8 fixed-topright' : ''}`}>
           <div className='space-right1 small quiet inline'>
             Show examples in:
           </div>
@@ -193,31 +224,6 @@ export default class App extends React.PureComponent {
                 className={`icon quiet caret-${col1 ? 'right' : 'left'} pad0 fill-darken0 round`} /> : null}
           </div>
         </div>
-      </div>
-
-      {/* Header */ }
-      <div className={`fill-dark dark bottom-shadow fixed-top ${queryMatches.tablet ? 'pad1y pad2x col6' : 'pad0 width16'}`}>
-        <a href='/' className={`active space-top1 space-left1 pin-topleft icon round dark pad0 ${brandClasses}`} />
-        <div className={`strong small pad0
-          ${queryMatches.mobile ? 'space-left3' : ''}
-          ${queryMatches.tablet ? 'space-left2' : 'space-left4 line-height15' }`}>
-          {queryMatches.desktop ? brandNames.desktop :
-            queryMatches.mobile ? brandNames.mobile : brandNames.tablet}
-        </div>
-        {queryMatches.tablet && <div>
-          <button
-            onClick={this.toggleNav}
-            className={`short quiet pin-topright button rcon ${showNav ? 'caret-up' : 'caret-down'} space-right1 space-top1`}>
-            <span className='micro'>{activeSection}</span>
-          </button>
-          {showNav && <div
-            className='fixed-left keyline-top fill-dark pin-left col6 pad2 scroll-styled space-top5'>
-              <Navigation
-                navigationItemClicked={this.navigationItemClicked}
-                activeSection={activeSection}
-                ast={ast} />
-            </div>}
-          </div>}
       </div>
 
     </div>);

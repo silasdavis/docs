@@ -1,5 +1,258 @@
 /* BASE OVERRIDES */
 
+
+/* Typography */
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:'Montserrat',sans-serif;
+  color: #292929;
+}
+
+h1 {
+  font-size:32px;
+  line-height:1.4;
+}
+
+h2 {
+  font-size: 36px;
+  margin-top: 40px;
+  line-height:1.4;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 1.5;
+  /* text-transform: uppercase; */
+}
+
+h4, h5, h6 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body,
+p {
+  font-family: 'Montserrat',sans-serif;
+  color: #666;
+}
+
+body,
+input,
+textarea,
+p {
+  font-size:16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+p strong,
+li strong {
+    color: #292929;
+    /* text-transform: uppercase; */
+    /* padding-right: 5px; */
+}
+
+
+
+/* prose */
+
+.prose h2:after {
+    content: "";
+    width: 10%;
+    height: 3px;
+    background-color: #00b48f;
+    display: block;
+    margin: 20px 0 25px;
+}
+
+.prose h3:first-child {
+    padding-top: 40px !important;
+    /* margin-bottom: 10px; */
+}
+
+.prose h2:first-child {
+    padding-top: 20px;
+    padding-right: 40px;
+}
+
+
+/* Tables */
+
+.prose table,
+.prose table p,
+.prose table td {
+    font-size: 14px;
+    color: #292929;
+    font-weight: 400;
+}
+.prose table th {
+  text-transform: uppercase;
+}
+
+
+
+
+
+/* Sidebar / Header */
+.AN-titlebar {
+  padding: 15px 20px;
+  z-index: 2;
+}
+.AN-title {
+  padding: 7px 0 3px;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.AN-sidebar {
+  margin-top: 90px;
+  padding-top: 15px;
+}
+.AN-sidebar:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  top: -1px;
+  z-index: -1;
+  transform: scale(.9);
+  box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.4);
+  left: 0;
+}
+.AN-tablet-sidebar {
+  margin-top: 85px;
+  padding-top: 10px;
+}
+.AN-tablet-sidebar:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  top: -1px;
+  z-index: -1;
+  transform: scale(.9);
+  box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.4);
+  left: 0;
+}
+
+/* sidebar-h1 */
+.AN-sidebar-h1 {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.3;
+  text-transform: uppercase;
+  padding-top: 10px;
+  padding-bottom: 4px;
+}
+.AN-sidebar-h1:first-of-type {
+  margin-top: 0px;
+}
+
+/* sidebar-h2 */
+.AN-sidebar-h2 {
+  transition: all 0.3s;
+}
+.AN-sidebar-h2 a {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.3;
+  transition: all 0.3s;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+}
+.AN-sidebar-h2.active {
+  color: rgba(255,255,255,0.5) !important;
+  background-color: #292929;
+}
+.AN-sidebar-h2:hover,
+.AN-sidebar-h2:focus {
+  background-color: #292929;
+}
+.AN-sidebar-h2:hover a,
+.AN-sidebar-h2:focus a {
+  color: white !important;
+  box-shadow: none;
+}
+.AN-sidebar-h2 a:hover,
+.AN-sidebar-h2 a:focus {
+  box-shadow: none;
+}
+
+/* sidebar-h3 */
+.AN-sidebar-h3 {
+  background-color: #353535;
+  margin-left: 0;
+  padding: 3px 3px 3px 25px;
+  transition: all 0.3s;
+}
+.AN-sidebar-h3 a {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+.AN-sidebar-h3.active {
+  color: rgba(255,255,255,0.5) !important;
+  background-color: #292929;
+}
+.AN-sidebar-h3:hover,
+.AN-sidebar-h3:focus {
+  background-color: #292929;
+}
+.AN-sidebar-h3:hover a,
+.AN-sidebar-h3:focus a {
+  color: white !important;
+  box-shadow: none;
+}
+
+.AN-tablet-language-slide {
+  background-color: #5a5a5a;
+}
+.AN-tablet-language-slide .rounded-toggle {
+    background: #999;
+}
+.AN-tablet-language-slide .inline {
+    color: #fff;
+    font-weight: 400;
+}
+.AN-tablet-titlebar a {
+  margin-right: 10px;
+}
+.AN-tablet-language-slide.space-top8 {
+  margin-top: 55px;
+}
+
+
+
+
+
+
+
+
+/* Fixes  */
+
+.rounded-toggle.short > * {
+    padding: 3px 6px;
+}
+.rounded-toggle.short .strong {
+    color: #292929;
+    font-weight: 400;
+}
+
+
+
+
+
+
+
+
+
+
+
 /* Add buffer for nicer anchor links */
 .prose h2:first-child {
   padding-top: 20px;

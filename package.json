@@ -55,7 +55,8 @@
     "standard-changelog": "^1.0.1",
     "standard-version": "^4.0.0",
     "unist-util-select": "^1.3.0",
-    "unist-util-visit": "^1.0.0"
+    "unist-util-visit": "^1.0.0",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "babel-register": "^6.3.13",

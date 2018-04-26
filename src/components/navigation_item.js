@@ -16,7 +16,7 @@ export default class NavigationItem extends React.PureComponent {
     return (<a
       href={href}
       onClick={this.onClick}
-      className={`line-height15 pad0x pad00y quiet block ${active ? 'fill-lighten0 round' : ''}`}>
+      className={`line-height15 pad1x pad00y quiet block ${active ? '' : ''}`}>
       {sectionName}
     </a>);
   }

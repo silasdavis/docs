@@ -57,7 +57,7 @@ export default class Navigation extends React.PureComponent {
       return memo;
     }, {});
 
-    return (<div className='pad0x small'>
+    return (<div className=' small'>
       {headings
         .map((child, i) => {
           let sectionName = child.children[0].value;
@@ -65,19 +65,22 @@ export default class Navigation extends React.PureComponent {
           if (child.depth === 1) {
             return (<div key={i}
               onClick={this.navigationItemClicked}
-              className='small pad0x quiet space-top1'>{sectionName}</div>);
+              className='small pad2x space-top1 AN-sidebar-h1'>{sectionName}</div>);
           } else if (child.depth === 2) {
-            return (<NavigationItem
+            return (<div key={i}
+              className={`AN-sidebar-h2 pad1x ${active ? 'active' : ''}`}>
+              <NavigationItem
               key={i}
               href={`#${child.data.id}`}
               onClick={this.props.navigationItemClicked}
               active={active}
-              sectionName={sectionName} />);
+              sectionName={sectionName} />
+            </div>);
           } else if (child.depth === 3) {
             if (activeHeadings.hasOwnProperty(sectionName)) {
               return (<div
                 key={i}
-                className='space-left1'>
+                className={`quiet space-left1 AN-sidebar-h3 pad2x ${active ? 'active' : ''}`}>
                   <NavigationItem
                     href={`#${child.data.id}`}
                     onClick={this.props.navigationItemClicked}
