@@ -533,22 +533,35 @@ curl -iX POST /dummy
 
 
 ```endpoint
-GET /hoard
+POST /hoard
 ```
 
 
 
+
+
+#### Parameters
+
+| Parameter     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
 
 ```curl
-curl -i /hoard
+curl -iX POST /hoard
 ```
 
 
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ## Models
@@ -558,7 +571,7 @@ curl -i /hoard
 
 
 ```endpoint
-POST /api/bpmn/model
+POST /bpmn/model
 ```
 
 
@@ -568,7 +581,7 @@ POST /api/bpmn/model
 
 
 ```curl
-curl -i /api/bpmn/model
+curl -i /bpmn/model
 ```
 
 
@@ -628,6 +641,43 @@ curl -iX POST /models
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Create a process definition
+
+<p>Creates a process definition with info passed in the request body: { modelAddress: 'AC1E0E841141FFF510350D04696174C8B4BDF53A', id: 'myProcess1', name: 'My Process 1' }</p>
+
+```endpoint
+POST /process
+```
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /process
+```
+
+
+#### Success Response
+
+1EC5F9ABE8053D87526786F98957AC6631206E7C
+
+```json
+1EC5F9ABE8053D87526786F98957AC6631206E7C
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| Address | text | <p>of process definition</p>|
+
+
 
 
 ### Read Activities
@@ -1300,6 +1350,31 @@ curl -iX PUT /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+## Runtime
+
+### Complete task identified by the given task id
+
+<p>Completes the activity identified by the activityInstanceId. The activityInstanceId needs to be passed as a param.</p>
+
+```endpoint
+PUT /tasks/:id/complete
+```
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /task/:id/complete
+```
+
+
+
+
 
 
 ## Standards
