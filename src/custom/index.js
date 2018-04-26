@@ -5,16 +5,10 @@
  * media queries.
  */
 module.exports.brandNames = {
-  desktop: 'Agreements Network API Documentation',
-  tablet: 'AN API Documentation',
+  desktop: 'API Documentation',
+  tablet: 'API Docs',
   mobile: 'API Docs'
 };
-
-/**
- * Classes that define the top-left brand box.
- */
-module.exports.brandClasses = 'fill-green';
-
 
 /**
  * Text for the link back to the linking website.

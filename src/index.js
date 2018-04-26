@@ -5,6 +5,13 @@ import App from './components/app';
 import remark from 'remark';
 import slug from 'remark-slug';
 import content from './custom/content';
+import WebFont from 'webfontloader';
+
+WebFont.load({
+  google: {
+    families: ['Montserrat:300,400,700']
+  }
+});
 
 var ast = remark()
   .use(slug)
