@@ -11,12 +11,6 @@ module.exports.brandNames = {
 };
 
 /**
- * Classes that define the top-left brand box.
- */
-module.exports.brandClasses = 'fill-green';
-
-
-/**
  * Text for the link back to the linking website.
  */
 module.exports.backLink = 'Back to agreements.network';

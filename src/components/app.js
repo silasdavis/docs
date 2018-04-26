@@ -5,7 +5,7 @@ import Content from './content';
 import RoundedToggle from './rounded_toggle';
 import GithubSlugger from 'github-slugger';
 import debounce from 'lodash.debounce';
-import { brandNames, brandClasses } from '../custom';
+import brandNames from '../custom';
 import qs from 'querystring';
 
 let slugger = new GithubSlugger();
