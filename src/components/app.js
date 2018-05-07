@@ -159,7 +159,7 @@ export default class App extends React.PureComponent {
       <div className={`fill-dark dark fixed-top ${queryMatches.tablet ? 'pad1y pad2x col7 z2 AN-tablet-titlebar' : 'pad1 width24  AN-titlebar'}`}>
         <div className={`${queryMatches.desktop ? 'clearfix' : ''}`}>
           <a href='/' className={`width16`} title={`${queryMatches.desktop ? brandNames.desktop : queryMatches.mobile ? brandNames.mobile : brandNames.tablet}`}>
-            <img src={`/images/AgreementsNetwork_logo.png`} alt={`${queryMatches.desktop ? brandNames.desktop : queryMatches.mobile ? brandNames.mobile : brandNames.tablet}`}/>
+            <img src={`images/AgreementsNetwork_logo.png`} alt={`${queryMatches.desktop ? brandNames.desktop : queryMatches.mobile ? brandNames.mobile : brandNames.tablet}`}/>
           </a>
         </div>
         <div className={`strong small AN-title

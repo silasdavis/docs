@@ -1,12 +1,12 @@
 image: node:9-alpine
 
 stages:
-- build
+- cache
 - test
 - deploy
 
-build site:
-  stage: build
+cache site:
+  stage: cache
   script:
     - npm install
   cache:
@@ -20,7 +20,7 @@ build site:
 test site:
   stage: test
   dependencies:
-    - build site
+    - cache site
   script:
     - npm test
   artifacts:
@@ -34,6 +34,8 @@ test site:
 # Deploy jobs
 deploy staging:
   stage: deploy
+  dependencies:
+    - cache site
   only:
     - staging@monax/docs.agreements.network
   before_script:
