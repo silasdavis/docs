@@ -41,25 +41,43 @@ The Agreements Network serves the multi-sided needs of the legal sector.
 
 **Network Validators.** Network Validators assure the operational backbone for the network blockchain by bonding tokens and participating in the decentralized consensus mechanism. In return, Validators earn a Maintenance Fee over the lifecycle of each Active Agreement, based upon their positive contributions to the Agreements Network.
 
-**Services Providers.** Legal products often entail leveraging point solutions for things like identity, market information, payments, insurance, etc. The Agreements Network’s public blockchain protocol is a stable base on which Service Providers can build solutions linked to the vital commercial data contained within it.
-
-**Technical requirements for running a single burrow instance**
+**Technical requirements for joining as a Validator**
 
 1. **Install <a href="https://github.com/monax/bosmarmot">Bosmarmot</a>.** This is a monorepo containing condensed and updated versions of the Monax tooling. This repo intends to provide the basic tooling required to interact with a Burrow chain.
+2. **Install <a href="https://golang.org/">Go</a>.** programing language 
 
-2. **Create your own key.**
-Monax Keys is a simple dev-only tool for generating keys, producing and verifying signatures. These features are exposed through Monax tooling.
-Find full instructions <a href="https://github.com/monax/bosmarmot/tree/master/keys">here</a>.
+3. **Create your own key.** Monax Keys is a simple dev-only tool for generating keys, producing and verifying signatures. These features are exposed through Monax tooling.
+   **Go get monax-keys <a href="https://github.com/monax/bosmarmot/keys/cmd/monax-keys">here</a>.** Run monax-keys server on the machine you intend to run as validator _(requires the jq tool available on most distributions)_. We generate a key passing its address into the convert command to give us the output we need.
 
-3. **Register your own key.** The registration will approve you into the validator pool.
+    - monax-keys convert --addr $(monax-keys gen --no-pass) | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
+
+    - Send validator_info.json to **<join@agreements.network>** and keep a note of the validator key you will need to configure your node
+
+4. Email public key and address to **<join@agreements.network>**
+
+5. Boot your burrow node and connect into the network.
+
+    Download genesis.json from **<a href="https://info.t1.agreements.network/genesis.json">** to your local directory
+
+    Create a local config file 
+
+    <code>Burrow -c base.toml configure</code>
+
+    Change the seeds field in the <code>burrow.toml</code> to:
+
+    tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/001:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/002:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/003:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/004:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/005:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/006:80
+
+    Change the moniker field in the <code>burrow.toml</code> to: 
+
+    <code>ORGNAME-t1.agreements.network-validator</code> 
+
+    Start burrow with the local <code>burrow.toml</code> and local <code>genesis.json</code>
+
+6. **Monitoring considerations**
+Network 
 
 
-3. **Boot your burrow node and connect into the network.**
-Install Burrow
-Connect to…...
-4. **Monitoring considerations**
-Network
-
+**Services Providers.** Legal products often entail leveraging point solutions for things like identity, market information, payments, insurance, etc. The Agreements Network’s public blockchain protocol is a stable base on which Service Providers can build solutions linked to the vital commercial data contained within it.
 
 
 ### What is Burrow?
