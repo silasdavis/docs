@@ -93,11 +93,11 @@ First you will need [Hyperledger Burrow](https://www.hyperledger.org/projects/hy
 go get github.com/hyperledger/burrow/cmd/burrow
 ```
 
-Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `base.toml` that has all the key variables preconfigured. They are both available with a simple curl command.
+Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `burrow.toml` that has all the key variables preconfigured. They are both available with a simple wget (you could also use curl) command.
 
 ```
-curl -L https://info.t1.agreements.network/genesis.json > genesis.json
-curl -L https://info.t1.agreements.network/base.toml > burrow.toml
+wget https://info.t1.agreements.network/genesis.json
+wget https://info.t1.agreements.network/burrow.toml
 ```
 
 Now we are all set to boot our node and connect into the network. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
