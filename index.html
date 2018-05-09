@@ -10,7 +10,7 @@
     <link href='css/railscasts.css' rel='stylesheet' />
   </head>
   <body>
-    <!--START--><div id='app'><div class="container unlimiter" data-reactroot="" data-reactid="1" data-react-checksum="-662044896"><div class="fixed-top fixed-right space-left24" data-reactid="2"><div class="fill-light col5 pin-right" data-reactid="3"></div></div><div class="fill-dark dark fixed-top pad1 width24  AN-titlebar" data-reactid="4"><div class="clearfix" data-reactid="5"><a href="/" class="width16" title="API Documentation" data-reactid="6"><img src="images/AgreementsNetwork_logo.png" alt="API Documentation" data-reactid="7"/></a></div><div class="strong small AN-title
+    <!--START--><div id='app'><div class="container unlimiter" data-reactroot="" data-reactid="1" data-react-checksum="-178913372"><div class="fixed-top fixed-right space-left24" data-reactid="2"><div class="fill-light col5 pin-right" data-reactid="3"></div></div><div class="fill-dark dark fixed-top pad1 width24  AN-titlebar" data-reactid="4"><div class="clearfix" data-reactid="5"><a href="/" class="width16" title="API Documentation" data-reactid="6"><img src="images/AgreementsNetwork_logo.png" alt="API Documentation" data-reactid="7"/></a></div><div class="strong small AN-title
           
           line-height15" data-reactid="8">API Documentation</div></div><div class="space-top8 scroll-styled overflow-auto width24 sidebar fixed-left fill-dark dark AN-sidebar" data-reactid="9"><div class=" small" data-reactid="10"><div class="small pad2x space-top1 AN-sidebar-h1" data-reactid="11">Getting Started</div><div class="AN-sidebar-h2 pad1x " data-reactid="12"><a href="#introduction-to-the-agreements-network" class="line-height15 pad1x pad00y quiet block " data-reactid="13">Introduction to the Agreements Network</a></div><div class="small pad2x space-top1 AN-sidebar-h1" data-reactid="14">REST API</div><div class="AN-sidebar-h2 pad1x " data-reactid="15"><a href="#agreements-network-rest-api" class="line-height15 pad1x pad00y quiet block " data-reactid="16">Agreements Network REST API</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="17"><a href="#agreements" class="line-height15 pad1x pad00y quiet block " data-reactid="18">Agreements</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="19"><a href="#archetypes" class="line-height15 pad1x pad00y quiet block " data-reactid="20">Archetypes</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="21"><a href="#authorizations" class="line-height15 pad1x pad00y quiet block " data-reactid="22">Authorizations</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="23"><a href="#content" class="line-height15 pad1x pad00y quiet block " data-reactid="24">Content</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="25"><a href="#models" class="line-height15 pad1x pad00y quiet block " data-reactid="26">Models</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="27"><a href="#organizations" class="line-height15 pad1x pad00y quiet block " data-reactid="28">Organizations</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="29"><a href="#runtime" class="line-height15 pad1x pad00y quiet block " data-reactid="30">Runtime</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="31"><a href="#standards" class="line-height15 pad1x pad00y quiet block " data-reactid="32">Standards</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="33"><a href="#users" class="line-height15 pad1x pad00y quiet block " data-reactid="34">Users</a></div><div class="small pad2x space-top1 AN-sidebar-h1" data-reactid="35">Contracts API</div><div class="AN-sidebar-h2 pad1x " data-reactid="36"><a href="#agreements-network-contracts" class="line-height15 pad1x pad00y quiet block " data-reactid="37">Agreements Network Contracts</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="38"><a href="#agreements-1" class="line-height15 pad1x pad00y quiet block " data-reactid="39">agreements</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="40"><a href="#bpm-model" class="line-height15 pad1x pad00y quiet block " data-reactid="41">bpm-model</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="42"><a href="#bpm-runtime" class="line-height15 pad1x pad00y quiet block " data-reactid="43">bpm-runtime</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="44"><a href="#commons-auth" class="line-height15 pad1x pad00y quiet block " data-reactid="45">commons-auth</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="46"><a href="#commons-management" class="line-height15 pad1x pad00y quiet block " data-reactid="47">commons-management</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="48"><a href="#commons-standards" class="line-height15 pad1x pad00y quiet block " data-reactid="49">commons-standards</a></div><div class="AN-sidebar-h2 pad1x " data-reactid="50"><a href="#commons-utils" class="line-height15 pad1x pad00y quiet block " data-reactid="51">commons-utils</a></div></div></div><div class="space-left24" data-reactid="52"><div class="" data-reactid="53"><div class="clearfix" data-reactid="54"><div data-title="Introduction to the Agreements Network" class="keyline-top section contain clearfix " data-reactid="55"><div class="space-bottom8 col7 pad2x prose clip" data-reactid="56"><h2 id="introduction-to-the-agreements-network">Introduction to the Agreements Network</h2>
 <p>The Agreements Network is the legal layer for a networked world. Be part of the paradigm shift from legal services to legal products. Join the network, build products and services on top of it or reimagine what law looks like when it’s facilitated through technology. The possibilities are truly endless entering into this new paradigm.</p>
@@ -30,37 +30,53 @@
 Workflow factories. Workflow factories process a sequence of prescribed events, create a specific process contract and register smart contract that within the network. Active Agreements and Agreement factories use workflow factories to execute logic.</p>
 <p><strong>Attestations.</strong> Attestations are endorsements of fitness of purpose of an Active Agreement made by qualified individual. In return for putting their reputation at stake they are rewarded when a template consumer instantiates an agreement to which they have attested.</p>
 </div></div><div data-title="How to get started on the Agreements Network as a Validator" class="keyline-top section contain clearfix " data-reactid="61"><div class="space-bottom8 col7 pad2x prose clip" data-reactid="62"><h3 id="how-to-get-started-on-the-agreements-network-as-a-validator">How to get started on the Agreements Network as a Validator</h3>
-<p>The Agreements Network serves the multi-sided needs of the legal sector.</p>
 <img src="images/users_of_AN-for_dev.png" alt="Agreements Network Users" width="500">
-<p><strong>Network Validators.</strong> Network Validators assure the operational backbone for the network blockchain by bonding tokens and participating in the decentralized consensus mechanism. In return, Validators earn a Maintenance Fee over the lifecycle of each Active Agreement, based upon their positive contributions to the Agreements Network.</p>
-<ol>
-<li><strong>Install Dependencies.</strong></li>
-</ol>
+<p>Network Validators assure the operational backbone for the network blockchain by bonding tokens and participating in the decentralized consensus mechanism. In return, Validators earn a Maintenance Fee over the lifecycle of each Active Agreement, based upon their positive contributions to the Agreements Network.</p>
 <p>The <a href="https://golang.org">Go</a> programing language is used to build all the necessary tools. Please first install Go.</p>
 <p>Second, we need to install <a href="https://stedolan.github.io/jq/download/">jq</a> which is an <code>sed</code> like tool that makes it easy and simple to work with json files.</p>
 <p>Lastly, you'll need <a href="https://gist.github.com/derhuerst/1b15ff4652a867391f03">Git</a> installed on your machine.</p>
-<ol start="2">
-<li><strong>Create your own key and send us the information.</strong></li>
-</ol>
 <p>Monax keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the <code>monax-keys</code> tool. To install this run the following command:</p>
+<pre><code>go get github.com/monax/bosmarmot/keys/cmd/monax-keys
+</code></pre>
 <p>Run monax-keys server on the machine you intend to run as validator and save the process ID in a variable.</p>
+<pre><code>monax-keys server &#x26;
+MONAX_KEYS_PID=$!
+</code></pre>
 <p>Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you.</p>
+<pre><code>ADDR=$(monax-keys gen --no-pass)
+</code></pre>
 <p><strong>If and only iff</strong> you wish to give it a passphrase then remove the <code>--no-pass</code> flag and manually copy and paste the address outputted into a shell variable in the following manner.</p>
+<pre><code>monax-keys gen
+ADDR="COPY_AND_PASTE_THE_ADDRESS_OUTPUTTED"
+</code></pre>
 <p>Next also we will pass the new key's address into the <code>convert</code> command to give us the output we need.</p>
+<pre><code>monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
+</code></pre>
 <p>The final step is to send validator_info.json to the <a href="mailto:join@agreements.network">Network Validator Waiting List</a> and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.</p>
-<ol start="3">
-<li><strong>Boot your burrow node and connect into the network.</strong></li>
-</ol>
 <p>Once we have confirmed that your key has been moved off the waiting list into the active network then you will boot your local node in the following manner.</p>
 <p>(<strong>N.B.</strong> if you've stoped your keys server then restart it with the commands above. You'll also need to manually add your address into the <code>$ADDR</code> shell variable.)</p>
 <p>First you will need <a href="https://www.hyperledger.org/projects/hyperledger-burrow">Hyperledger Burrow</a> which is the base blockchain node used for the Agreements Network.</p>
+<pre><code>go get github.com/hyperledger/burrow/cmd/burrow
+</code></pre>
 <p>Now that we have <code>burrow</code> available on our machine we will set it up to connect to the network. First, we'll need to download the <code>genesis.json</code> which sets the beginning of the network along with the <code>base.toml</code> that has all the key variables preconfigured. They are both available with a simple curl command.</p>
+<pre><code>curl -L https://info.t1.agreements.network/genesis.json > genesis.json
+curl -L https://info.t1.agreements.network/base.toml > burrow.toml
+</code></pre>
 <p>Now we are all set to boot our node and connect into the network. In the below command, you'll change <code>ORGNAME</code> to something which clearly identifies your node on the network.</p>
+<pre><code>burrow serve \
+    --genesis genesis.json \
+    --config burrow.toml \
+    --validator-moniker ORGNAME-t1.agreements.network-validator \
+    --validator-address $ADDR
+</code></pre>
 <p>One point of note is that if you have generated the key using a password you will add the <code>--validator-passphrase XXXX</code> flag with your password.</p>
 <p>Another point is that if you are running this on a cloud box you may want to run within <code>tmux</code> or <code>screen</code> so that you can detach from the shell without shutting down the node. At a minimum you'll want to add <code>&#x26;</code> or <code>&#x26;disown</code> to the end of the command if you are not running within <code>tmux</code> or <code>screen</code>.</p>
 <p>If you're running burrow in a cluster or via Docker then all the commands listed above can be handled with envirnoment variables (i.e., <code>BURROW_VALIDATOR_MONIKER</code>, <code>BURROW_VALIDATOR_ADDRESS</code> and <code>BURROW_VALIDATOR_PASSPHRASE</code>).</p>
 <p>There is a <code>helm</code> <a href="https://github.com/kubernetes/charts/tree/master/stable/burrow">chart for burrow</a> which may be helpful as well.</p>
-</div><div class="space-bottom4 col5 pad2 prose clip fill-light space-top5" data-reactid="63"><h4 id="operational-notes">Operational Notes</h4>
+</div><div class="space-bottom4 col5 pad2 prose clip fill-light space-top5" data-reactid="63"><h4 id="install-dependencies">Install Dependencies</h4>
+<h4 id="create-your-own-key-and-send-us-the-information">Create your own key and send us the information</h4>
+<h4 id="boot-your-burrow-node-and-connect-into-the-network">Boot your burrow node and connect into the network</h4>
+<h4 id="operational-notes">Operational Notes</h4>
 </div></div><div data-title="What is Burrow?" class="keyline-top section contain clearfix " data-reactid="64"><div class="space-bottom8 col7 pad2x prose clip" data-reactid="65"><h3 id="what-is-burrow">What is Burrow?</h3>
 <p>Hyperledger Burrow, commonly referred to as Burrow, is a permissioned Ethereum smart-contract blockchain node. It executes Ethereum smart contract code on a permissioned virtual machine. Burrow provides transaction finality and high transaction throughput on a proof-of-stake Tendermint consensus engine. Burrow is built for a multi-chain universe with application specific optimization in mind. Burrow as a node is constructed out of three main components; the consensus engine, the permissioned Ethereum virtual machine and the rpc gateway.</p>
 <p>Burrow has been architected with a longer term vision on security and data privacy from the outset, featuring cryptographically secured consensus,remote signing, secure signing and multi-chain universe.</p>
