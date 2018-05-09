@@ -31,13 +31,13 @@ Workflow factories. Workflow factories process a sequence of prescribed events, 
 
 **Attestations.** Attestations are endorsements of fitness of purpose of an Active Agreement made by qualified individual. In return for putting their reputation at stake they are rewarded when a template consumer instantiates an agreement to which they have attested.
 
-### How to get started on the Agreements Network as a Validator
+## Get started as a Network validator
 
 <img src="images/users_of_AN-for_dev.png" alt="Agreements Network Users" width="500">
 
 Network Validators assure the operational backbone for the network blockchain by bonding tokens and participating in the decentralized consensus mechanism. In return, Validators earn a Maintenance Fee over the lifecycle of each Active Agreement, based upon their positive contributions to the Agreements Network.
 
-#### Install Dependencies
+### Install Dependencies
 
 The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go.
 
@@ -45,7 +45,7 @@ Second, we need to install [jq](https://stedolan.github.io/jq/download/) which i
 
 Lastly, you'll need [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) installed on your machine.
 
-#### Create your own key and send us the information
+### Create your own key and send us the information
 
 Monax keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the `monax-keys` tool. To install this run the following command:
 
@@ -81,7 +81,7 @@ monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' 
 
 The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
-#### Boot your burrow node and connect into the network
+### Boot your burrow node and connect into the network
 
 Once we have confirmed that your key has been moved off the waiting list into the active network then you will boot your local node in the following manner.
 
@@ -110,7 +110,7 @@ burrow serve \
     --validator-address $ADDR
 ```
 
-#### Operational Notes
+### Operational Notes
 
 One point of note is that if you have generated the key using a password you will add the `--validator-passphrase XXXX` flag with your password.
 
@@ -120,14 +120,6 @@ If you're running burrow in a cluster or via Docker then all the commands listed
 
 There is a `helm` [chart for burrow](https://github.com/kubernetes/charts/tree/master/stable/burrow) which may be helpful as well.
 
-### What is Burrow?
-
-Hyperledger Burrow, commonly referred to as Burrow, is a permissioned Ethereum smart-contract blockchain node. It executes Ethereum smart contract code on a permissioned virtual machine. Burrow provides transaction finality and high transaction throughput on a proof-of-stake Tendermint consensus engine. Burrow is built for a multi-chain universe with application specific optimization in mind. Burrow as a node is constructed out of three main components; the consensus engine, the permissioned Ethereum virtual machine and the rpc gateway.
-
-Burrow has been architected with a longer term vision on security and data privacy from the outset, featuring cryptographically secured consensus,remote signing, secure signing and multi-chain universe.
-
-For all details and to install Burrow [click here](https://github.com/hyperledger/burrow).
-
-### Structure of the API documentation
+## Structure of the API documentation
 
 The following sections provide in depth guidance and information on the Agreements Network's REST API and Contracts API.
