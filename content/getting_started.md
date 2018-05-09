@@ -81,6 +81,9 @@ monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' 
 
 The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
+```curl
+```
+
 ### Boot your burrow node and connect into the network
 
 Once we have confirmed that your key has been moved off the waiting list into the active network then you will boot your local node in the following manner.
