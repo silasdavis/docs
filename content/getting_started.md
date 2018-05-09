@@ -1,4 +1,4 @@
-i## Introduction to the Agreements Network
+## Introduction to the Agreements Network
 
 The Agreements Network is the legal layer for a networked world. Be part of the paradigm shift from legal services to legal products. Join the network, build products and services on top of it or reimagine what law looks like when it’s facilitated through technology. The possibilities are truly endless entering into this new paradigm.
 
@@ -134,4 +134,3 @@ For all details and to install Burrow [click here](https://github.com/hyperledge
 ### Structure of the API documentation
 
 The following sections provide in depth guidance and information on the Agreements Network's REST API and Contracts API.
-
