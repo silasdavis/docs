@@ -1,4 +1,4 @@
-## Introduction to the Agreements Network
+i## Introduction to the Agreements Network
 
 The Agreements Network is the legal layer for a networked world. Be part of the paradigm shift from legal services to legal products. Join the network, build products and services on top of it or reimagine what law looks like when it’s facilitated through technology. The possibilities are truly endless entering into this new paradigm.
 
@@ -10,7 +10,6 @@ The Agreements Network’s architecture leverages robust interconnected distribu
 <img src="images/AN-Cosmos-ETH.png" alt="Agreements Network Architecture" width="600" align="middle">
 
 The Agreements Network is configured to significantly reduce the operational costs to users.By operating a sharded, optimized, zone, the Agreements Network is able to interact with Ethereum smart contracts without being exposed to backlogs or attacks in transactional processing within the Ethereum public blockchain.
-
 
 ### The Agreements Network Protocol
 
@@ -33,7 +32,7 @@ Workflow factories. Workflow factories process a sequence of prescribed events, 
 **Attestations.** Attestations are endorsements of fitness of purpose of an Active Agreement made by qualified individual. In return for putting their reputation at stake they are rewarded when a template consumer instantiates an agreement to which they have attested.
 
 
-### How to get started on the Agreements Network as Validator or Service Provider?
+### How to get started on the Agreements Network as a Validator
 
 The Agreements Network serves the multi-sided needs of the legal sector.
 
@@ -41,53 +40,98 @@ The Agreements Network serves the multi-sided needs of the legal sector.
 
 **Network Validators.** Network Validators assure the operational backbone for the network blockchain by bonding tokens and participating in the decentralized consensus mechanism. In return, Validators earn a Maintenance Fee over the lifecycle of each Active Agreement, based upon their positive contributions to the Agreements Network.
 
-**Technical requirements for joining as a Validator**
+1. **Install Dependencies.**
 
-1. **Install <a href="https://github.com/monax/bosmarmot">Bosmarmot</a>.** This is a monorepo containing condensed and updated versions of the Monax tooling. This repo intends to provide the basic tooling required to interact with a Burrow chain.
-2. **Install <a href="https://golang.org/">Go</a>.** programing language 
+The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go.
 
-3. **Create your own key.** Monax Keys is a simple dev-only tool for generating keys, producing and verifying signatures. These features are exposed through Monax tooling.
-   **Go get monax-keys <a href="https://github.com/monax/bosmarmot/keys/cmd/monax-keys">here</a>.** Run monax-keys server on the machine you intend to run as validator _(requires the jq tool available on most distributions)_. We generate a key passing its address into the convert command to give us the output we need.
+Second, we need to install [jq](https://stedolan.github.io/jq/download/) which is an `sed` like tool that makes it easy and simple to work with json files.
 
-    - monax-keys convert --addr $(monax-keys gen --no-pass) | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
+Lastly, you'll need [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) installed on your machine.
 
-    - Send validator_info.json to **<join@agreements.network>** and keep a note of the validator key you will need to configure your node
+2. **Create your own key and send us the information.**
 
-4. Email public key and address to **<join@agreements.network>**
+Monax keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the `monax-keys` tool. To install this run the following command:
 
-5. Boot your burrow node and connect into the network.
+```bash
+go get github.com/monax/bosmarmot/keys/cmd/monax-keys
+```
 
-    Download genesis.json from **<a href="https://info.t1.agreements.network/genesis.json">** to your local directory
+Run monax-keys server on the machine you intend to run as validator and save the process ID in a variable.
 
-    Create a local config file 
+```bash
+monax-keys server &
+MONAX_KEYS_PID=$!
+```
 
-    <code>Burrow -c base.toml configure</code>
+Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you.
 
-    Change the seeds field in the <code>burrow.toml</code> to:
+```bash
+ADDR=$(monax-keys gen --no-pass)
+```
 
-    tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/001:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/002:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/003:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/004:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/005:80,tcp://1B1ECA9055642DC89C04ADC477FB08C9D09A9570@peers.t1.agreements.network/006:80
+**If and only iff** you wish to give it a passphrase then remove the `--no-pass` flag and manually copy and paste the address outputted into a shell variable in the following manner.
 
-    Change the moniker field in the <code>burrow.toml</code> to: 
+```bash
+monax-keys gen
+ADDR="COPY_AND_PASTE_THE_ADDRESS_OUTPUTTED"
+```
 
-    <code>ORGNAME-t1.agreements.network-validator</code> 
+Next also we will pass the new key's address into the `convert` command to give us the output we need.
 
-    Start burrow with the local <code>burrow.toml</code> and local <code>genesis.json</code>
+```bash
+monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
+```
 
-6. **Monitoring considerations**
-Network 
+The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
+3. **Boot your burrow node and connect into the network.**
 
-**Services Providers.** Legal products often entail leveraging point solutions for things like identity, market information, payments, insurance, etc. The Agreements Network’s public blockchain protocol is a stable base on which Service Providers can build solutions linked to the vital commercial data contained within it.
+Once we have confirmed that your key has been moved off the waiting list into the active network then you will boot your local node in the following manner.
 
+(**N.B.** if you've stoped your keys server then restart it with the commands above. You'll also need to manually add your address into the `$ADDR` shell variable.)
+
+First you will need [Hyperledger Burrow](https://www.hyperledger.org/projects/hyperledger-burrow) which is the base blockchain node used for the Agreements Network.
+
+```bash
+go get github.com/hyperledger/burrow/cmd/burrow
+```
+
+Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `base.toml` that has all the key variables preconfigured. They are both available with a simple curl command.
+
+```bash
+curl -L https://info.t1.agreements.network/genesis.json > genesis.json
+curl -L https://info.t1.agreements.network/burrow.toml > burrow.toml
+```
+
+Now we are all set to boot our node and connect into the network. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
+
+```bash
+burrow serve \
+    --genesis genesis.json \
+    --config burrow.toml \
+    --validator-moniker ORGNAME-t1.agreements.network-validator \
+    --validator-address $ADDR
+```
+
+#### Operational Notes
+
+One point of note is that if you have generated the key using a password you will add the `--validator-passphrase XXXX` flag with your password.
+
+Another point is that if you are running this on a cloud box you may want to run within `tmux` or `screen` so that you can detach from the shell without shutting down the node. At a minimum you'll want to add `&` or `&disown` to the end of the command if you are not running within `tmux` or `screen`.
+
+If you're running burrow in a cluster or via Docker then all the commands listed above can be handled with envirnoment variables (i.e., `BURROW_VALIDATOR_MONIKER`, `BURROW_VALIDATOR_ADDRESS` and `BURROW_VALIDATOR_PASSPHRASE`).
+
+There is a `helm` [chart for burrow](https://github.com/kubernetes/charts/tree/master/stable/burrow) which may be helpful as well.
 
 ### What is Burrow?
 
 Hyperledger Burrow, commonly referred to as Burrow, is a permissioned Ethereum smart-contract blockchain node. It executes Ethereum smart contract code on a permissioned virtual machine. Burrow provides transaction finality and high transaction throughput on a proof-of-stake Tendermint consensus engine. Burrow is built for a multi-chain universe with application specific optimization in mind. Burrow as a node is constructed out of three main components; the consensus engine, the permissioned Ethereum virtual machine and the rpc gateway.
 
 Burrow has been architected with a longer term vision on security and data privacy from the outset, featuring cryptographically secured consensus,remote signing, secure signing and multi-chain universe.
-For all details and to install Burrow click <a href="https://github.com/hyperledger/burrow">here</a>.
 
+For all details and to install Burrow [click here](https://github.com/hyperledger/burrow).
 
 ### Structure of the API documentation
 
 The following sections provide in depth guidance and information on the Agreements Network's REST API and Contracts API.
+
