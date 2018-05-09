@@ -83,6 +83,8 @@ The final step is to send validator_info.json to the [Network Validator Waiting 
 
 ```curl
 ```
+```endpoint
+```
 
 ### Boot your burrow node and connect into the network
 
