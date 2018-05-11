@@ -20,7 +20,7 @@ POST /agreements
 
 | Parameter     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| name | String | <p>Human readable name of the Active Agreement</p>|
+| name | String | <p>Human readable name of the Active Agreement (limit: 32 ASCII characters)</p>|
 | archetype | String | <p>Address of the parent Archetype of the Active Agreement</p>|
 | isPrivate | Boolean | <p>Whether the encryption framework of the Active Agreement is operational or not</p>|
 | password | String | <p>A secret string which is used to trigger the encryption system for the Active Agreements's documents</p>|
@@ -182,12 +182,12 @@ POST /archetypes
 
 | Parameter     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| name | String | <p>Human readable name of the Archetype</p>|
+| name | String | <p>Human readable name of the Archetype (limit: 32 ASCII characters)</p>|
 | author | String | <p>Controller contract of the user or organization that created the Archetype</p>|
 | description | String | <p>Short human readable description of the Archetype</p>|
 | isPrivate | Boolean | <p><strong>(Optional)</strong> Whether the encryption framework of the Archetype is operational or not</p>|
 | password | String | <p>A secret string which is used to trigger the encryption system for the Archetype's documents</p>|
-| fields | Object[] | <p><strong>(Optional)</strong> The &quot;name&quot; and &quot;type&quot; of all custom parameters used by the Archetype</p>|
+| fields | Object[] | <p><strong>(Optional)</strong> The &quot;name&quot; (limit: 32 ASCII characters) and &quot;type&quot; of all custom parameters used by the Archetype</p>|
 | documents | Object[] | <p><strong>(Optional)</strong>  The &quot;name&quot;, &quot;hoardAddress&quot; and &quot;secretKey&quot; (if any) sufficient to provide the information regarding the relevant documents associated with the Archetype</p>|
 | jurisdictions | Object[] | <p>The &quot;country&quot; and &quot;regions&quot; which the Archetype has been registered as relevant to. The &quot;country&quot; is registered as an ISO standard two character string and &quot;regions&quot; is an array of addresses relating to the controlling contracts for the region (see <a href="#">ISO standards manipulation</a> section).</p>|
 | formationProcessDefinition | String | <p>Address of the formation process definition controller</p>|
@@ -533,79 +533,25 @@ curl -iX POST /dummy
 
 
 ```endpoint
-POST /hoard
+GET /hoard
 ```
 
 
 
-
-
-#### Parameters
-
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
 
 ```curl
-curl -iX POST /hoard
+curl -i /hoard
 ```
 
 
 
 
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ## Models
-
-### Parse BPMN XML and from it create a process model and definition
-
-
-
-```endpoint
-POST /bpmn/model
-```
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /bpmn/model
-```
-
-
-#### Success Response
-
-Success Object
-
-```json
-{
-    "modelAddress": "1EC5F9ABE8053D87526786F98957AC6631206E7C",
-    "processAddress": "150D431B160790B2462D8CC683C87FEA2F1C3C61",
-    "startActivityId": "Task_abc"
-}
-```
-
-
-#### Success 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| Address | Object | <p>of process model, process definition and start activity id</p>|
-
-
-
 
 ### Create Model
 
@@ -645,7 +591,7 @@ curl -iX POST /models
 
 ### Create a process definition
 
-<p>Creates a process definition with info passed in the request body: { modelAddress: 'AC1E0E841141FFF510350D04696174C8B4BDF53A', id: 'myProcess1', name: 'My Process 1' }</p>
+<p>Creates a process definition with info passed in the request body: { modelAddress: 'AC1E0E841141FFF510350D04696174C8B4BDF53A', id: 'myProcess1', name: 'My Process 1', hoardAddress: 'd71376de29b408f82974d4ca5685db9e6f415ea13c66b774a86429e80f341131', hoardSecret: '52f57f5997d5c1bb088e7de4720709179059ca394ef81247c7a691ea44924717', }</p>
 
 ```endpoint
 POST /process
@@ -682,10 +628,10 @@ curl -i /process
 
 ### Read Activities
 
-<p>Read all the activities for a given process instance</p>
+<p>Read all activities. Accepts an optional query string parameter <code>processInstance</code> to read only the activities with the given process addess.</p>
 
 ```endpoint
-GET /activites/:piAddress
+GET /activity-instances
 ```
 
 
@@ -695,7 +641,7 @@ GET /activites/:piAddress
 
 
 ```curl
-curl -i /activites/:piAddress
+curl -i /activity-instances?processInstance=150D431B160790B2462D8CC683C87FEA2F1C3C61
 ```
 
 
@@ -733,13 +679,17 @@ Success Objects Array
       "processDefinitionAddress":"81A817870C6C6A209150FA26BC52D835CA6E17D2",
       "id":"defaultFormationProcess",
       "name":"Default Formation Process",
-      "interfaceId":"Agreement Formation"
+      "interfaceId":"Agreement Formation",
+      "diagramAddress":"7D85BB76DB402B752F84792FF50B40483922673CF277CD2045D3D9637D4CE8F9",
+      "diagramSecret":"4AF3A863BF6F2AD79E4919F562252866CBDA58E3E5AA27E2C5C94BAE9931BE74"
   },{
       "modelAddress":"912A82D4C72847EF1EC76426544EAA992993EE20",
       "processDefinitionAddress":"A043C06EB2FB91F4811F51F6500744906FD0903E",
       "id":"defaultExecutionProcess",
       "name":"Default Execution Process",
-      "interfaceId":"Agreement Execution"
+      "interfaceId":"Agreement Execution",
+      "diagramAddress":"7D85BB76DB402B752F84792FF50B40483922673CF277CD2045D3D9637D4CE8F9",
+      "diagramSecret":"4AF3A863BF6F2AD79E4919F562252866CBDA58E3E5AA27E2C5C94BAE9931BE74"
   }
 ]
 ```
@@ -853,7 +803,9 @@ Success Objects Array
         "processDefinitionAddress":"81A817870C6C6A209150FA26BC52D835CA6E17D2",
         "id":"defaultFormationProcess",
         "name":"Default Formation Process",
-        "interfaceId":"Agreement Formation"
+        "interfaceId":"Agreement Formation",
+        "diagramAddress":"7D85BB76DB402B752F84792FF50B40483922673CF277CD2045D3D9637D4CE8F9",
+        "diagramSecret":"4AF3A863BF6F2AD79E4919F562252866CBDA58E3E5AA27E2C5C94BAE9931BE74"
     }
 ]
 ```
@@ -1074,6 +1026,62 @@ curl -iX POST /validateProcess
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+## Models_BPMN_XML_needs_to_be_passed_in_the_request_body_as_plain_text_or_application_xml
+
+### Parse BPMN XML and from it create a process model and definition
+
+
+
+```endpoint
+POST /bpmn/model
+```
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /bpmn/model
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+    "model": {
+        "id": "model_10",
+        "address": "3650839FB751186AC9B1B2BBDD30E23D7926D6E6"
+    },
+    "processes": [
+        {
+            "id": "Process_1",
+            "address": "B19BA0D61DD95958C4B6B8F11B03477C24738D53",
+            "startActivity": "Task_0m3bxv3"
+        },
+        {
+            "id": "Process_2",
+            "address": "696133F794C0B87C0E40FEE4144648798C508379",
+            "startActivity": "Task_0a1ijkc"
+        }
+    ]
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| Address | Object | <p>of process model, process definition(s) and start activity id(s)</p>|
+
+
 
 
 ## Organizations
