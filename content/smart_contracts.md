@@ -53,18 +53,10 @@ The AbstractEventListener contract is found within the agreements bundle.
 **eventFired(bytes32,address)**
 
 
-Invoked by an EventEmitter for a named event without any additional data.
+See EventListener.eventFired(bytes32,address)
 
 ```endpoint
 CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -76,19 +68,10 @@ _source // the source of the event
 **eventFired(bytes32,address,address)**
 
 
-Invoked by an EventEmitter for a named event with an additional address payload.
+See EventListener.eventFired(bytes32,address,address)
 
 ```endpoint
 CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -100,19 +83,10 @@ _source // the source of the event
 **eventFired(bytes32,address,bytes32)**
 
 
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+See EventListener.eventFired(bytes32,address,bytes32)
 
 ```endpoint
 CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -124,19 +98,10 @@ _source // the source of the event
 **eventFired(bytes32,address,string)**
 
 
-Invoked by an EventEmitter for a named event with an additional string payload.
+See EventListener.eventFired(bytes32,address,string)
 
 ```endpoint
 CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -148,19 +113,10 @@ _source // the source of the event
 **eventFired(bytes32,address,uint256)**
 
 
-Invoked by an EventEmitter for a named event with an additional uint payload.
+See EventListener.eventFired(bytes32,address,uint)
 
 ```endpoint
 CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -1248,16 +1204,16 @@ error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of 
 
 ---
 
-#### getSignatureTimestamp(address)
+#### getSignatureDetails(address)
 
 
-**getSignatureTimestamp(address)**
+**getSignatureDetails(address)**
 
 
 Returns the timestamp of the signature of the given party.
 
 ```endpoint
-CALL getSignatureTimestamp(address)
+CALL getSignatureDetails(address)
 ```
 
 #### Parameters
@@ -1270,7 +1226,7 @@ _party // the signing party
 #### Return
 
 ```json
-the timestamp or 0 if the address is not a party to this agreement or has not signed yet
+the address of the signee (if the party authorized a signee other than itself)the time of signing or 0 if the address is not a party to this agreement or has not signed yet
 ```
 
 
@@ -1334,6 +1290,34 @@ CALL isPrivate()
 
 ```json
 the private flag 
+```
+
+
+---
+
+#### isSignedBy(address)
+
+
+**isSignedBy(address)**
+
+
+Returns whether the given account's signature is on the agreement.
+
+```endpoint
+CALL isSignedBy(address)
+```
+
+#### Parameters
+
+```solidity
+_signee // The account to check
+
+```
+
+#### Return
+
+```json
+true if the provided address is a recorded signature on the agreement, false otherwise
 ```
 
 
@@ -2466,7 +2450,7 @@ party party
 **getPartyByActiveAgreementData(address,address)**
 
 
-Returns data about the party at the specified address. Placeholder function due to SQLSOL requirements.
+Returns data about the given party's signature on the specified agreement.
 
 ```endpoint
 CALL getPartyByActiveAgreementData(address,address)
@@ -2475,19 +2459,20 @@ CALL getPartyByActiveAgreementData(address,address)
 #### Parameters
 
 ```solidity
-_activeAgreement // active agreement
-_party // party
+_activeAgreement // the ActiveAgreement
+_party // the signing party
 
 ```
 
 #### Return
 
 ```json
-signatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
+signedBy the actual signature authorized by the partysignatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
 ```
 
 
 ---
+
 
 ### Archetype Interface
 
@@ -3686,6 +3671,32 @@ true if the value is found in the array, false otherwise
 
 ---
 
+
+### Identifiable Interface
+
+
+The Identifiable Interface contract is found within the agreements bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
 
 ### DataStorage Interface
 
@@ -5756,16 +5767,16 @@ error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of 
 
 ---
 
-#### getSignatureTimestamp(address)
+#### getSignatureDetails(address)
 
 
-**getSignatureTimestamp(address)**
+**getSignatureDetails(address)**
 
 
-Returns the timestamp of the signature of the given party.
+Returns the signee and timestamp of the signature of the given party.
 
 ```endpoint
-CALL getSignatureTimestamp(address)
+CALL getSignatureDetails(address)
 ```
 
 #### Parameters
@@ -5778,7 +5789,7 @@ _party // the signing party
 #### Return
 
 ```json
-the timestamp or 0 if the address is not a party to this agreement or has not signed yet
+the address of the signee (if the party authorized a signee other than itself)the time of signing or 0 if the address is not a party to this agreement or has not signed yet
 ```
 
 
@@ -5821,6 +5832,34 @@ CALL isPrivate()
 
 ```json
 the private flag 
+```
+
+
+---
+
+#### isSignedBy(address)
+
+
+**isSignedBy(address)**
+
+
+Returns whether the given account's signature is on the agreement.
+
+```endpoint
+CALL isSignedBy(address)
+```
+
+#### Parameters
+
+```solidity
+_signee // The account to check
+
+```
+
+#### Return
+
+```json
+true if the provided address is a recorded signature on the agreement, false otherwise
 ```
 
 
@@ -5877,7 +5916,7 @@ _listener // the address of an EventListener
 **sign()**
 
 
-Applies the msg.sender signature. The timestamp of an already existing signature is not overwritten!
+Applies the msg.sender or tx.origin as a signature to this agreement, if the it can be authorized as a valid signee. The timestamp of an already existing signature is not overwritten!
 
 ```endpoint
 CALL sign()
@@ -5935,18 +5974,10 @@ error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype o
 **eventFired(bytes32,address)**
 
 
-Invoked by an EventEmitter for a named event without any additional data.
+See EventListener.eventFired(bytes32,address)
 
 ```endpoint
 CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -5973,19 +6004,10 @@ CALL eventFired(bytes32,address,address)
 **eventFired(bytes32,address,bytes32)**
 
 
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+See EventListener.eventFired(bytes32,address,bytes32)
 
 ```endpoint
 CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -5997,19 +6019,10 @@ _source // the source of the event
 **eventFired(bytes32,address,string)**
 
 
-Invoked by an EventEmitter for a named event with an additional string payload.
+See EventListener.eventFired(bytes32,address,string)
 
 ```endpoint
 CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -6021,19 +6034,10 @@ _source // the source of the event
 **eventFired(bytes32,address,uint256)**
 
 
-Invoked by an EventEmitter for a named event with an additional uint payload.
+See EventListener.eventFired(bytes32,address,uint)
 
 ```endpoint
 CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -6179,7 +6183,7 @@ party party
 **getPartyByActiveAgreementData(address,address)**
 
 
-Returns data about the party at the specified address. Placeholder function due to SQLSOL requirements.
+Returns data about the given party's signature on the specified agreement.
 
 ```endpoint
 CALL getPartyByActiveAgreementData(address,address)
@@ -6188,15 +6192,15 @@ CALL getPartyByActiveAgreementData(address,address)
 #### Parameters
 
 ```solidity
-_activeAgreement // active agreement
-_party // party
+_activeAgreement // the ActiveAgreement
+_party // the signing party
 
 ```
 
 #### Return
 
 ```json
-signatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
+signedBy the actual signature authorized by the partysignatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
 ```
 
 
@@ -7378,6 +7382,75 @@ _listener // the address of an EventListener
 
 ---
 
+
+### ERC165 Interface
+
+
+The ERC165 Interface contract is found within the agreements bundle.
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
+```
+
+
+---
+
+### ERC165Utils
+
+
+The ERC165Utils contract is found within the agreements bundle.
+
+#### implementsInterface(address,bytes4)
+
+
+**implementsInterface(address,bytes4)**
+
+
+Detects whether the given contract implements the specified ERC165 interface signature. This is a modified implementation of the example in EIP 881 to avoid the use of the "staticcall" opcode. This function performs two invocations: 1. A "call" to the 0x01ffc9a7 function signature to test if it can be invoked 2. If step 1 returns 'true', the contract is cast to ERC165 and the supportsInterface(bytes4) function is invoked
+
+```endpoint
+CALL implementsInterface(address,bytes4)
+```
+
+#### Parameters
+
+```solidity
+_contract // the contract to be examined
+_interfaceId // the signature of the interface for which to test
+
+```
+
+#### Return
+
+```json
+true if the contract implements the interface, false otherwise
+```
+
+
+---
+
 ### EventEmitter Interface
 
 
@@ -7596,7 +7669,6 @@ _source // the source of the event
 
 
 ---
-
 
 
 ### Mappings Library Public API Contract
@@ -11141,6 +11213,401 @@ the bytes32 name
 
 ---
 
+### NamedElement Interface
+
+
+The NamedElement Interface contract is found within the agreements bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+### Organization Interface
+
+
+The Organization Interface contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### addUser(address)
+
+
+**addUser(address)**
+
+
+Adds the specified user to this organization
+
+```endpoint
+CALL addUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user to add
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### getApproverAtIndex(uint256)
+
+
+**getApproverAtIndex(uint256)**
+
+
+Returns the approver's address at the given index position.
+
+```endpoint
+CALL getApproverAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address, if the position exists
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+#### getNumberOfApprovers()
+
+
+**getNumberOfApprovers()**
+
+
+Returns the number of registered approvers.
+
+```endpoint
+CALL getNumberOfApprovers()
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfUsers()
+
+
+**getNumberOfUsers()**
+
+
+returns the number of users associated with this organization
+
+```endpoint
+CALL getNumberOfUsers()
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getUserAtIndex(uint256)
+
+
+**getUserAtIndex(uint256)**
+
+
+Returns the user's address at the given index position.
+
+```endpoint
+CALL getUserAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### isActiveUser(address)
+
+
+**isActiveUser(address)**
+
+
+Returns whether the given user account is active in this organization
+
+```endpoint
+CALL isActiveUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user account
+
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeUser(address)
+
+
+**removeUser(address)**
+
+
+Removes / Deactivates the user in this organization.
+
+```endpoint
+CALL removeUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the account to deactivate
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
+```
+
+
+---
+
 ### TypeUtils Library Interface
 
 
@@ -11309,32 +11776,6 @@ the bytes32 name
 
 
 
-### Identifiable Interface
-
-
-The Identifiable Interface contract is found within the bpm-model bundle.
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
 ### DefaultProcessDefinition
 
 
@@ -11369,33 +11810,64 @@ BaseErrors.RESOURCE_NOT_FOUND() if the specified interface cannot be located in 
 
 ---
 
-#### createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
+#### createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
 
 
-**createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)**
+**createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)**
 
 
 Creates a new activity definition with the specified parameters.
 
 ```endpoint
-CALL createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
+CALL createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_activityType // the BpmModel.ActivityType
+_activityType // the BpmModel.ActivityType [TASK|SUBPROCESS]
 _application // the application handling the execution of the activity
+_assignee // the ID of the participant performing the activity (for USER tasks only)
+_behavior // the BpmModel.TaskBehavior [SEND|SENDRECEIVE|RECEIVE]
 _id // the activity ID
 _multiInstance // whether the activity represents multiple instances
-_taskType // the BpmModel.TaskType
+_subProcessDefinitionId // references a subprocess definition (only for SUBPROCESS ActivityType)
+_subProcessModelId // references the model containg a subprocess definition (only for SUBPROCESS ActivityType)
+_taskType // the BpmModel.TaskType [DUMMY|USER|SERVICE|EVENT]
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.RESOURCE_ALREADY_EXISTS() if an activity with the same ID already existsBaseErrors.INVALID_PARAM_VALUE() if an assignee is specified, but the BpmModel.TaskType is not USERBaseErrors.NULL_PARAM_NOT_ALLOWED() if BpmModel.TaskType is USER, but no assignee was specifiedBaseErrors.RESOURCE_NOT_FOUND() if an application or an assignee is specified that does not exist in the modelBaseErrors.NO_ERROR() upon successful creation.
+BaseErrors.RESOURCE_ALREADY_EXISTS() if an activity with the same ID already existsBaseErrors.INVALID_PARAM_VALUE() if an assignee is specified, but the BpmModel.TaskType is not USERBaseErrors.NULL_PARAM_NOT_ALLOWED() if BpmModel.TaskType is USER, but no assignee was specifiedBaseErrors.RESOURCE_NOT_FOUND() if an assignee is specified that does not exist in the modelBaseErrors.NO_ERROR() upon successful creation.
+```
+
+
+---
+
+#### createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+
+
+**createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)**
+
+
+Create a data mapping for the specified activity and direction.
+
+```endpoint
+CALL createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_accessPath // the access path offered by the application
+_activityId // the ID of the activity in this ProcessDefinition
+_dataPath // a data path (key) to use for data lookup on a DataStorage.
+_dataStorage // an optional address of a DataStorage as basis for the data path other than the default one
+_dataStorageId // an optional key to identify a DataStorage as basis for the data path other than the default one
+_direction // the BpmModel.Direction [IN|OUT]
+
 ```
 
 
@@ -11480,7 +11952,7 @@ _id // the bytes32 id of the activity definition
 #### Return
 
 ```json
-activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
 ```
 
 
@@ -11591,6 +12063,35 @@ modelAddress the interface's modelinterfaceId the interface ID
 
 ---
 
+#### getInDataMappingAtIndex(bytes32,uint256)
+
+
+**getInDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the IN data mapping of the specified activity at the given index
+
+```endpoint
+CALL getInDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
 #### getModel()
 
 
@@ -11675,6 +12176,91 @@ the number of process interfaces
 
 ---
 
+#### getNumberOfInDataMappings(bytes32)
+
+
+**getNumberOfInDataMappings(bytes32)**
+
+
+Returns the number of IN data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfInDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of IN data mappings
+```
+
+
+---
+
+#### getNumberOfOutDataMappings(bytes32)
+
+
+**getNumberOfOutDataMappings(bytes32)**
+
+
+Returns the number of OUT data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfOutDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of OUT data mappings
+```
+
+
+---
+
+#### getOutDataMappingAtIndex(bytes32,uint256)
+
+
+**getOutDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the OUT data mapping of the specified activity at the given index
+
+```endpoint
+CALL getOutDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
 #### getStartActivity()
 
 
@@ -11741,35 +12327,6 @@ CALL isValid()
 
 ```json
 true if valid, false otherwise
-```
-
-
----
-
-#### removeProcessInterfaceImplementation(address,bytes32)
-
-
-**removeProcessInterfaceImplementation(address,bytes32)**
-
-
-Removes the specified process interface from the list of supported process interfaces of this ProcessDefinition
-
-```endpoint
-CALL removeProcessInterfaceImplementation(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the ID of the interface
-_model // the model defining the interface
-
-```
-
-#### Return
-
-```json
-an error code signaling success or failure
 ```
 
 
@@ -11952,65 +12509,6 @@ BaseErrors.RESOURCE_ALREADY_EXISTS() if an interface with the given ID already e
 
 ---
 
-#### addServiceApplication(bytes32,address,bytes4)
-
-
-**addServiceApplication(bytes32,address,bytes4)**
-
-
-Adds a Service application with the given parameters to this ProcessModel
-
-```endpoint
-CALL addServiceApplication(bytes32,address,bytes4)
-```
-
-#### Parameters
-
-```solidity
-_address // the location of the contract implementing the application
-_function // the function to call on the application contract
-_id // the ID of the application
-
-```
-
-#### Return
-
-```json
-BaseErrors.RESOURCE_ALREADY_EXISTS() if an application with the given ID already exists, BaseErrors.NO_ERROR() otherwise
-```
-
-
----
-
-#### addWebApplication(bytes32,bytes32)
-
-
-**addWebApplication(bytes32,bytes32)**
-
-
-Adds a Web application with the given parameters to this ProcessModel
-
-```endpoint
-CALL addWebApplication(bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the ID of the application
-_webForm // the form identifier (formHash) of the Web application
-
-```
-
-#### Return
-
-```json
-BaseErrors.RESOURCE_ALREADY_EXISTS() if an application with the given ID already exists, BaseErrors.NO_ERROR() otherwise
-```
-
-
----
-
 #### compareVersion(address)
 
 
@@ -12096,6 +12594,21 @@ error - BaseErrors.RESOURCE_ALREADY_EXISTS(), if a process definition with the s
 
 ---
 
+#### fireActivityDefinitionUpdateEvent(bytes32)
+
+
+**fireActivityDefinitionUpdateEvent(bytes32)**
+
+
+To be called by a registered process definition to signal an update. Causes the ProcessModel to emit an update event on behalf of the msg.sender
+
+```endpoint
+CALL fireActivityDefinitionUpdateEvent(bytes32)
+```
+
+
+---
+
 #### fireProcessDefinitionUpdateEvent()
 
 
@@ -12111,57 +12624,22 @@ CALL fireProcessDefinitionUpdateEvent()
 
 ---
 
-#### getApplicationAtIndex(uint256)
+#### getDiagram()
 
 
-**getApplicationAtIndex(uint256)**
+**getDiagram()**
 
 
-Returns the ID of the application at the given index
+Returns the HOARD file information of the model's diagram
 
 ```endpoint
-CALL getApplicationAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_idx // the index position
-
+CALL getDiagram()
 ```
 
 #### Return
 
 ```json
-the application ID, if it exists
-```
-
-
----
-
-#### getApplicationData(bytes32)
-
-
-**getApplicationData(bytes32)**
-
-
-Returns information about the application with the given ID
-
-```endpoint
-CALL getApplicationData(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the application ID
-
-```
-
-#### Return
-
-```json
-applicationType the BpmModel.ApplicationType as uint8location the applications contract address, only available for a service applicationmethod the function signature of the application, only available for a service applicationwebForm the form identifier (formHash) of the web application, only available for a web application
+location - the HOARD addresssecret - the HOARD secret
 ```
 
 
@@ -12204,27 +12682,6 @@ CALL getName()
 
 ```json
 the bytes32 name
-```
-
-
----
-
-#### getNumberOfApplications()
-
-
-**getNumberOfApplications()**
-
-
-Returns the number of applications defined in this ProcessModel
-
-```endpoint
-CALL getNumberOfApplications()
-```
-
-#### Return
-
-```json
-the number of applications
 ```
 
 
@@ -12449,34 +12906,6 @@ CALL getVersion()
 
 ```json
 the version as unit8[3]
-```
-
-
----
-
-#### hasApplication(bytes32)
-
-
-**hasApplication(bytes32)**
-
-
-Returns whether an application with the specified ID exists in this ProcessModel
-
-```endpoint
-CALL hasApplication(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the application ID
-
-```
-
-#### Return
-
-```json
-true if it exists, false otherwise
 ```
 
 
@@ -12689,21 +13118,23 @@ BaseErrors.RESOURCE_ALREADY_EXISTS() if a model with the same ID and version alr
 
 ---
 
-#### createProcessModel(bytes32,bytes32,uint8[3])
+#### createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 
 
-**createProcessModel(bytes32,bytes32,uint8[3])**
+**createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)**
 
 
 Factory function to instantiate a ProcessModel. The model is automatically added to this repository.
 
 ```endpoint
-CALL createProcessModel(bytes32,bytes32,uint8[3])
+CALL createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_hoardAddress // the HOARD address of the model file
+_hoardSecret // the HOARD secret of the model file
 _id // the model ID
 _name // the model name
 _version // the model version
@@ -12742,19 +13173,10 @@ _source // the event source (process model)
 **eventFired(bytes32,address,address)**
 
 
-Invoked by an EventEmitter for a named event with an additional address payload.
+See EventListener.eventFired(bytes32,address,address)
 
 ```endpoint
 CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -12766,7 +13188,7 @@ _source // the source of the event
 **eventFired(bytes32,address,bytes32)**
 
 
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+Overwrites AbstractEventListener.eventFired to receive UPDATE_ACTIVITY_DEFINITION  events from registered models.
 
 ```endpoint
 CALL eventFired(bytes32,address,bytes32)
@@ -12775,9 +13197,9 @@ CALL eventFired(bytes32,address,bytes32)
 #### Parameters
 
 ```solidity
-_data // the payload
+_activityId // the activityId
 _event // the event name
-_source // the source of the event
+_source // the event source (process model)
 
 ```
 
@@ -12790,19 +13212,10 @@ _source // the source of the event
 **eventFired(bytes32,address,string)**
 
 
-Invoked by an EventEmitter for a named event with an additional string payload.
+See EventListener.eventFired(bytes32,address,string)
 
 ```endpoint
 CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -12814,19 +13227,10 @@ _source // the source of the event
 **eventFired(bytes32,address,uint256)**
 
 
-Invoked by an EventEmitter for a named event with an additional uint payload.
+See EventListener.eventFired(bytes32,address,uint)
 
 ```endpoint
 CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -12886,7 +13290,7 @@ _processDefinition // a Process Definition address
 #### Return
 
 ```json
-activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
 ```
 
 
@@ -12999,7 +13403,7 @@ _model // the ProcessModel address
 #### Return
 
 ```json
-id - the model IDname - the model nameversionMajor - the model's major versionversionMinor - the model's minor versionversionPatch - the model's patch version
+id - the model IDname - the model nameversionMajor - the model's major versionversionMinor - the model's minor versionversionPatch - the model's patch versionactive - whether the model is activediagramAddress - the HOARD address of the model diagram filediagramSecret - the HOARD secret of the model diagram file
 ```
 
 
@@ -13169,53 +13573,6 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 
 ---
 
-### NamedElement Interface
-
-
-The NamedElement Interface contract is found within the bpm-model bundle.
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
 
 ### ProcessDefinition Interface
 
@@ -13251,27 +13608,30 @@ an error code signaling success or failure
 
 ---
 
-#### createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
+#### createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
 
 
-**createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)**
+**createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)**
 
 
 Creates a new activity definition with the specified parameters.
 
 ```endpoint
-CALL createActivityDefinition(bytes32,uint8,uint8,bytes32,bool,bytes32)
+CALL createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_activityType // the BpmModel.ActivityType
+_activityType // the BpmModel.ActivityType [TASK|SUBPROCESS]
 _application // the application handling the execution of the activity
 _assignee // the ID of the participant performing the activity (for USER tasks only)
+_behavior // the BpmModel.TaskBehavior [SEND|SENDRECEIVE|RECEIVE]
 _id // the activity ID
 _multiInstance // whether the activity represents multiple instances
-_taskType // the BpmModel.TaskType
+_subProcessDefinitionId // references a subprocess definition (only for SUBPROCESS ActivityType)
+_subProcessModelId // references the model containg a subprocess definition (only for SUBPROCESS ActivityType)
+_taskType // the BpmModel.TaskType [DUMMY|USER|SERVICE|EVENT]
 
 ```
 
@@ -13279,6 +13639,33 @@ _taskType // the BpmModel.TaskType
 
 ```json
 an error code indicating success or failure
+```
+
+
+---
+
+#### createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+
+
+**createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)**
+
+
+Create a data mapping for the specified activity and direction.
+
+```endpoint
+CALL createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_accessPath // the access path offered by the application
+_activityId // the ID of the activity in this ProcessDefinition
+_dataPath // a data path (key) to use for data lookup on a DataStorage.
+_dataStorage // an optional address of a DataStorage as basis for the data path other than the default one
+_dataStorageId // an optional key to identify a DataStorage as basis for the data path other than the default one
+_direction // the BpmModel.Direction [IN|OUT]
+
 ```
 
 
@@ -13363,7 +13750,7 @@ _id // the bytes32 id of the activity definition
 #### Return
 
 ```json
-activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
 ```
 
 
@@ -13474,6 +13861,35 @@ modelAddress the interface's modelinterfaceId the interface ID
 
 ---
 
+#### getInDataMappingAtIndex(bytes32,uint256)
+
+
+**getInDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the IN data mapping of the specified activity at the given index
+
+```endpoint
+CALL getInDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
 #### getModel()
 
 
@@ -13558,6 +13974,91 @@ the number of process interfaces
 
 ---
 
+#### getNumberOfInDataMappings(bytes32)
+
+
+**getNumberOfInDataMappings(bytes32)**
+
+
+Returns the number of IN data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfInDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of IN data mappings
+```
+
+
+---
+
+#### getNumberOfOutDataMappings(bytes32)
+
+
+**getNumberOfOutDataMappings(bytes32)**
+
+
+Returns the number of OUT data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfOutDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of OUT data mappings
+```
+
+
+---
+
+#### getOutDataMappingAtIndex(bytes32,uint256)
+
+
+**getOutDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the OUT data mapping of the specified activity at the given index
+
+```endpoint
+CALL getOutDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
 #### getStartActivity()
 
 
@@ -13624,35 +14125,6 @@ CALL isValid()
 
 ```json
 true if valid, false otherwise
-```
-
-
----
-
-#### removeProcessInterfaceImplementation(address,bytes32)
-
-
-**removeProcessInterfaceImplementation(address,bytes32)**
-
-
-Removes the specified process interface from the list of supported process interfaces of this ProcessDefinition
-
-```endpoint
-CALL removeProcessInterfaceImplementation(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the ID of the interface
-_model // the model defining the interface
-
-```
-
-#### Return
-
-```json
-an error code signaling success or failure
 ```
 
 
@@ -13835,65 +14307,6 @@ an error code indicating success of failure
 
 ---
 
-#### addServiceApplication(bytes32,address,bytes4)
-
-
-**addServiceApplication(bytes32,address,bytes4)**
-
-
-Adds a Service application with the given parameters to this ProcessModel
-
-```endpoint
-CALL addServiceApplication(bytes32,address,bytes4)
-```
-
-#### Parameters
-
-```solidity
-_address // the location of the contract implementing the application
-_function // the function to call on the application contract
-_id // the ID of the application
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-#### addWebApplication(bytes32,bytes32)
-
-
-**addWebApplication(bytes32,bytes32)**
-
-
-Adds a Web application with the given parameters to this ProcessModel
-
-```endpoint
-CALL addWebApplication(bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the ID of the application
-_webForm // the form identifier (formHash) of the Web application
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
 #### compareVersion(address)
 
 
@@ -13979,6 +14392,21 @@ an error code indicating success or failurethe address of the new ProcessDefinit
 
 ---
 
+#### fireActivityDefinitionUpdateEvent(bytes32)
+
+
+**fireActivityDefinitionUpdateEvent(bytes32)**
+
+
+To be called by a registered process definition to signal an update.
+
+```endpoint
+CALL fireActivityDefinitionUpdateEvent(bytes32)
+```
+
+
+---
+
 #### fireProcessDefinitionUpdateEvent()
 
 
@@ -13994,57 +14422,22 @@ CALL fireProcessDefinitionUpdateEvent()
 
 ---
 
-#### getApplicationAtIndex(uint256)
+#### getDiagram()
 
 
-**getApplicationAtIndex(uint256)**
+**getDiagram()**
 
 
-Returns the ID of the application at the given index
+Returns the HOARD file information of the model's diagram
 
 ```endpoint
-CALL getApplicationAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_idx // the index position
-
+CALL getDiagram()
 ```
 
 #### Return
 
 ```json
-the application ID, if it exists
-```
-
-
----
-
-#### getApplicationData(bytes32)
-
-
-**getApplicationData(bytes32)**
-
-
-Returns information about the application with the given ID
-
-```endpoint
-CALL getApplicationData(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the application ID
-
-```
-
-#### Return
-
-```json
-applicationType the BpmModel.ApplicationType as uint8location the applications contract address, only available for a service applicationmethod the function signature of the application, only available for a service applicationwebForm the form identifier (formHash) of the web application, only available for a web application
+location - the HOARD addresssecret - the HOARD secret
 ```
 
 
@@ -14087,27 +14480,6 @@ CALL getName()
 
 ```json
 the bytes32 name
-```
-
-
----
-
-#### getNumberOfApplications()
-
-
-**getNumberOfApplications()**
-
-
-Returns the number of applications defined in this ProcessModel
-
-```endpoint
-CALL getNumberOfApplications()
-```
-
-#### Return
-
-```json
-the number of applications
 ```
 
 
@@ -14337,34 +14709,6 @@ the version as unit8[3]
 
 ---
 
-#### hasApplication(bytes32)
-
-
-**hasApplication(bytes32)**
-
-
-Returns whether an application with the specified ID exists in this ProcessModel
-
-```endpoint
-CALL hasApplication(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the application ID
-
-```
-
-#### Return
-
-```json
-true if it exists, false otherwise
-```
-
-
----
-
 #### hasParticipant(bytes32)
 
 
@@ -14572,21 +14916,23 @@ an error indicating success or failure
 
 ---
 
-#### createProcessModel(bytes32,bytes32,uint8[3])
+#### createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 
 
-**createProcessModel(bytes32,bytes32,uint8[3])**
+**createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)**
 
 
 Factory function to instantiate a ProcessModel.
 
 ```endpoint
-CALL createProcessModel(bytes32,bytes32,uint8[3])
+CALL createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_hoardAddress // the HOARD address of the model file
+_hoardSecret // the HOARD secret of the model file
 _id // the model ID
 _name // the model name
 _version // the model version
@@ -14602,7 +14948,7 @@ _version // the model version
 **eventFired(bytes32,address)**
 
 
-Overwrites AbstractEventListener.eventFired to receive UPDATE_PROCESS_MODEL  and UPDATE_PROCESS_DEFINITION events from registered models.
+Invoked by an EventEmitter for a named event without any additional data.
 
 ```endpoint
 CALL eventFired(bytes32,address)
@@ -14612,7 +14958,7 @@ CALL eventFired(bytes32,address)
 
 ```solidity
 _event // the event name
-_source // the event source (process model)
+_source // the source of the event
 
 ```
 
@@ -14769,7 +15115,7 @@ _processDefinition // a Process Definition address
 #### Return
 
 ```json
-activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
 ```
 
 
@@ -14882,7 +15228,7 @@ _model // the ProcessModel address
 #### Return
 
 ```json
-id - the model IDname - the model nameversionMajor - the model's major versionversionMinor - the model's minor versionversionPatch - the model's patch version
+id - the model IDname - the model nameversionMajor - the model's major versionversionMinor - the model's minor versionversionPatch - the model's patch versionactive - whether the model is activediagramAddress - the HOARD address of the model diagram filediagramSecret - the HOARD secret of the model diagram file
 ```
 
 
@@ -15492,40 +15838,217 @@ error code
 
 ---
 
-
-### BpmApi Interface Library
-
-
-The BpmApi Interface Library contract is found within the bpm-runtime bundle.
-
-#### activateAndComplete(BpmRuntime.ActivityInstance storage,ProcessDefinition)
+### AgreementSignatureCheck Interface
 
 
-**activateAndComplete(BpmRuntime.ActivityInstance storage,ProcessDefinition)**
+The AgreementSignatureCheck Interface contract is found within the bpm-runtime bundle.
+
+#### complete(address,bytes32,address)
 
 
-Activates the given ActivityInstance from a suspended state (SUSPENDED or INTERRUPTED) and invokes its application.
+**complete(address,bytes32,address)**
+
+
+Treats the provided DataStorage as the agreement and checks if the TX performer has applied a signature. The function will throw if the presence of the signature could not be established.
 
 ```endpoint
-CALL activateAndComplete(BpmRuntime.ActivityInstance storage,ProcessDefinition)
+CALL complete(address,bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
-_activityInstance // the activity instance
-_processDefinition // a ProcessDefinition containing information about the activity
+_activityInstanceId // the activity instance associated with executing the call to this application
+_dataStorage // the Agreement
+_txPerformer // the address performing the transaction
+
+```
+
+
+---
+
+
+### ApplicationRegistry Interface
+
+
+The ApplicationRegistry Interface contract is found within the bpm-runtime bundle.
+
+#### addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)
+
+
+**addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)**
+
+
+Adds an application with the given parameters to this ProcessModel
+
+```endpoint
+CALL addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_eventName // the ID of an event to fire (only for event application)
+_function // the signature of the completion function
+_id // the ID of the application
+_location // the location of the contract implementing the application
+_type // the BpmModel.ApplicationType
+_webForm // the hash of a web form (only for web applications)
 
 ```
 
 #### Return
 
 ```json
-error code indicating success or failure
+an error code indicating success or failure
 ```
 
 
 ---
+
+#### getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
+
+
+**getApplicationAccessPathAtIndex(bytes32,uint256,uint8)**
+
+
+Returns information about the specified I/O access path of an application
+
+```endpoint
+CALL getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
+```
+
+#### Parameters
+
+```solidity
+_direction // BpmModel.Direction.[IN|OUT]
+_id // the ID of the application
+_idx // the index of the input/output parameter
+
+```
+
+#### Return
+
+```json
+the ID of the input/outputthe uint8 representation of the DataTypes value
+```
+
+
+---
+
+#### getApplicationAtIndex(uint256)
+
+
+**getApplicationAtIndex(uint256)**
+
+
+Returns the ID of the application at the given index
+
+```endpoint
+CALL getApplicationAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+the application ID, if it exists
+```
+
+
+---
+
+#### getApplicationData(bytes32)
+
+
+**getApplicationData(bytes32)**
+
+
+Returns information about the application with the given ID
+
+```endpoint
+CALL getApplicationData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the application ID
+
+```
+
+#### Return
+
+```json
+applicationType the BpmModel.ApplicationType as uint8location the applications contract addressmethod the function signature of the application's completion functionwebForm the form identifier (hash) of the web application (only for a web application)eventName the identifier for an event to emit (only for event application)inputs the number of inputsoutputs the number of outputs
+```
+
+
+---
+
+#### getNumberOfApplications()
+
+
+**getNumberOfApplications()**
+
+
+Returns the number of applications defined in this ProcessModel
+
+```endpoint
+CALL getNumberOfApplications()
+```
+
+#### Return
+
+```json
+the number of applications
+```
+
+
+---
+
+#### setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
+
+
+**setApplicationAccessPath(bytes32,bytes32,uint8,uint8)**
+
+
+Adds an input or output declaration to the application identified by the activity ID.
+
+```endpoint
+CALL setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // a DataTypes code
+_direction // the BpmModel.Direction (IN/OUT) of the data flow
+_id // the ID of the application to which to add the declaration
+_pathId // the ID of the data path
+
+```
+
+#### Return
+
+```json
+an error code indicating success or failure
+```
+
+
+---
+
+
+### BpmApi Interface Library
+
+
+The BpmApi Interface Library contract is found within the bpm-runtime bundle.
 
 #### addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 
@@ -15678,25 +16201,25 @@ BaseErrors.NO_ERROR() if no errors were encountered during processing or no proc
 
 ---
 
-#### execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)
+#### execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)
 
 
-**execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)**
+**execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)**
 
 
 Executes the given ActivityInstance based on the information in the provided ProcessDefinition.
 
 ```endpoint
-CALL execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,uint256)
+CALL execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)
 ```
 
 #### Parameters
 
 ```solidity
 _activityInstance // the ActivityInstance
-_instanceCounter // indicates the index position for multi-instance activities to support accessing array-based data mappings
 _processDefinition // a ProcessDefinition containing information how to execute the activity
 _rootDataStorage // a DataStorage that can be used to resolve process data (typically this is the ProcessInstance itself)
+_service // the BpmService to use for communicating
 
 ```
 
@@ -15789,6 +16312,39 @@ _graph // the ProcessGraph
 
 ```json
 true if at least one activatable activity was found, false otherwise
+```
+
+
+---
+
+#### invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)
+
+
+**invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)**
+
+
+Performs a call on the given application ID defined in the provided ApplicationRegistry
+
+```endpoint
+CALL invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)
+```
+
+#### Parameters
+
+```solidity
+_activityInstance // the ActivityInstance
+_application // the application ID
+_applicationRegistry // the registry where information about an application can be retrieved
+_processDefinition // the process definition
+_rootDataStorage // a DataStorage that is used as the root or default for resolving data references
+_txPerformer // the account that initiated the current transaction (optional)
+
+```
+
+#### Return
+
+```json
+BaseErrors.RUNTIME_ERROR if there was an exception in calling the defined appliationBaseErrors.NO_ERROR() if successful
 ```
 
 
@@ -16050,41 +16606,432 @@ _newOwner // The address to transfer ownership to.
 
 ---
 
-### BpmService Interface
+### BpmRuntimeImpl Implementation Library
 
 
-The BpmService Interface contract is found within the bpm-runtime bundle.
+The BpmRuntimeImpl Implementation Library contract is found within the bpm-runtime bundle.
 
-#### createOrganization(address,bytes32,bytes32,address[10])
-
-
-**createOrganization(address,bytes32,bytes32,address[10])**
+#### addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 
 
-Creates a new Organization with the specified parameters and adds it to this Ecosystem.
+**addActivity(BpmRuntime.ProcessGraph storage,bytes32)**
+
+
+Adds an activity with the specified ID to the given process runtime graph.
 
 ```endpoint
-CALL createOrganization(address,bytes32,bytes32,address[10])
+CALL addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_approvers // the initial owners. If left empty, the msg.sender will be added as an owner.
-_ecosystem // the Ecosystem address
-_id // the organization's ID
-_name // the organization's name
+_graph // the process runtime graph
+_id // the activity ID to add
+
+```
+
+
+---
+
+#### addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
+
+
+**addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)**
+
+
+Adds an input arc to the given process runtime graph to connect from the provided activity to the provided transition.
+
+```endpoint
+CALL addInputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity from which to connect
+_graph // the process runtime graph
+_transitionId // the ID of the transtion to which to connect
+
+```
+
+
+---
+
+#### addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
+
+
+**addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)**
+
+
+Adds an output arc to the given process runtime graph to connect from the provided transition to the provided activity.
+
+```endpoint
+CALL addOutputArc(BpmRuntime.ProcessGraph storage,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity to which to connect
+_graph // the process runtime graph
+_transitionId // the ID of the transtion from which to connect
+
+```
+
+
+---
+
+#### addTransition(BpmRuntime.ProcessGraph storage,bytes32)
+
+
+**addTransition(BpmRuntime.ProcessGraph storage,bytes32)**
+
+
+Adds a transition with the specified ID to the given process runtime graph.
+
+```endpoint
+CALL addTransition(BpmRuntime.ProcessGraph storage,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_graph // the process runtime graph
+_id // the transition ID to add
+
+```
+
+
+---
+
+#### configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)
+
+
+**configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)**
+
+
+Configures a ProcessRuntimeIntance based on the provided ProcessDefinition. Note: Placing this function in the BpmRuntimeApi library avoids import dependencies of the runtime package by the model.
+
+```endpoint
+CALL configure(BpmRuntime.ProcessGraph storage,ProcessDefinition)
+```
+
+#### Parameters
+
+```solidity
+_processDefinition // the process definition
+_runtime // the runtime instance
 
 ```
 
 #### Return
 
 ```json
-error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()the address of the newly created Organization, or 0x0 if not successful
+an error code indicating success or failure
 ```
 
 
 ---
+
+#### continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)
+
+
+**continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)**
+
+
+Checks the given ProcessInstance for completeness and open activities. If activatable activities are detected, recursive execution is entered via execute(ProcessInstance). If the ProcessInstance is complete, its state is set to COMPLETED. Otherwise the function returns BaseErrors.NO_ERROR().
+
+```endpoint
+CALL continueTransaction(BpmRuntime.ProcessInstance storage,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_processInstance // the BpmRuntime.ProcessInstance
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if no errors were encountered during processing or no processing happenedany error code from entering into a recursive execute(ProcessInstance) and continuing to execute the process
+```
+
+
+---
+
+#### createActivityInstance(BpmRuntime.ProcessInstance storage,bytes32,uint256)
+
+
+**createActivityInstance(BpmRuntime.ProcessInstance storage,bytes32,uint256)**
+
+
+Creates a new BpmRuntime.ActivityInstance with the specified parameters and adds it to the given ProcessInstance
+
+```endpoint
+CALL createActivityInstance(BpmRuntime.ProcessInstance storage,bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity as defined in the ProcessDefinition
+_index // indicates the position of the ActivityInstance when used in a multi-instance context
+_processInstance // the ProcessInstance to which the ActivityInstance is added
+
+```
+
+#### Return
+
+```json
+the unique global ID of the activity instance
+```
+
+
+---
+
+#### execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)
+
+
+**execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)**
+
+
+Executes the given ActivityInstance based on the information in the provided ProcessDefinition.
+
+```endpoint
+CALL execute(BpmRuntime.ActivityInstance storage,DataStorage,ProcessDefinition,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_activityInstance // the ActivityInstance
+_processDefinition // a ProcessDefinition containing information how to execute the activity
+_rootDataStorage // a DataStorage that can be used to resolve process data (typically this is the ProcessInstance itself)
+_service // the BpmService to use for communicating
+
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_PARAM_STATE() if the ActivityInstance's state is not CREATED, SUSPENDED, or INTERRUPTEDBaseErrors.INVALID_ACTOR() if the ActivityInstance is of TaskType.USER, but neither the msg.sender nor the tx.origin is the assignee of the task.BaseErrors.NO_ERROR() if successful
+```
+
+
+---
+
+#### execute(BpmRuntime.ProcessGraph storage)
+
+
+**execute(BpmRuntime.ProcessGraph storage)**
+
+
+Executes a single iteration of the given ProcessGraph, i.e. it goes over all transitions and attempts to fire them based on the current marker state of the network graph. If after this iteration the new marker state would result in more transitions being fired, this function should be invoked again.
+
+```endpoint
+CALL execute(BpmRuntime.ProcessGraph storage)
+```
+
+#### Parameters
+
+```solidity
+_graph // the process runtime graph
+
+```
+
+#### Return
+
+```json
+the number of transitions that fired
+```
+
+
+---
+
+#### execute(BpmRuntime.ProcessInstance storage,BpmService)
+
+
+**execute(BpmRuntime.ProcessInstance storage,BpmService)**
+
+
+Executes the given ProcessInstance leveraging the given BpmService reference by looking for activities that are "ready" to be executed. Execution continues along the process graph until no more activities can be executed. This function implements a single transaction of all activities in a process flow until an asynchronous point in the flow is reached or the process has ended.
+
+```endpoint
+CALL execute(BpmRuntime.ProcessInstance storage,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_processInstance // the ProcessInstance to execute
+_service // the BpmService managing the ProcessInstance (used to register changes to the ProcessInstance and fire events)
+
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_STATE() if the ProcessInstance is not ACTIVEBaseErrors.NO_ERROR() if successful
+```
+
+
+---
+
+#### hasActivatableActivities(BpmRuntime.ProcessGraph storage)
+
+
+**hasActivatableActivities(BpmRuntime.ProcessGraph storage)**
+
+
+Determines whether the given runtime instance has any activities that are waiting to be activated.
+
+```endpoint
+CALL hasActivatableActivities(BpmRuntime.ProcessGraph storage)
+```
+
+#### Parameters
+
+```solidity
+_graph // the ProcessGraph
+
+```
+
+#### Return
+
+```json
+true if at least one activatable activity was found, false otherwise
+```
+
+
+---
+
+#### invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)
+
+
+**invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)**
+
+
+Performs a call on the given application ID defined in the provided ApplicationRegistry
+
+```endpoint
+CALL invokeApplication(BpmRuntime.ActivityInstance storage,address,bytes32,address,ProcessDefinition,ApplicationRegistry)
+```
+
+#### Parameters
+
+```solidity
+_activityInstance // the ActivityInstance
+_application // the application ID
+_applicationRegistry // the registry where information about an application can be retrieved
+_processDefinition // the process definition
+_rootDataStorage // a DataStorage that is used as the root or default for resolving data references
+_txPerformer // the account that initiated the current transaction (optional)
+
+```
+
+#### Return
+
+```json
+BaseErrors.RUNTIME_ERROR if there was an exception in calling the defined appliationBaseErrors.NO_ERROR() if successful
+```
+
+
+---
+
+#### isCompleted(BpmRuntime.ProcessGraph storage)
+
+
+**isCompleted(BpmRuntime.ProcessGraph storage)**
+
+
+Executes the given ProcessGraph and reports back on completeness and open activities. The following scenarios are possible: (completed, !readyActivities): the process is done, there are no more activities to process (!completed, readyActivities): the process is still active and there are activities ready for processing (!completed, !readyActivities): the process is still active, but no activities are ready to be processed (which means there must be instances waiting for asynchronous events)
+
+```endpoint
+CALL isCompleted(BpmRuntime.ProcessGraph storage)
+```
+
+#### Parameters
+
+```solidity
+_graph // the BpmRuntime.ProcessGraph
+
+```
+
+#### Return
+
+```json
+completed - if true, the graph cannot be executed any furtherreadyActivities - if true there are activities ready for processing, false otherwise
+```
+
+
+---
+
+#### isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)
+
+
+**isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)**
+
+
+Determines whether the conditions are met to fire the provided transition.
+
+```endpoint
+CALL isTransitionEnabled(BpmRuntime.ProcessGraph storage,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_graph // the process runtime graph containing the transition
+_transitionId // the ID specifying the transition
+
+```
+
+#### Return
+
+```json
+true if the transitions can fire, false otherwise
+```
+
+
+---
+
+#### resolveParticipant(ProcessModel,DataStorage,bytes32)
+
+
+**resolveParticipant(ProcessModel,DataStorage,bytes32)**
+
+
+Provides runtime resolution capabilities to determine the account address or lookup location of an account for a participant in a given ProcessModel. This function supports dealing with concrete participants as well as conditional performers. Examples: Return value (FE80A3F6CDFEF73D4FACA7DBA1DFCF215299279D, "") => The address is a concrete (user) account and can be used directly Return value (AA194B34D18F710058C0B14CFDAD4FF0150856EA, "accountant") => The address is a DataStorage contract and the (user) account to use can be located using DataStorage(AA194B34D18F710058C0B14CFDAD4FF0150856EA).getDataValueAsAddress("accountant")
+
+```endpoint
+CALL resolveParticipant(ProcessModel,DataStorage,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_dataStorage // a concrete DataStorage instance supporting the lookup
+_participant // the ID of a participant in the given model
+_processModel // a ProcessModel
+
+```
+
+#### Return
+
+```json
+target - either the address of an account or the address of another DataStorage where the account can be founddataPath - empty bytes32 in case the returned target is already an identified account or a key where to retrieve the account if the target is another DataStorage
+```
+
+
+---
+
+### BpmService Interface
+
+
+The BpmService Interface contract is found within the bpm-runtime bundle.
 
 #### createUserAccount(address,address,bytes32,bytes32)
 
@@ -16092,7 +17039,7 @@ error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()the address o
 **createUserAccount(address,address,bytes32,bytes32)**
 
 
-Creates a user account account with the specified parameters and adds it to the AccountsManager
+Creates a WorkflowUserAccount with the specified parameters and adds it to the AccountsManager
 
 ```endpoint
 CALL createUserAccount(address,address,bytes32,bytes32)
@@ -16135,35 +17082,6 @@ CALL fireActivityUpdateEvent(address,bytes32)
 _activityId // - the bytes32 Id of the activity
 _piAddress // - the address of the process instance to which the activity belongs
 
-```
-
-
----
-
-#### getActivityDefinitionDetails(address,bytes32)
-
-
-**getActivityDefinitionDetails(address,bytes32)**
-
-
-Gets the address of the assignee for a given activity Id and process instance address
-
-```endpoint
-CALL getActivityDefinitionDetails(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the activity Id
-_piAddress // process instance address
-
-```
-
-#### Return
-
-```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -16222,6 +17140,27 @@ _processInstance // the process instance address to which the ActivityInstance b
 
 ```json
 activityId - the ID of the activity as defined by the process definitioncreated - the creation timestampcompleted - the completion timestampperformer - the account who is performing the activity (for interactive activities only)completedBy - the account who completed the activity (for interactive activities only) state - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
+```
+
+
+---
+
+#### getApplicationRegistry()
+
+
+**getApplicationRegistry()**
+
+
+Returns a reference to the ApplicationRegistry currently used by this BpmService
+
+```endpoint
+CALL getApplicationRegistry()
+```
+
+#### Return
+
+```json
+the ApplicationRegistry
 ```
 
 
@@ -16397,7 +17336,7 @@ _address // the process instance address
 #### Return
 
 ```json
-(processId)
+processDefinition the address of the ProcessDefinitionstate the BpmRuntime.ProcessInstanceState as uint8startedBy the address of the account who started the process
 ```
 
 
@@ -16473,30 +17412,23 @@ the BpmRuntimeDb
 
 ---
 
-#### getUserTaskDetails(address,bytes32)
+#### setApplicationRegistry(address)
 
 
-**getUserTaskDetails(address,bytes32)**
+**setApplicationRegistry(address)**
 
 
-Gets the address of the assignee for a given activity Id and process instance address
+Sets the ApplicationRegistry for this BpmService
 
 ```endpoint
-CALL getUserTaskDetails(address,bytes32)
+CALL setApplicationRegistry(address)
 ```
 
 #### Parameters
 
 ```solidity
-_activityId // the activity Id
-_piAddress // process instance address
+_registry // - the address of the application registry
 
-```
-
-#### Return
-
-```json
-assignee the ID of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's application
 ```
 
 
@@ -16517,28 +17449,29 @@ CALL setProcessModelRepository(address)
 #### Parameters
 
 ```solidity
-_repository // - the address of the repository
+_repository // - the address of the model repository
 
 ```
 
 
 ---
 
-#### startProcess(address)
+#### startProcess(address,bytes32)
 
 
-**startProcess(address)**
+**startProcess(address,bytes32)**
 
 
 Creates a new ProcessInstance based on the specified ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcess(address)
+CALL startProcess(address,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _processDefinition // the address of a ProcessDefinition
 
 ```
@@ -16552,21 +17485,22 @@ error code indicating success or failureinstance the address of a ProcessInstanc
 
 ---
 
-#### startProcessFromRepository(bytes32,bytes32)
+#### startProcessFromRepository(bytes32,bytes32,bytes32)
 
 
-**startProcessFromRepository(bytes32,bytes32)**
+**startProcessFromRepository(bytes32,bytes32,bytes32)**
 
 
 Creates a new ProcessInstance based on the specified IDs of a ProcessModel and ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcessFromRepository(bytes32,bytes32)
+CALL startProcessFromRepository(bytes32,bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _modelId // the model that qualifies the process ID, if multiple models are deployed, otherwise optional
 _processDefinitionId // the ID of the process definition
 
@@ -16581,21 +17515,22 @@ error code indicating success or failureinstance the address of a ProcessInstanc
 
 ---
 
-#### startProcessWithData(address,bytes32,address)
+#### startProcessWithData(address,bytes32,bytes32,address)
 
 
-**startProcessWithData(address,bytes32,address)**
+**startProcessWithData(address,bytes32,bytes32,address)**
 
 
 Creates a new ProcessInstance based on the specified ProcessDefinition, populates the key/value address-type field and starts its execution
 
 ```endpoint
-CALL startProcessWithData(address,bytes32,address)
+CALL startProcessWithData(address,bytes32,bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _addressKey // the key under which the value should be stored in the ProcessInstance
 _addressValue // an address value
 _processDefinition // the address of a ProcessDefinition
@@ -16611,155 +17546,177 @@ error code indicating success or failureinstance the address of a ProcessInstanc
 
 ---
 
-### BusinessAccount Interface
+### ApplicationRegistry
 
 
-The BusinessAccount Interface contract is found within the bpm-runtime bundle.
+The ApplicationRegistry contract is found within the bpm-runtime bundle.
 
-#### addFunds(uint256)
-
-
-**addFunds(uint256)**
+#### addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)
 
 
-Increases the balance by specified amount
+**addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)**
+
+
+Adds a Service application with the given parameters to this ProcessModel
 
 ```endpoint
-CALL addFunds(uint256)
+CALL addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_funds // the amount to add
+_eventName // the ID of an event to fire (only for event application)
+_function // the signature of the completion function
+_id // the ID of the application
+_location // the location of the contract implementing the application
+_type // the BpmModel.ApplicationType
+_webForm // the hash of a web form (only for web applications)
 
-```
-
-
----
-
-#### getBalance()
-
-
-**getBalance()**
-
-
-Returns the current balance
-
-```endpoint
-CALL getBalance()
 ```
 
 #### Return
 
 ```json
-the balance
+BaseErrors.RESOURCE_ALREADY_EXISTS() if an application with the given ID already exists, BaseErrors.NO_ERROR() otherwise
 ```
 
 
 ---
 
-#### getId()
+#### getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
 
 
-**getId()**
+**getApplicationAccessPathAtIndex(bytes32,uint256,uint8)**
 
 
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
+Returns information about the specified I/O access path of an application
 
 ```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns the address of the organization this business account is associated with.
-
-```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization address
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-#### Return
-
-```json
-the owner address
-```
-
-
----
-
-#### withdrawFunds(uint256)
-
-
-**withdrawFunds(uint256)**
-
-
-Decreases the balance by the specified amount
-
-```endpoint
-CALL withdrawFunds(uint256)
+CALL getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
 ```
 
 #### Parameters
 
 ```solidity
-_funds // the amount to withdraw
+_direction // BpmModel.Direction.[IN|OUT]
+_id // the ID of the application
+_idx // the index of the input/output parameter
 
+```
+
+#### Return
+
+```json
+the ID of the input/outputthe uint8 representation of the DataTypes value
+```
+
+
+---
+
+#### getApplicationAtIndex(uint256)
+
+
+**getApplicationAtIndex(uint256)**
+
+
+Returns the ID of the application at the given index
+
+```endpoint
+CALL getApplicationAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+the application ID, if it exists
+```
+
+
+---
+
+#### getApplicationData(bytes32)
+
+
+**getApplicationData(bytes32)**
+
+
+Returns information about the application with the given ID
+
+```endpoint
+CALL getApplicationData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the application ID
+
+```
+
+#### Return
+
+```json
+applicationType the BpmModel.ApplicationType as uint8location the applications contract addressmethod the function signature of the application's completion functionwebForm the form identifier (hash) of the web application (only for a web application)eventName the identifier for an event to emit (only for event application)inputs the number of inputsoutputs the number of outputs
+```
+
+
+---
+
+#### getNumberOfApplications()
+
+
+**getNumberOfApplications()**
+
+
+Returns the number of applications defined in this ProcessModel
+
+```endpoint
+CALL getNumberOfApplications()
+```
+
+#### Return
+
+```json
+the number of applications
+```
+
+
+---
+
+#### setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
+
+
+**setApplicationAccessPath(bytes32,bytes32,uint8,uint8)**
+
+
+Adds an input or output declaration to the application identified by the activity ID. Overwrites any previously recorded 
+
+```endpoint
+CALL setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
+```
+
+#### Parameters
+
+```solidity
+_dataType // a DataTypes code
+_direction // the BpmModel.Direction (IN/OUT) of the data flow
+_id // the ID of the application to which to add the declaration
+_pathId // the ID of the data path
+
+```
+
+#### Return
+
+```json
+BaseErrors.RESOURCE_NOT_FOUND() if the application does not exist, BaseErrors.NO_ERROR() otherwise
 ```
 
 
@@ -16770,44 +17727,13 @@ _funds // the amount to withdraw
 
 The DefaultBpmService contract is found within the bpm-runtime bundle.
 
-#### createOrganization(address,bytes32,bytes32,address[10])
-
-
-**createOrganization(address,bytes32,bytes32,address[10])**
-
-
-Creates a new Organization with the specified parameters and adds it to this Ecosystem.
-
-```endpoint
-CALL createOrganization(address,bytes32,bytes32,address[10])
-```
-
-#### Parameters
-
-```solidity
-_approvers // the initial owners. If left empty, the msg.sender will be added as an owner.
-_ecosystem // the Ecosystem address
-_id // the organization's ID
-_name // the organization's name
-
-```
-
-#### Return
-
-```json
-error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()the address of the newly created Organization, or 0x0 if not successful
-```
-
-
----
-
 #### createUserAccount(address,address,bytes32,bytes32)
 
 
 **createUserAccount(address,address,bytes32,bytes32)**
 
 
-Creates a user account account with the specified parameters and adds it to the AccountsManager
+Creates a WorkflowUserAccount with the specified parameters and adds it to the AccountsManager
 
 ```endpoint
 CALL createUserAccount(address,address,bytes32,bytes32)
@@ -16850,35 +17776,6 @@ CALL fireActivityUpdateEvent(address,bytes32)
 _activityId // - the bytes32 Id of the activity
 _piAddress // - the address of the process instance to which the activity belongs
 
-```
-
-
----
-
-#### getActivityDefinitionDetails(address,bytes32)
-
-
-**getActivityDefinitionDetails(address,bytes32)**
-
-
-Gets the address of the assignee for a given activity Id and process instance address
-
-```endpoint
-CALL getActivityDefinitionDetails(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the activity Id
-_piAddress // process instance address
-
-```
-
-#### Return
-
-```json
-id the bytes32 id of the activity definitionactivityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -16937,6 +17834,27 @@ _processInstance // the process instance address to which the ActivityInstance b
 
 ```json
 activityId - the ID of the activity as defined by the process definitioncreated - the creation timestampcompleted - the completion timestampperformer - the account who is performing the activity (for interactive activities only)completedBy - the account who completed the activity (for interactive activities only) state - the uint8 representation of the BpmRuntime.ActivityInstanceState of this activity instance
+```
+
+
+---
+
+#### getApplicationRegistry()
+
+
+**getApplicationRegistry()**
+
+
+Returns a reference to the ApplicationRegistry currently used by this BpmService
+
+```endpoint
+CALL getApplicationRegistry()
+```
+
+#### Return
+
+```json
+the ApplicationRegistry
 ```
 
 
@@ -17112,7 +18030,7 @@ _address // the process instance address
 #### Return
 
 ```json
-(processId)
+processDefinition the address of the ProcessDefinitionstate the BpmRuntime.ProcessInstanceState as uint8startedBy the address of the account who started the process
 ```
 
 
@@ -17188,30 +18106,23 @@ the BpmRuntimeDb
 
 ---
 
-#### getUserTaskDetails(address,bytes32)
+#### setApplicationRegistry(address)
 
 
-**getUserTaskDetails(address,bytes32)**
+**setApplicationRegistry(address)**
 
 
-Gets the address of the assignee for a given activity Id and process instance address
+Sets the ApplicationRegistry for this BpmService
 
 ```endpoint
-CALL getUserTaskDetails(address,bytes32)
+CALL setApplicationRegistry(address)
 ```
 
 #### Parameters
 
 ```solidity
-_activityId // the activity Id
-_piAddress // process instance address
+_registry // - the address of the application registry
 
-```
-
-#### Return
-
-```json
-assignee the ID of the activity's assignee (for interactive activities)processId ID of the process definitionprocessName Name of the process definitionapplication the activity's applicationinputGateway the activity's input BpmModel.Gatewaytype as uint8outputGateway the activity's output BpmModel.Gatewaytype as uint8
 ```
 
 
@@ -17232,28 +18143,29 @@ CALL setProcessModelRepository(address)
 #### Parameters
 
 ```solidity
-_repository // - the address of the repository
+_repository // - the address of the model repository
 
 ```
 
 
 ---
 
-#### startProcess(address)
+#### startProcess(address,bytes32)
 
 
-**startProcess(address)**
+**startProcess(address,bytes32)**
 
 
 Creates a new ProcessInstance based on the specified ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcess(address)
+CALL startProcess(address,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _processDefinition // the address of a ProcessDefinition
 
 ```
@@ -17267,21 +18179,22 @@ any error resulting from ProcessInstance.execute() or ProcessBaseErrors.NO_ERROR
 
 ---
 
-#### startProcessFromRepository(bytes32,bytes32)
+#### startProcessFromRepository(bytes32,bytes32,bytes32)
 
 
-**startProcessFromRepository(bytes32,bytes32)**
+**startProcessFromRepository(bytes32,bytes32,bytes32)**
 
 
 Creates a new ProcessInstance based on the specified IDs of a ProcessModel and ProcessDefinition and starts its execution
 
 ```endpoint
-CALL startProcessFromRepository(bytes32,bytes32)
+CALL startProcessFromRepository(bytes32,bytes32,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _modelId // the model that qualifies the process ID, if multiple models are deployed, otherwise optional
 _processDefinitionId // the ID of the process definition
 
@@ -17296,21 +18209,22 @@ BaseErrors.RESOURCE_NOT_FOUND() if ProcessDefinition cannot be located in the Pr
 
 ---
 
-#### startProcessWithData(address,bytes32,address)
+#### startProcessWithData(address,bytes32,bytes32,address)
 
 
-**startProcessWithData(address,bytes32,address)**
+**startProcessWithData(address,bytes32,bytes32,address)**
 
 
 Creates a new ProcessInstance based on the specified ProcessDefinition, populates the key/value address-type field and starts its execution
 
 ```endpoint
-CALL startProcessWithData(address,bytes32,address)
+CALL startProcessWithData(address,bytes32,bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
+_activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _addressKey // the key under which the value should be stored in the ProcessInstance
 _addressValue // an address value
 _processDefinition // the address of a ProcessDefinition
@@ -17321,423 +18235,6 @@ _processDefinition // the address of a ProcessDefinition
 
 ```json
 error code indicating success or failureinstance the address of a ProcessInstance, if successful
-```
-
-
----
-
-### DefaultBusinessAccount
-
-
-The DefaultBusinessAccount contract is found within the bpm-runtime bundle.
-
-#### addFunds(uint256)
-
-
-**addFunds(uint256)**
-
-
-Increases the balance by specified amount
-
-```endpoint
-CALL addFunds(uint256)
-```
-
-
----
-
-#### getBalance()
-
-
-**getBalance()**
-
-
-Returns the current balance
-
-```endpoint
-CALL getBalance()
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-Returns this account's ID
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns this account's name
-
-```endpoint
-CALL getName()
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns the address of the organization this accounts is associated with.
-
-```endpoint
-CALL getOrganization()
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-
----
-
-#### withdrawFunds(uint256)
-
-
-**withdrawFunds(uint256)**
-
-
-Decreases the balance by the specified amount
-
-```endpoint
-CALL withdrawFunds(uint256)
-```
-
-
----
-
-### DefaultOrganization
-
-
-The DefaultOrganization contract is found within the bpm-runtime bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### addUser(address)
-
-
-**addUser(address)**
-
-
-Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
-
-```endpoint
-CALL addUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user to add
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.
-```
-
-
----
-
-#### getApproverAtIndex(uint256)
-
-
-**getApproverAtIndex(uint256)**
-
-
-Returns the approver's address at the given index position.
-
-```endpoint
-CALL getApproverAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-see NamedElement.getId()
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-see NamedElement.getName()
-
-```endpoint
-CALL getName()
-```
-
-
----
-
-#### getNumberOfApprovers()
-
-
-**getNumberOfApprovers()**
-
-
-Returns the number of registered approvers.
-
-```endpoint
-CALL getNumberOfApprovers()
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfUsers()
-
-
-**getNumberOfUsers()**
-
-
-returns the number of users associated with this organization
-
-```endpoint
-CALL getNumberOfUsers()
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getUserAtIndex(uint256)
-
-
-**getUserAtIndex(uint256)**
-
-
-Returns the user's address at the given index position.
-
-```endpoint
-CALL getUserAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### isActiveUser(address)
-
-
-**isActiveUser(address)**
-
-
-Returns whether the given user account is valid in this organization
-
-```endpoint
-CALL isActiveUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user account
-
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeUser(address)
-
-
-**removeUser(address)**
-
-
-Removes / Deactivates the user in this organization.
-
-```endpoint
-CALL removeUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the account to deactivate
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
 ```
 
 
@@ -17771,7 +18268,7 @@ _service // the BpmService managing this ProcessInstance (required for changes t
 #### Return
 
 ```json
-BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if the activity instance cannot be locatedBaseErrors.INVALID_STATE() if the activity is not in a state to be completedBaseErrors.INVALID_ACTOR() if the msg.sender or tx.origin is not the assignee of the task
+BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if the activity instance cannot be locatedBaseErrors.INVALID_STATE() if the activity is not in a state to be completed (SUSPENDED or INTERRUPTED)BaseErrors.INVALID_ACTOR() if the msg.sender or tx.origin is not the assignee of the task
 ```
 
 
@@ -17927,6 +18424,27 @@ CALL getProcessDefinition()
 
 ```json
 the address of a ProcessDefinition
+```
+
+
+---
+
+#### getStartedBy()
+
+
+**getStartedBy()**
+
+
+Returns the account that started this process instance
+
+```endpoint
+CALL getStartedBy()
+```
+
+#### Return
+
+```json
+the address registered when creating the process instance
 ```
 
 
@@ -18562,325 +19080,6 @@ _id // organization ID
 
 ```json
 bool exists
-```
-
-
----
-
-### Organization Interface
-
-
-The Organization Interface contract is found within the bpm-runtime bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### addUser(address)
-
-
-**addUser(address)**
-
-
-Adds the specified user to this organization
-
-```endpoint
-CALL addUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user to add
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### getApproverAtIndex(uint256)
-
-
-**getApproverAtIndex(uint256)**
-
-
-Returns the approver's address at the given index position.
-
-```endpoint
-CALL getApproverAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address, if the position exists
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
-#### getNumberOfApprovers()
-
-
-**getNumberOfApprovers()**
-
-
-Returns the number of registered approvers.
-
-```endpoint
-CALL getNumberOfApprovers()
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfUsers()
-
-
-**getNumberOfUsers()**
-
-
-returns the number of users associated with this organization
-
-```endpoint
-CALL getNumberOfUsers()
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getUserAtIndex(uint256)
-
-
-**getUserAtIndex(uint256)**
-
-
-Returns the user's address at the given index position.
-
-```endpoint
-CALL getUserAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### isActiveUser(address)
-
-
-**isActiveUser(address)**
-
-
-Returns whether the given user account is active in this organization
-
-```endpoint
-CALL isActiveUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user account
-
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeUser(address)
-
-
-**removeUser(address)**
-
-
-Removes / Deactivates the user in this organization.
-
-```endpoint
-CALL removeUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the account to deactivate
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
 ```
 
 
@@ -19965,6 +20164,27 @@ uint the size
 
 ---
 
+#### getStartedBy()
+
+
+**getStartedBy()**
+
+
+Returns the account that started this process instance
+
+```endpoint
+CALL getStartedBy()
+```
+
+#### Return
+
+```json
+the address registered when creating the process instance
+```
+
+
+---
+
 #### getState()
 
 
@@ -20925,537 +21145,6 @@ error code indicating success or failure
 
 ---
 
-### WorkflowBusinessAccount
-
-
-The WorkflowBusinessAccount contract is found within the bpm-runtime bundle.
-
-#### addFunds(uint256)
-
-
-**addFunds(uint256)**
-
-
-Increases the balance by specified amount
-
-```endpoint
-CALL addFunds(uint256)
-```
-
-
----
-
-#### completeActivity(bytes32,address)
-
-
-**completeActivity(bytes32,address)**
-
-
-Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
-
-```endpoint
-CALL completeActivity(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
-
-```
-
-#### Return
-
-```json
-error code if the completion failed
-```
-
-
----
-
-#### getBalance()
-
-
-**getBalance()**
-
-
-Returns the current balance
-
-```endpoint
-CALL getBalance()
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-Returns this account's ID
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns this account's name
-
-```endpoint
-CALL getName()
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns the address of the organization this accounts is associated with.
-
-```endpoint
-CALL getOrganization()
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-
----
-
-#### signAgreement(address)
-
-
-**signAgreement(address)**
-
-
-Signs the agreement identified by the provided address
-
-```endpoint
-CALL signAgreement(address)
-```
-
-#### Parameters
-
-```solidity
-_agreement // the address of the agreement
-
-```
-
-#### Return
-
-```json
-error code if the signing process failed
-```
-
-
----
-
-#### withdrawFunds(uint256)
-
-
-**withdrawFunds(uint256)**
-
-
-Decreases the balance by the specified amount
-
-```endpoint
-CALL withdrawFunds(uint256)
-```
-
-
----
-
-### WorkflowOrganizationAccount
-
-
-The WorkflowOrganizationAccount contract is found within the bpm-runtime bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### addUser(address)
-
-
-**addUser(address)**
-
-
-Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
-
-```endpoint
-CALL addUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user to add
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.
-```
-
-
----
-
-#### completeActivity(bytes32,address)
-
-
-**completeActivity(bytes32,address)**
-
-
-Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
-
-```endpoint
-CALL completeActivity(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
-
-```
-
-#### Return
-
-```json
-error code if the completion failed
-```
-
-
----
-
-#### getApproverAtIndex(uint256)
-
-
-**getApproverAtIndex(uint256)**
-
-
-Returns the approver's address at the given index position.
-
-```endpoint
-CALL getApproverAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-see NamedElement.getId()
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-see NamedElement.getName()
-
-```endpoint
-CALL getName()
-```
-
-
----
-
-#### getNumberOfApprovers()
-
-
-**getNumberOfApprovers()**
-
-
-Returns the number of registered approvers.
-
-```endpoint
-CALL getNumberOfApprovers()
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfUsers()
-
-
-**getNumberOfUsers()**
-
-
-returns the number of users associated with this organization
-
-```endpoint
-CALL getNumberOfUsers()
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getUserAtIndex(uint256)
-
-
-**getUserAtIndex(uint256)**
-
-
-Returns the user's address at the given index position.
-
-```endpoint
-CALL getUserAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### isActiveUser(address)
-
-
-**isActiveUser(address)**
-
-
-Returns whether the given user account is valid in this organization
-
-```endpoint
-CALL isActiveUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the user account
-
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeUser(address)
-
-
-**removeUser(address)**
-
-
-Removes / Deactivates the user in this organization.
-
-```endpoint
-CALL removeUser(address)
-```
-
-#### Parameters
-
-```solidity
-_userAccount // the account to deactivate
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
-```
-
-
----
-
-#### signAgreement(address)
-
-
-**signAgreement(address)**
-
-
-Signs the agreement identified by the provided address
-
-```endpoint
-CALL signAgreement(address)
-```
-
-#### Parameters
-
-```solidity
-_agreement // the address of the agreement
-
-```
-
-#### Return
-
-```json
-error code if the signing process failed
-```
-
-
----
-
 ### WorkflowProxy
 
 
@@ -21689,6 +21378,39 @@ error code if the signing process failed
 
 ## commons-auth
 
+### AbstractERC165
+
+
+The AbstractERC165 contract is found within the commons-auth bundle.
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
+```
+
+
+---
+
 ### AuthorizationsManager
 
 
@@ -21856,6 +21578,160 @@ This function disassociates the given address from the specified role in the imp
 
 ```endpoint
 CALL removeRole(address,bytes32)
+```
+
+
+---
+
+### BusinessAccount Interface
+
+
+The BusinessAccount Interface contract is found within the commons-auth bundle.
+
+#### addFunds(uint256)
+
+
+**addFunds(uint256)**
+
+
+Increases the balance by specified amount
+
+```endpoint
+CALL addFunds(uint256)
+```
+
+#### Parameters
+
+```solidity
+_funds // the amount to add
+
+```
+
+
+---
+
+#### getBalance()
+
+
+**getBalance()**
+
+
+Returns the current balance
+
+```endpoint
+CALL getBalance()
+```
+
+#### Return
+
+```json
+the balance
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns the address of the organization this business account is associated with.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization address
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+#### Return
+
+```json
+the owner address
+```
+
+
+---
+
+#### withdrawFunds(uint256)
+
+
+**withdrawFunds(uint256)**
+
+
+Decreases the balance by the specified amount
+
+```endpoint
+CALL withdrawFunds(uint256)
+```
+
+#### Parameters
+
+```solidity
+_funds // the amount to withdraw
+
 ```
 
 
@@ -22573,6 +22449,116 @@ CALL withdrawFunds(address,bytes32,uint256)
 
 ---
 
+### DefaultBusinessAccount
+
+
+The DefaultBusinessAccount contract is found within the commons-auth bundle.
+
+#### addFunds(uint256)
+
+
+**addFunds(uint256)**
+
+
+Increases the balance by specified amount
+
+```endpoint
+CALL addFunds(uint256)
+```
+
+
+---
+
+#### getBalance()
+
+
+**getBalance()**
+
+
+Returns the current balance
+
+```endpoint
+CALL getBalance()
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns this account's ID
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns this account's name
+
+```endpoint
+CALL getName()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns the address of the organization this accounts is associated with.
+
+```endpoint
+CALL getOrganization()
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### withdrawFunds(uint256)
+
+
+**withdrawFunds(uint256)**
+
+
+Decreases the balance by the specified amount
+
+```endpoint
+CALL withdrawFunds(uint256)
+```
+
+
+---
+
 ### DefaultEcosystem
 
 
@@ -22642,18 +22628,10 @@ BaseErrors.INVALID_PARAM_VALUE() if the ID is empty, BaseErrors.RESOURCE_ALREADY
 **eventFired(bytes32,address)**
 
 
-Invoked by an EventEmitter for a named event without any additional data.
+See EventListener.eventFired(bytes32,address)
 
 ```endpoint
 CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -22688,19 +22666,10 @@ _source // Expected to be a registered Organization
 **eventFired(bytes32,address,bytes32)**
 
 
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
+See EventListener.eventFired(bytes32,address,bytes32)
 
 ```endpoint
 CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -22712,19 +22681,10 @@ _source // the source of the event
 **eventFired(bytes32,address,string)**
 
 
-Invoked by an EventEmitter for a named event with an additional string payload.
+See EventListener.eventFired(bytes32,address,string)
 
 ```endpoint
 CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -22736,19 +22696,10 @@ _source // the source of the event
 **eventFired(bytes32,address,uint256)**
 
 
-Invoked by an EventEmitter for a named event with an additional uint payload.
+See EventListener.eventFired(bytes32,address,uint)
 
 ```endpoint
 CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
 ```
 
 
@@ -23059,6 +23010,341 @@ bool exists
 
 ---
 
+### DefaultOrganization
+
+
+The DefaultOrganization contract is found within the commons-auth bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### addUser(address)
+
+
+**addUser(address)**
+
+
+Adds the specified user to this organization as an active user. If the user already exists, the function ensures the account is active.
+
+```endpoint
+CALL addUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user to add
+
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_PARAM_STATE if the UserAccount does not have this organization as its organization.BaseErrors.NO_ERROR if successful
+```
+
+
+---
+
+#### getApproverAtIndex(uint256)
+
+
+**getApproverAtIndex(uint256)**
+
+
+Returns the approver's address at the given index position.
+
+```endpoint
+CALL getApproverAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+see NamedElement.getId()
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+see NamedElement.getName()
+
+```endpoint
+CALL getName()
+```
+
+
+---
+
+#### getNumberOfApprovers()
+
+
+**getNumberOfApprovers()**
+
+
+Returns the number of registered approvers.
+
+```endpoint
+CALL getNumberOfApprovers()
+```
+
+#### Return
+
+```json
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfUsers()
+
+
+**getNumberOfUsers()**
+
+
+returns the number of users associated with this organization
+
+```endpoint
+CALL getNumberOfUsers()
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getUserAtIndex(uint256)
+
+
+**getUserAtIndex(uint256)**
+
+
+Returns the user's address at the given index position.
+
+```endpoint
+CALL getUserAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### isActiveUser(address)
+
+
+**isActiveUser(address)**
+
+
+Returns whether the given user account is valid in this organization
+
+```endpoint
+CALL isActiveUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the user account
+
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeUser(address)
+
+
+**removeUser(address)**
+
+
+Removes / Deactivates the user in this organization.
+
+```endpoint
+CALL removeUser(address)
+```
+
+#### Parameters
+
+```solidity
+_userAccount // the account to deactivate
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND if the user account does not exist in this organization
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
+```
+
+
+---
+
 ### SecureNativeAuthorizations Interface
 
 
@@ -23270,82 +23556,6 @@ result the effective permissions flags on the account after the call
 
 ## commons-management
 
-### Castable
-
-
-The Castable contract is found within the commons-management bundle.
-
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. 
-
-```
-
-
----
-
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-a bytes32 indicating whether the type is supported. It is recommended to return the input parameter bytes32!
-```
-
-
----
-
 ### ContractLocator Interface
 
 
@@ -23413,77 +23623,6 @@ _name // the registered name
 
 The ContractLocatorEnabled contract is found within the commons-management bundle.
 
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. Empty bytes32 and keccak256("") are ignored!
-
-```
-
-
----
-
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-the same bytes32 as the input if the type is supported, keccak256("") otherwise.
-```
-
-
----
-
 #### setContractLocator(address)
 
 
@@ -23499,7 +23638,35 @@ CALL setContractLocator(address)
 #### Return
 
 ```json
-true if successful
+true if successful, false otherwise
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
 ```
 
 
@@ -23771,6 +23938,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index.
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+the registered name and address as (bytes32,address)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -23986,6 +24174,35 @@ BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if addre
 
 ---
 
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -23996,82 +24213,6 @@ Checks the version and invokes migrateTo and migrateTo in order to transfer stat
 
 ```endpoint
 CALL upgrade(address)
-```
-
-
----
-
-### DefaultCastable
-
-
-The DefaultCastable contract is found within the commons-management bundle.
-
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. Empty bytes32 and keccak256("") are ignored!
-
-```
-
-
----
-
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-the same bytes32 as the input if the type is supported, keccak256("") otherwise.
 ```
 
 
@@ -24199,6 +24340,12 @@ Overwrites HierarchyEnabled.addChild()
 CALL addChild(address)
 ```
 
+#### Return
+
+```json
+BaseErrors.INVALID_TYPE() if the address is not a LifecycleModuleBaseErrors.NO_ERROR() if sucessfull
+```
+
 
 ---
 
@@ -24316,28 +24463,6 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. Empty bytes32 and keccak256("") are ignored!
-
-```
-
-
----
-
 #### getContract(bytes32)
 
 
@@ -24394,27 +24519,6 @@ the address of the library or 0x0 if it doesn't exist
 
 ---
 
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
 #### getNumberOfChildren()
 
 
@@ -24431,6 +24535,27 @@ CALL getNumberOfChildren()
 
 ```json
 the number of children
+```
+
+
+---
+
+#### getNumberOfRegistrationContracts()
+
+
+**getNumberOfRegistrationContracts()**
+
+
+Returns the number of contracts registered in this module
+
+```endpoint
+CALL getNumberOfRegistrationContracts()
+```
+
+#### Return
+
+```json
+0
 ```
 
 
@@ -24457,6 +24582,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+("", 0x0)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -24478,34 +24624,6 @@ the version as unit8[3]
 
 ---
 
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-the same bytes32 as the input if the type is supported, keccak256("") otherwise.
-```
-
-
----
-
 #### isDestroyOnUpgrade()
 
 
@@ -24516,6 +24634,12 @@ default implementation returns false. Overwrite to return true, if the module sh
 
 ```endpoint
 CALL isDestroyOnUpgrade()
+```
+
+#### Return
+
+```json
+false
 ```
 
 
@@ -24542,17 +24666,16 @@ CALL major()
 **migrateFrom(address)**
 
 
-default implementation of Upgradeable.migrateFrom(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateFrom(address).
 
 ```endpoint
 CALL migrateFrom(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_predecessor // the predecessor contract from which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -24564,17 +24687,16 @@ _predecessor // the predecessor contract from which to migrate
 **migrateTo(address)**
 
 
-default implementation of Upgradeable.migrateTo(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateTo(address).
 
 ```endpoint
 CALL migrateTo(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_successor // the successor contract to which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -24731,6 +24853,34 @@ BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if addre
 
 ---
 
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -24761,6 +24911,12 @@ Overwrites HierarchyEnabled.addChild()
 
 ```endpoint
 CALL addChild(address)
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_TYPE() if the address is not a LifecycleModuleBaseErrors.NO_ERROR() if sucessfull
 ```
 
 
@@ -24851,28 +25007,6 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. Empty bytes32 and keccak256("") are ignored!
-
-```
-
-
----
-
 #### getContract(bytes32)
 
 
@@ -24901,27 +25035,6 @@ _name // the registered key
 
 ---
 
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
 #### getNumberOfChildren()
 
 
@@ -24938,6 +25051,27 @@ CALL getNumberOfChildren()
 
 ```json
 the number of children
+```
+
+
+---
+
+#### getNumberOfRegistrationContracts()
+
+
+**getNumberOfRegistrationContracts()**
+
+
+Returns the number of contracts registered in this module
+
+```endpoint
+CALL getNumberOfRegistrationContracts()
+```
+
+#### Return
+
+```json
+0
 ```
 
 
@@ -24964,6 +25098,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+("", 0x0)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -24985,34 +25140,6 @@ the version as unit8[3]
 
 ---
 
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-the same bytes32 as the input if the type is supported, keccak256("") otherwise.
-```
-
-
----
-
 #### isDestroyOnUpgrade()
 
 
@@ -25023,6 +25150,12 @@ default implementation returns false. Overwrite to return true, if the module sh
 
 ```endpoint
 CALL isDestroyOnUpgrade()
+```
+
+#### Return
+
+```json
+false
 ```
 
 
@@ -25049,17 +25182,16 @@ CALL major()
 **migrateFrom(address)**
 
 
-default implementation of Upgradeable.migrateFrom(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateFrom(address).
 
 ```endpoint
 CALL migrateFrom(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_predecessor // the predecessor contract from which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -25071,17 +25203,16 @@ _predecessor // the predecessor contract from which to migrate
 **migrateTo(address)**
 
 
-default implementation of Upgradeable.migrateTo(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateTo(address).
 
 ```endpoint
 CALL migrateTo(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_successor // the successor contract to which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -25233,6 +25364,34 @@ _address // the hierarchy root
 
 ```json
 BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
 ```
 
 
@@ -25342,49 +25501,6 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### declareCastableTo(bytes32)
-
-
-**declareCastableTo(bytes32)**
-
-
-Adds the specified type to the supported types of this Castable.
-
-```endpoint
-CALL declareCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support. Empty bytes32 and keccak256("") are ignored!
-
-```
-
-
----
-
-#### getNumberOfCastTypes()
-
-
-**getNumberOfCastTypes()**
-
-
-Returns the number of supported cast types.
-
-```endpoint
-CALL getNumberOfCastTypes()
-```
-
-#### Return
-
-```json
-the number of supported types.
-```
-
-
----
-
 #### getNumberOfChildren()
 
 
@@ -25401,6 +25517,27 @@ CALL getNumberOfChildren()
 
 ```json
 the number of children
+```
+
+
+---
+
+#### getNumberOfRegistrationContracts()
+
+
+**getNumberOfRegistrationContracts()**
+
+
+Returns the number of contracts registered in this module
+
+```endpoint
+CALL getNumberOfRegistrationContracts()
+```
+
+#### Return
+
+```json
+0
 ```
 
 
@@ -25427,6 +25564,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+("", 0x0)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -25448,34 +25606,6 @@ the version as unit8[3]
 
 ---
 
-#### isCastableTo(bytes32)
-
-
-**isCastableTo(bytes32)**
-
-
-Checks whether this Castable supports the given type. Note that returning a bytes32 is necessary since a contract that does not implement Castable, but has a fallback function would evaluate to bool 'true' when `isCastableTo(bytes32) returns (bool)` was invoked on it.  
-
-```endpoint
-CALL isCastableTo(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_type // a bytes32 specifying the cast support.
-
-```
-
-#### Return
-
-```json
-the same bytes32 as the input if the type is supported, keccak256("") otherwise.
-```
-
-
----
-
 #### isDestroyOnUpgrade()
 
 
@@ -25486,6 +25616,12 @@ default implementation returns false. Overwrite to return true, if the module sh
 
 ```endpoint
 CALL isDestroyOnUpgrade()
+```
+
+#### Return
+
+```json
+false
 ```
 
 
@@ -25512,17 +25648,16 @@ CALL major()
 **migrateFrom(address)**
 
 
-default implementation of Upgradeable.migrateFrom(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateFrom(address).
 
 ```endpoint
 CALL migrateFrom(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_predecessor // the predecessor contract from which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -25534,17 +25669,16 @@ _predecessor // the predecessor contract from which to migrate
 **migrateTo(address)**
 
 
-default implementation of Upgradeable.migrateTo(address). Returns BaseErrors.UNSUPPORTED_OPERATION()
+Default implementation of Upgradeable.migrateTo(address).
 
 ```endpoint
 CALL migrateTo(address)
 ```
 
-#### Parameters
+#### Return
 
-```solidity
-_successor // the successor contract to which to migrate
-
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
 ```
 
 
@@ -25653,6 +25787,34 @@ _address // the hierarchy root
 
 ```json
 BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
 ```
 
 
@@ -26040,6 +26202,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index.
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+the registered name and address as (bytes32,address)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -26250,6 +26433,35 @@ _address // the hierarchy root
 
 ```json
 BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
 ```
 
 
@@ -26422,6 +26634,27 @@ the parent or 0x0, if this is the root of the hierarchy
 
 ---
 
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index.
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+the registered name and address as (bytes32,address)
+```
+
+
+---
+
 #### getVersion()
 
 
@@ -26632,6 +26865,35 @@ _address // the hierarchy root
 
 ```json
 BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
 ```
 
 
@@ -26921,452 +27183,6 @@ Checks the version and invokes migrateTo and migrateTo in order to transfer stat
 
 ```endpoint
 CALL upgrade(address)
-```
-
-
----
-
-### VersionLinked
-
-
-The VersionLinked contract is found within the commons-management bundle.
-
-#### acceptVersionLink(address)
-
-
-**acceptVersionLink(address)**
-
-
-Adds the given VersionLinked contract into the linked version list or returns an error, if the operation is not possible
-
-```endpoint
-CALL acceptVersionLink(address)
-```
-
-#### Parameters
-
-```solidity
-_link // a new VersionedLink contract.
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if the given VersionLinked instance was successfully placed into the linked version list.
-BaseErrors.NULL_PARAM_NOT_ALLOWED() if the _newPredecessor is empty (null address).
-BaseErrors.INVALID_STATE() if the given VersionLinked instance has a different owner than this contract.
-BaseErrors.INVALID_PARAM_VALUE() if the given VersionLinked instance has the same version or address as this contract.
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns the owner
-
-```endpoint
-CALL getOwner()
-```
-
-#### Return
-
-```json
-the address of the owner
-```
-
-
----
-
-#### getPredecessor()
-
-
-**getPredecessor()**
-
-
-Returns the predecessor version
-
-```endpoint
-CALL getPredecessor()
-```
-
-#### Return
-
-```json
-the address of the predecessor or 0x0 if not set
-```
-
-
----
-
-#### getSuccessor()
-
-
-**getSuccessor()**
-
-
-Returns the successor version
-
-```endpoint
-CALL getSuccessor()
-```
-
-#### Return
-
-```json
-the address of the successor or 0x0 if not set
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-### VersionLinkedAppendOnly Interface
-
-
-The VersionLinkedAppendOnly Interface contract is found within the commons-management bundle.
-
-#### appendNewVersion(address)
-
-
-**appendNewVersion(address)**
-
-
-Appends the given version as the latest in version linked list
-
-```endpoint
-CALL appendNewVersion(address)
-```
-
-#### Return
-
-```json
-error - failure to append due to various reasons
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getTargetVersion(uint8[3])
-
-
-**getTargetVersion(uint8[3])**
-
-
-Retrieves the specified version
-
-```endpoint
-CALL getTargetVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_targetVer // - the version to retrieve
-
-```
-
-#### Return
-
-```json
-targetAddr - address of the version to retrieve, 0x0 if not found
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLatest(address)
-
-
-**setLatest(address)**
-
-
-Sets the latest version, and recursively sets latest for preceeding links
-
-```endpoint
-CALL setLatest(address)
-```
-
-#### Parameters
-
-```solidity
-_latest // - the latest version
-
-```
-
-#### Return
-
-```json
-success - representing whether latest was successfully set for all links
-```
-
-
----
-
-#### setPredecessor()
-
-
-**setPredecessor()**
-
-
-Sets the predecessor to msg.sender who should also have the same owner
-
-```endpoint
-CALL setPredecessor()
-```
-
-#### Return
-
-```json
-error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
 ```
 
 
@@ -28053,6 +27869,231 @@ error - if a predecessor is already set (i.e. no overwriting allowed), or if the
 
 
 The IsoCurrencies100 Interface contract is found within the commons-standards bundle.
+
+#### appendNewVersion(address)
+
+
+**appendNewVersion(address)**
+
+
+Appends the given version as the latest in version linked list
+
+```endpoint
+CALL appendNewVersion(address)
+```
+
+#### Return
+
+```json
+error - failure to append due to various reasons
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getTargetVersion(uint8[3])
+
+
+**getTargetVersion(uint8[3])**
+
+
+Retrieves the specified version
+
+```endpoint
+CALL getTargetVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_targetVer // - the version to retrieve
+
+```
+
+#### Return
+
+```json
+targetAddr - address of the version to retrieve, 0x0 if not found
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLatest(address)
+
+
+**setLatest(address)**
+
+
+Sets the latest version, and recursively sets latest for preceeding links
+
+```endpoint
+CALL setLatest(address)
+```
+
+#### Parameters
+
+```solidity
+_latest // - the latest version
+
+```
+
+#### Return
+
+```json
+success - representing whether latest was successfully set for all links
+```
+
+
+---
+
+#### setPredecessor()
+
+
+**setPredecessor()**
+
+
+Sets the predecessor to msg.sender who should also have the same owner
+
+```endpoint
+CALL setPredecessor()
+```
+
+#### Return
+
+```json
+error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
+
+### VersionLinkedAppendOnly Interface
+
+
+The VersionLinkedAppendOnly Interface contract is found within the commons-standards bundle.
 
 #### appendNewVersion(address)
 
