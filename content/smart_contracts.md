@@ -23564,10 +23564,10 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 
 ## bpm-runtime
 
-### ProcessStateChangeEmitter
+### AbstractProcessStateChangeEmitter
 
 
-The ProcessStateChangeEmitter contract is found within the bpm-runtime bundle.
+The AbstractProcessStateChangeEmitter contract is found within the bpm-runtime bundle.
 
 #### addProcessStateChangeListener(address)
 
