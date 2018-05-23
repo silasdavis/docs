@@ -39,11 +39,9 @@ Network Validators assure the operational backbone for the network blockchain by
 
 ### Install Dependencies
 
-The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go.
+The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go. Secondly, you'll need [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) installed on your machine.
 
-Second, we need to install [jq](https://stedolan.github.io/jq/download/) which is an `sed` like tool that makes it easy and simple to work with json files.
-
-Lastly, you'll need [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) installed on your machine.
+Lastly, we need to install [jq](https://stedolan.github.io/jq/download/) which is an `sed` like tool that makes it easy and simple to work with json files as well as `curl` which is a command line utility to download files.
 
 ### Create your own key and send us the information
 
@@ -57,16 +55,15 @@ Run monax-keys server on the machine you intend to run as validator and save the
 
 ```
 monax-keys server &
-MONAX_KEYS_PID=$!
 ```
 
-Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you.
+Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you. If you would like to stop the server after your session and/or when you're not running burrow then run `pkill monax-keys`.
 
 ```
 ADDR=$(monax-keys gen --no-pass)
 ```
 
-**If and only iff** you wish to give it a passphrase then remove the `--no-pass` flag and manually copy and paste the address outputted into a shell variable in the following manner.
+**If and only if** you wish to give it a passphrase then remove the `--no-pass` flag and manually copy and paste the address outputted into a shell variable in the following manner. Adding a passphrase will ensure that the key is encrypted at rest on the disk of your machine.
 
 ```
 monax-keys gen
@@ -78,6 +75,8 @@ Next also we will pass the new key's address into the `convert` command to give 
 ```
 monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
 ```
+
+**N.B.** if you generated your key with a passphrase before running the above command you'll need to run `monax-keys unlock --addr $ADDR`.
 
 The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
@@ -99,32 +98,30 @@ First you will need [Hyperledger Burrow](https://www.hyperledger.org/projects/hy
 go get github.com/hyperledger/burrow/cmd/burrow
 ```
 
-Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `burrow.toml` that has all the key variables preconfigured. They are both available with a simple wget (you could also use curl) command.
+Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `burrow.toml` that has all the key variables preconfigured. They are both available with a simple `curl` command.
 
 ```
-wget https://info.t1.agreements.network/genesis.json
-wget https://info.t1.agreements.network/burrow.toml
+curl -L https://info.t1.agreements.network/genesis.json > genesis.json
+curl -L https://info.t1.agreements.network/burrow.toml > burrow.toml
 ```
 
-Now we are all set to boot our node and connect into the network. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
+Now we are all set to boot our node and connect into the network. From the same directory where you saved your burrow.toml and genesis.json please run the below command. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
 
 ```
-burrow serve \
-    --genesis genesis.json \
-    --config burrow.toml \
+burrow start \
     --validator-moniker ORGNAME-t1.agreements.network-validator \
     --validator-address $ADDR
 ```
 
+**If and only if** you have generated the key using a password and have restarted your `monax-keys` server since last unlocking the key, you will need to first unlock your key with `monax-keys unlock --addr $ADDR`.
+
 ### Operational Notes
 
-One point of note is that if you have generated the key using a password you will add the `--validator-passphrase XXXX` flag with your password.
+If you are running this on a cloud box you may want to run within `tmux` or `screen` so that you can detach from the shell without shutting down the node. At a minimum you'll want to add `&` or `&disown` to the end of the command if you are not running within `tmux` or `screen`.
 
-Another point is that if you are running this on a cloud box you may want to run within `tmux` or `screen` so that you can detach from the shell without shutting down the node. At a minimum you'll want to add `&` or `&disown` to the end of the command if you are not running within `tmux` or `screen`.
+Be aware that `burrow` is a relatively chatty client and over weeks may accumulate a lot of logs. If you're using file based logging make sure that you build a log rotation so that your cloud box does not overfill.
 
-If you're running burrow in a cluster or via Docker then all the commands listed above can be handled with envirnoment variables (i.e., `BURROW_VALIDATOR_MONIKER`, `BURROW_VALIDATOR_ADDRESS` and `BURROW_VALIDATOR_PASSPHRASE`).
-
-There is a `helm` [chart for burrow](https://github.com/kubernetes/charts/tree/master/stable/burrow) which may be helpful as well.
+If you're running burrow in a Kubernetes cluster or via Docker then all the commands listed above can be handled with envirnoment variables (i.e., `BURROW_VALIDATOR_MONIKER`, `BURROW_VALIDATOR_ADDRESS` and `BURROW_VALIDATOR_PASSPHRASE`). There is a `helm` [chart for burrow](https://github.com/kubernetes/charts/tree/master/stable/burrow) which may be helpful as well.
 
 ## Structure of the API documentation
 
