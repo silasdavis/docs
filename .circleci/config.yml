@@ -15,6 +15,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "5e:f3:47:75:34:c7:83:93:51:48:31:6a:3a:1a:de:85"
+            - "nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8"
       - run:
           name: "Merge to Master"
           command: |
@@ -27,10 +28,3 @@ jobs:
             git add -A :/
             git commit -m "Automatic document generation: $CIRCLE_SHA1"
             git push origin master
-      # - deploy:
-      #     command: |
-      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
-      #         echo 'example.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJiGRY6N9WYQ0vy6cTiwAgNbc6ueJmVo/EafBtmT7bcD6cQMbipYM/KfYQ2lCn2TxqWepZKYoyoVQXgArycCOns=' >> ~/.ssh/known_hosts
-      #         rsync -va --delete src/public/ staticweb@example.com:/var/www/
-      #       fi
-
