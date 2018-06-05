@@ -5,7 +5,9 @@ jobs:
     docker:
       - image: node:9-alpine
     steps:
-      - add_ssh_keys
+      - add_ssh_keys:
+          fingerprints:
+            - "93:8d:84:15:24:16:74:77:07:80:ff:3a:a1:e5:d7:76"
       - run:
           name: "Install Git"
           command: |
