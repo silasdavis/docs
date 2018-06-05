@@ -12,9 +12,7 @@ jobs:
       - run:
           name: "NPM Test"
           command: npm test
-      - add_ssh_keys:
-          fingerprints:
-            - "5e:f3:47:75:34:c7:83:93:51:48:31:6a:3a:1a:de:85"
+      - add_ssh_keys
       - run:
           name: "Merge to Master"
           command: |
