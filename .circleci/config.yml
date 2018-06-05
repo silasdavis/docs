@@ -5,6 +5,18 @@ jobs:
     docker:
       - image: node:9-alpine
     steps:
+      - add_ssh_keys
+      - run:
+          name: "Install Git"
+          command: |
+            apk add --no-cache --update git openssh-client
+            mkdir -p $HOME/.ssh && chmod 700 $HOME/.ssh
+      - run:
+          name: "Configure SSH"
+          command: |
+            echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > $HOME/.ssh/config
+            git config --global user.name "Billings, a Bot"
+            git config --global user.email "billings@monax.io"
       - checkout
       - run:
           name: "NPM Install"
@@ -12,15 +24,9 @@ jobs:
       - run:
           name: "NPM Test"
           command: npm test
-      - add_ssh_keys
       - run:
-          name: "Merge to Master"
+          name: "Build & Merge to Master"
           command: |
-            apk add --no-cache --update git openssh-client
-            mkdir -p $HOME/.ssh && chmod 700 $HOME/.ssh
-            echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > $HOME/.ssh/config
-            git config --global user.name "Billings, a Bot"
-            git config --global user.email "billings@monax.io"
             git clone git@github.com:agreements-network/docs build
             npm run-script build
             cd build
