@@ -18,6 +18,7 @@ jobs:
       - run:
           name: "Merge to Master"
           command: |
+            apk add --no-cache --update git openssh-client
             git config --global user.name "Billings, a Bot"
             git config --global user.email "billings@monax.io"
             git clone git@github.com:agreements-network/docs build
