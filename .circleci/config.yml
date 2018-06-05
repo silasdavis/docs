@@ -27,5 +27,5 @@ jobs:
             npm run-script build
             cd build
             git add -A :/
-            git commit -m "Automatic document generation: $CIRCLE_SHA1"
+            git commit -m "Automatic document generation: $CIRCLE_SHA1" || true
             git push origin master
