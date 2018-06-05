@@ -1,0 +1,25 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: node:9-alpine
+    steps:
+      - checkout
+      - run:
+          name: "NPM Install"
+          command: npm install
+      - run:
+          name: "NPM Test"
+          command: npm test
+      # - add_ssh_keys
+      # - run:
+      #     name: "Merge to Master"
+      #     command:
+      # - deploy:
+      #     command: |
+      #       if [ "${CIRCLE_BRANCH}" == "master" ]; then
+      #         echo 'example.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJiGRY6N9WYQ0vy6cTiwAgNbc6ueJmVo/EafBtmT7bcD6cQMbipYM/KfYQ2lCn2TxqWepZKYoyoVQXgArycCOns=' >> ~/.ssh/known_hosts
+      #         rsync -va --delete src/public/ staticweb@example.com:/var/www/
+      #       fi
+
