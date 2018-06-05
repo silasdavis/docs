@@ -101,15 +101,15 @@ go get github.com/hyperledger/burrow/cmd/burrow
 Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `burrow.toml` that has all the key variables preconfigured. They are both available with a simple `curl` command.
 
 ```
-curl -L https://info.t1.agreements.network/genesis.json > genesis.json
-curl -L https://info.t1.agreements.network/burrow.toml > burrow.toml
+curl -L https://info.t2.agreements.network/genesis.json > genesis.json
+curl -L https://info.t2.agreements.network/burrow.toml > burrow.toml
 ```
 
 Now we are all set to boot our node and connect into the network. From the same directory where you saved your burrow.toml and genesis.json please run the below command. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
 
 ```
 burrow start \
-    --validator-moniker ORGNAME-t1.agreements.network-validator \
+    --validator-moniker ORGNAME-t2.agreements.network-validator \
     --validator-address $ADDR
 ```
 

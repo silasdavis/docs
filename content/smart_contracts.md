@@ -6,36 +6,117 @@ The Agreements Network suite of smart contracts are solidity based and provide a
 
 Below you will find the specifics on how to interact with the smart contracts via solidity based CALLS. These calls can be managed in a variety of ways, from other smart contracts or from various non-blockchain clients.
 
-## active-agreements
+## agreements
 
-### AbstractERC165
-
-
-The AbstractERC165 contract is found within the active-agreements bundle.
-
-#### supportsInterface(bytes4)
+### AbstractDataStorage
 
 
-**supportsInterface(bytes4)**
+The AbstractDataStorage contract is found within the agreements bundle.
+
+#### getNumberOfArrayEntries(bytes32,bool)
 
 
-Returns whether the declared interface signature is supported by this contract
+**getNumberOfArrayEntries(bytes32,bool)**
+
+
+Returns the number of non-default entries in the specified array-type DataStorage field
 
 ```endpoint
-CALL supportsInterface(bytes4)
+CALL getNumberOfArrayEntries(bytes32,bool)
 ```
 
 #### Parameters
 
 ```solidity
-_interfaceId // the signature of the ERC165 interface
+_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
+_id // the key under which to find the array-type value
 
 ```
 
 #### Return
 
 ```json
-true if supported, false otherwise
+the number of non-default entries in the array
+```
+
+
+---
+
+### AbstractEventListener
+
+
+The AbstractEventListener contract is found within the agreements bundle.
+
+#### eventFired(bytes32,address)
+
+
+**eventFired(bytes32,address)**
+
+
+See EventListener.eventFired(bytes32,address)
+
+```endpoint
+CALL eventFired(bytes32,address)
+```
+
+
+---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+See EventListener.eventFired(bytes32,address,address)
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+See EventListener.eventFired(bytes32,address,bytes32)
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+See EventListener.eventFired(bytes32,address,string)
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+See EventListener.eventFired(bytes32,address,uint)
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
 ```
 
 
@@ -44,7 +125,7 @@ true if supported, false otherwise
 ### AbstractNamedElement
 
 
-The AbstractNamedElement contract is found within the active-agreements bundle.
+The AbstractNamedElement contract is found within the agreements bundle.
 
 #### getId()
 
@@ -91,7 +172,7 @@ the bytes32 name
 ### AccountsManager Interface
 
 
-The AccountsManager Interface contract is found within the active-agreements bundle.
+The AccountsManager Interface contract is found within the agreements bundle.
 
 #### addBusinessAccount(address)
 
@@ -223,16 +304,16 @@ bool exists
 
 ---
 
-#### createUserAccount(address,bytes32,bytes32)
+#### createUserAccount(address,bytes32)
 
 
-**createUserAccount(address,bytes32,bytes32)**
+**createUserAccount(address,bytes32)**
 
 
 Creates and adds a user account
 
 ```endpoint
-CALL createUserAccount(address,bytes32,bytes32)
+CALL createUserAccount(address,bytes32)
 ```
 
 #### Parameters
@@ -240,7 +321,6 @@ CALL createUserAccount(address,bytes32,bytes32)
 ```solidity
 _id // id (optional)
 _owner // owner (optional)
-_secret // secret
 
 ```
 
@@ -402,7 +482,7 @@ error code
 ### ActiveAgreement Interface
 
 
-The ActiveAgreement Interface contract is found within the active-agreements bundle.
+The ActiveAgreement Interface contract is found within the agreements bundle.
 
 #### addEventListener(bytes32)
 
@@ -444,6 +524,27 @@ CALL addEventListener(bytes32,address)
 _event // the event to subscribe to
 _listener // the address of an EventListener
 
+```
+
+
+---
+
+#### cancel()
+
+
+**cancel()**
+
+
+Registers the msg.sender as having cancelled the agreement. During formation (legal states DRAFT and FORMULATED), the agreement can cancelled unilaterally by one of the parties to the agreement. During execution (legal state EXECUTED), the agreement can only be canceled if all parties agree to do so by invoking this function.
+
+```endpoint
+CALL cancel()
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_ACTOR() if the msg.sender is not a party on this agreement, BaseErrors.NO_ERROR() otherwise.
 ```
 
 
@@ -1360,6 +1461,27 @@ uint8[100] the value of the data
 
 ---
 
+#### getEventLogReference()
+
+
+**getEventLogReference()**
+
+
+Returns the Hoard Address and Hoard Secret for the Event Log
+
+```endpoint
+CALL getEventLogReference()
+```
+
+#### Return
+
+```json
+the Hoard Address and Hoard Secret for the Event Log
+```
+
+
+---
+
 #### getHoardAddress()
 
 
@@ -1377,6 +1499,48 @@ CALL getHoardAddress()
 ```json
 the Hoard Address
 
+```
+
+
+---
+
+#### getLegalState()
+
+
+**getLegalState()**
+
+
+Returns the legal state of this agreement
+
+```endpoint
+CALL getLegalState()
+```
+
+#### Return
+
+```json
+the Agreements.LegalState as a uint
+```
+
+
+---
+
+#### getMaxNumberOfEvents()
+
+
+**getMaxNumberOfEvents()**
+
+
+Returns the max number of events for the event log
+
+```endpoint
+CALL getMaxNumberOfEvents()
+```
+
+#### Return
+
+```json
+the max number of events for the event log
 ```
 
 
@@ -2412,6 +2576,36 @@ _value // the uint8[100] value of the data
 
 ---
 
+#### setEventLogReference(bytes32,bytes32)
+
+
+**setEventLogReference(bytes32,bytes32)**
+
+
+Sets the Hoard Address and Hoard Secret for the Event Log
+
+```endpoint
+CALL setEventLogReference(bytes32,bytes32)
+```
+
+
+---
+
+#### setFulfilled()
+
+
+**setFulfilled()**
+
+
+Sets the legal state of this agreement to Agreements.LegalState.FULFILLED. Note: All other legal states are set by internal logic.
+
+```endpoint
+CALL setFulfilled()
+```
+
+
+---
+
 #### sign()
 
 
@@ -2436,18 +2630,18 @@ an error code indicating success or failure
 ### ActiveAgreementRegistry Interface
 
 
-The ActiveAgreementRegistry Interface contract is found within the active-agreements bundle.
+The ActiveAgreementRegistry Interface contract is found within the agreements bundle.
 
-#### create(address,bytes32,address,bytes32,bytes32,bool,address[])
+#### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
 
 
-**create(address,bytes32,address,bytes32,bytes32,bool,address[])**
+**create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])**
 
 
 Creates an Active Agreement with the given parameters
 
 ```endpoint
-CALL create(address,bytes32,address,bytes32,bytes32,bool,address[])
+CALL create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
 ```
 
 #### Parameters
@@ -2463,6 +2657,36 @@ _parties // parties
 
 ```json
 error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _name is null, or BaseErrors.RUNTIME_ERROR() if runtime errora return code indicating success or failure and the new activeAgreement's address, if successfully created
+```
+
+
+---
+
+#### createUserAccount(address,address,bytes32)
+
+
+**createUserAccount(address,address,bytes32)**
+
+
+Creates a AgreementPartyAccount with the specified parameters and adds it to the AccountsManager
+
+```endpoint
+CALL createUserAccount(address,address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_accountsManager // the AccountsManager address
+_id // id (optional)
+_owner // owner (optional)
+
+```
+
+#### Return
+
+```json
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
 ```
 
 
@@ -2893,6 +3117,30 @@ _service // the BpmService
 
 ---
 
+#### setEventLogReference(address,bytes32,bytes32)
+
+
+**setEventLogReference(address,bytes32,bytes32)**
+
+
+Updates the hoard address and secret for the event log of the specified agreement
+
+```endpoint
+CALL setEventLogReference(address,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // Address of active agreement
+_eventLogHoardAddress // New hoard address of event log for agreement
+_eventLogHoardSecret // New hoard secret key of event log for agreement
+
+```
+
+
+---
+
 #### startFormation(address)
 
 
@@ -2921,391 +3169,360 @@ error - an error code indicating success or failurethe address of the ProcessIns
 
 ---
 
-### AgreementsModule
+### AgreementPartyAccount
 
 
-The AgreementsModule contract is found within the active-agreements bundle.
+The AgreementPartyAccount contract is found within the agreements bundle.
 
-#### addChild(address)
-
-
-**addChild(address)**
+#### cancelAgreement(address)
 
 
-Adds the given address as a child of this component
+**cancelAgreement(address)**
+
+
+Signs the provided ActiveAgreement contract
 
 ```endpoint
-CALL addChild(address)
+CALL cancelAgreement(address)
 ```
 
 #### Parameters
 
 ```solidity
-_child // the child to add
+_agreement // the address of a ActiveAgreement
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+error code if the signing failed
 ```
 
 
 ---
 
-#### compareVersion(address)
+#### completeActivity(bytes32,address)
 
 
-**compareVersion(address)**
+**completeActivity(bytes32,address)**
 
 
-Compares this contract's version to the version of the contract at the specified address.
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
 
 ```endpoint
-CALL compareVersion(address)
+CALL completeActivity(bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
-_other // the address to which this contract is compared
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+error code if the completion failed
 ```
 
 
 ---
 
-#### compareVersion(uint8[3])
+#### getId()
 
 
-**compareVersion(uint8[3])**
+**getId()**
 
 
-Compares this contract's version to the specified version.
+Returns this account's ID
 
 ```endpoint
-CALL compareVersion(uint8[3])
+CALL getId()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
 ```
 
 #### Parameters
 
 ```solidity
-_version // the version to which this contract's version is compared
+_organization // the organization's address with which to associate this user account
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
 ```
 
 
 ---
 
-#### getNumberOfChildren()
+#### signAgreement(address)
 
 
-**getNumberOfChildren()**
+**signAgreement(address)**
 
 
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
+Signs the provided ActiveAgreement contract
 
 ```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
+CALL signAgreement(address)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
+_agreement // the address of a ActiveAgreement
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+error code if the signing failed
 ```
 
 
 ---
 
-#### setRoot(address)
+### AgreementPartyProxy
 
 
-**setRoot(address)**
+The AgreementPartyProxy contract is found within the agreements bundle.
+
+#### cancelAgreement(address)
 
 
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+**cancelAgreement(address)**
+
+
+Signs the provided ActiveAgreement contract
 
 ```endpoint
-CALL setRoot(address)
+CALL cancelAgreement(address)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the hierarchy root
+_agreement // the address of a ActiveAgreement
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+error code if the signing failed
 ```
 
 
 ---
 
-#### supportsInterface(bytes4)
+#### completeActivity(bytes32,address)
 
 
-**supportsInterface(bytes4)**
+**completeActivity(bytes32,address)**
 
 
-Returns whether the declared interface signature is supported by this contract
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
 
 ```endpoint
-CALL supportsInterface(bytes4)
+CALL completeActivity(bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
-_interfaceId // the signature of the ERC165 interface
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
 
 ```
 
 #### Return
 
 ```json
-true if supported, false otherwise
+error code if the completion failed
 ```
 
 
 ---
 
-#### upgrade(address)
+#### signAgreement(address)
 
 
-**upgrade(address)**
+**signAgreement(address)**
 
 
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+Signs the provided ActiveAgreement contract
 
 ```endpoint
-CALL upgrade(address)
+CALL signAgreement(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // the address of a ActiveAgreement
+
+```
+
+#### Return
+
+```json
+error code if the signing failed
 ```
 
 
 ---
+
+### AgreementSignatureCheck Interface
+
+
+The AgreementSignatureCheck Interface contract is found within the agreements bundle.
+
+#### complete(address,bytes32,bytes32,address)
+
+
+**complete(address,bytes32,bytes32,address)**
+
+
+Treats the provided DataStorage as the agreement and checks if the TX performer has applied a signature. The function will throw if the presence of the signature could not be established. NOTE: Not used parameters 
+
+```endpoint
+CALL complete(address,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_dataStorage // the Agreement
+_txPerformer // the address performing the transaction
+
+```
+
+
+---
+
+
+### AgreementsAPI
+
+
+The AgreementsAPI contract is found within the agreements bundle.
+
+#### authorizePartyActor(ActiveAgreement)
+
+
+**authorizePartyActor(ActiveAgreement)**
+
+
+Evaluates the msg.sender and tx.origin against the given agreement to determine if there is an authorized party/actor relationship.
+
+```endpoint
+CALL authorizePartyActor(ActiveAgreement)
+```
+
+#### Parameters
+
+```solidity
+_agreement // an ActiveAgreement
+
+```
+
+#### Return
+
+```json
+actor - the address of either msg.sender or tx.origin depending on which one was authorized; 0x0 if authorization failedparty - the agreement party associated with the identified actor. This is typically the same as the actor, but can also contain an Organization address if an Organization was registered as a party. 0x0 if authorization failed
+```
+
+
+---
+
+#### isFullyExecuted(ActiveAgreement)
+
+
+**isFullyExecuted(ActiveAgreement)**
+
+
+Checks whether the given agreement is fully executed.
+
+```endpoint
+CALL isFullyExecuted(ActiveAgreement)
+```
+
+#### Parameters
+
+```solidity
+_agreement // an ActiveAgreement
+
+```
+
+#### Return
+
+```json
+true if all parties have signed, false otherwise
+```
+
+
+---
+
 
 ### ApplicationRegistry Interface
 
 
-The ApplicationRegistry Interface contract is found within the active-agreements bundle.
+The ApplicationRegistry Interface contract is found within the agreements bundle.
 
 #### addApplication(bytes32,uint8,address,bytes4,bytes32,bytes32)
 
@@ -3478,10 +3695,524 @@ an error code indicating success or failure
 
 ---
 
+### Archetype Interface
+
+
+The Archetype Interface contract is found within the agreements bundle.
+
+#### activate()
+
+
+**activate()**
+
+
+Activates this archetype
+
+```endpoint
+CALL activate()
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### addCustomField(uint8,bytes32)
+
+
+**addCustomField(uint8,bytes32)**
+
+
+Adds a custom field with the specified type and name to the archetype
+
+```endpoint
+CALL addCustomField(uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_customField // customField
+_fieldType // field type (enum)
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### addDocument(bytes32,bytes32,bytes32)
+
+
+**addDocument(bytes32,bytes32,bytes32)**
+
+
+Adds the document specified by the given parameters to the archetype
+
+```endpoint
+CALL addDocument(bytes32,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_hoardAddress // hoard address
+_name // name
+_secretKey // secret key
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### addJurisdiction(bytes2,bytes32)
+
+
+**addJurisdiction(bytes2,bytes32)**
+
+
+Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations.
+
+```endpoint
+CALL addJurisdiction(bytes2,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_country // a ISO- code, e.g. 'US'
+_region // a region identifier from a IsoCountries contract
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+key of the jurisdiction just added
+```
+
+
+---
+
+#### deactivate()
+
+
+**deactivate()**
+
+
+Deactivates this archetype
+
+```endpoint
+CALL deactivate()
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+#### getAuthor()
+
+
+**getAuthor()**
+
+
+Gets Author
+
+```endpoint
+CALL getAuthor()
+```
+
+#### Return
+
+```json
+author author
+```
+
+
+---
+
+#### getCustomFieldAtIndex(uint256)
+
+
+**getCustomFieldAtIndex(uint256)**
+
+
+Gets custom field at index
+
+```endpoint
+CALL getCustomFieldAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error error TBDcustomField custom field
+```
+
+
+---
+
+#### getCustomFieldType(bytes32)
+
+
+**getCustomFieldType(bytes32)**
+
+
+Gets custom field data type
+
+```endpoint
+CALL getCustomFieldType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_customField // custom field
+
+```
+
+#### Return
+
+```json
+error error TBDfieldType field type
+```
+
+
+---
+
+#### getDescription()
+
+
+**getDescription()**
+
+
+Gets description
+
+```endpoint
+CALL getDescription()
+```
+
+#### Return
+
+```json
+description
+```
+
+
+---
+
+#### getDocument(bytes32)
+
+
+**getDocument(bytes32)**
+
+
+Gets document with given name
+
+```endpoint
+CALL getDocument(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_name // document name
+
+```
+
+#### Return
+
+```json
+externalContent external content
+```
+
+
+---
+
+#### getDocumentAtIndex(uint256)
+
+
+**getDocumentAtIndex(uint256)**
+
+
+Gets document name at index
+
+```endpoint
+CALL getDocumentAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsname
+```
+
+
+---
+
+#### getExecutionProcessDefinition()
+
+
+**getExecutionProcessDefinition()**
+
+
+Returns the address of the ProcessDefinition that orchestrates the agreement execution.
+
+```endpoint
+CALL getExecutionProcessDefinition()
+```
+
+#### Return
+
+```json
+the address of a ProcessDefinition
+```
+
+
+---
+
+#### getFormationProcessDefinition()
+
+
+**getFormationProcessDefinition()**
+
+
+Returns the address of the ProcessDefinition that orchestrates the agreement formation.
+
+```endpoint
+CALL getFormationProcessDefinition()
+```
+
+#### Return
+
+```json
+the address of a ProcessDefinition
+```
+
+
+---
+
+#### getJurisdictionAtIndex(uint256)
+
+
+**getJurisdictionAtIndex(uint256)**
+
+
+Retrieves the key for the jurisdiction at the specified index
+
+```endpoint
+CALL getJurisdictionAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // the index position
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsthe key of the jurisdiction or an empty bytes32 if the index was out of bounds
+```
+
+
+---
+
+#### getJurisdictionData(bytes32)
+
+
+**getJurisdictionData(bytes32)**
+
+
+Returns information about the jurisdiction with the specified key
+
+```endpoint
+CALL getJurisdictionData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_key // the key identifying the jurisdiction
+
+```
+
+#### Return
+
+```json
+the country and region identifiers (see IsoCountries), if the jurisdiction exists
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+#### getNumberOfCustomFields()
+
+
+**getNumberOfCustomFields()**
+
+
+Gets number of custom fields
+
+```endpoint
+CALL getNumberOfCustomFields()
+```
+
+#### Return
+
+```json
+size number of custom fields
+```
+
+
+---
+
+#### getNumberOfDocuments()
+
+
+**getNumberOfDocuments()**
+
+
+Gets number of documents
+
+```endpoint
+CALL getNumberOfDocuments()
+```
+
+#### Return
+
+```json
+size number of documents
+```
+
+
+---
+
+#### getNumberOfJurisdictions()
+
+
+**getNumberOfJurisdictions()**
+
+
+Returns the number jurisdictions for this archetype
+
+```endpoint
+CALL getNumberOfJurisdictions()
+```
+
+#### Return
+
+```json
+the number of jurisdictions
+```
+
+
+---
+
+#### isActive()
+
+
+**isActive()**
+
+
+Returns the active state
+
+```endpoint
+CALL isActive()
+```
+
+#### Return
+
+```json
+true if active, false otherwise
+```
+
+
+---
+
+#### isPrivate()
+
+
+**isPrivate()**
+
+
+Returns the private state
+
+```endpoint
+CALL isPrivate()
+```
+
+#### Return
+
+```json
+true if private, false otherwise
+```
+
+
+---
+
 ### ArchetypeRegistry Interface
 
 
-The ArchetypeRegistry Interface contract is found within the active-agreements bundle.
+The ArchetypeRegistry Interface contract is found within the agreements bundle.
 
 #### activate(address)
 
@@ -3551,7 +4282,7 @@ CALL addField(address,uint8,bytes32)
 
 ```solidity
 _customField // customField
-_dataType // data type (enum)
+_fieldType // field type (enum)
 
 ```
 
@@ -3580,7 +4311,7 @@ CALL addFields(address,uint8[],bytes32[])
 
 ```solidity
 _customFields // customField
-_dataTypes // data type (enum)
+_fieldTypes // field type (enum) array
 
 ```
 
@@ -3920,7 +4651,7 @@ _name // name
 #### Return
 
 ```json
-dataType data type
+fieldType field type
 ```
 
 
@@ -4040,393 +4771,134 @@ the number of jurisdictions
 
 ---
 
+### ArrayUtils Library Interface
 
 
-### BpmModule
+The ArrayUtils Library Interface contract is found within the agreements bundle.
+
+#### contains(address[],address)
 
 
-The BpmModule contract is found within the active-agreements bundle.
-
-#### addChild(address)
+**contains(address[],address)**
 
 
-**addChild(address)**
-
-
-Adds the given address as a child of this component
+Returns whether the specified value is present in the given array
 
 ```endpoint
-CALL addChild(address)
+CALL contains(address[],address)
 ```
 
 #### Parameters
 
 ```solidity
-_child // the child to add
+_list // the array
+_value // the value
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+true if the value is found in the array, false otherwise
 ```
 
 
 ---
 
-#### compareVersion(address)
+#### contains(bytes32[],bytes32)
 
 
-**compareVersion(address)**
+**contains(bytes32[],bytes32)**
 
 
-Compares this contract's version to the version of the contract at the specified address.
+Returns whether the specified value is present in the given array
 
 ```endpoint
-CALL compareVersion(address)
+CALL contains(bytes32[],bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_other // the address to which this contract is compared
+_list // the array
+_value // the value
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+true if the value is found in the array, false otherwise
 ```
 
 
 ---
 
-#### compareVersion(uint8[3])
+#### contains(int256[],int256)
 
 
-**compareVersion(uint8[3])**
+**contains(int256[],int256)**
 
 
-Compares this contract's version to the specified version.
+Returns whether the specified value is present in the given array
 
 ```endpoint
-CALL compareVersion(uint8[3])
+CALL contains(int256[],int256)
 ```
 
 #### Parameters
 
 ```solidity
-_version // the version to which this contract's version is compared
+_list // the array
+_value // the value
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+true if the value is found in the array, false otherwise
 ```
 
 
 ---
 
-#### getNumberOfChildren()
+#### contains(uint256[],uint256)
 
 
-**getNumberOfChildren()**
+**contains(uint256[],uint256)**
 
 
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
+Returns whether the specified value is present in the given array
 
 ```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
+CALL contains(uint256[],uint256)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
+_list // the array
+_value // the value
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+true if the value is found in the array, false otherwise
 ```
 
 
 ---
 
-#### setRoot(address)
 
 
-**setRoot(address)**
-
-
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
-
-```endpoint
-CALL setRoot(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the hierarchy root
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
-```
-
-
----
-
-#### supportsInterface(bytes4)
-
-
-**supportsInterface(bytes4)**
-
-
-Returns whether the declared interface signature is supported by this contract
-
-```endpoint
-CALL supportsInterface(bytes4)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the signature of the ERC165 interface
-
-```
-
-#### Return
-
-```json
-true if supported, false otherwise
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
-```
-
-
----
 
 ### BpmRuntimeDb
 
 
-The BpmRuntimeDb contract is found within the active-agreements bundle.
+The BpmRuntimeDb contract is found within the agreements bundle.
 
 #### addActivityInstance(bytes32)
 
@@ -4595,7 +5067,7 @@ _newOwner // The address to transfer ownership to.
 ### BpmService Interface
 
 
-The BpmService Interface contract is found within the active-agreements bundle.
+The BpmService Interface contract is found within the agreements bundle.
 
 #### createDefaultProcessInstance(address,address,bytes32)
 
@@ -4616,37 +5088,6 @@ _activityInstanceId // the ID of a subprocess activity instance that initiated t
 _processDefinition // the address of a ProcessDefinition
 _startedBy // the address of an account that regarded as the starting user
 
-```
-
-
----
-
-#### createUserAccount(address,address,bytes32,bytes32)
-
-
-**createUserAccount(address,address,bytes32,bytes32)**
-
-
-Creates a WorkflowUserAccount with the specified parameters and adds it to the AccountsManager
-
-```endpoint
-CALL createUserAccount(address,address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_accountsManager // the AccountsManager address
-_id // id (optional)
-_owner // owner (optional)
-_secret // secret
-
-```
-
-#### Return
-
-```json
-error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
 ```
 
 
@@ -5157,7 +5598,7 @@ BaseErrors.NO_ERROR() if successful or an error code from initializing or execut
 ### Identifiable Interface
 
 
-The Identifiable Interface contract is found within the active-agreements bundle.
+The Identifiable Interface contract is found within the agreements bundle.
 
 #### getId()
 
@@ -5183,7 +5624,7 @@ the bytes32 ID
 ### DataStorage Interface
 
 
-The DataStorage Interface contract is found within the active-agreements bundle.
+The DataStorage Interface contract is found within the agreements bundle.
 
 #### getDataIdAtIndex(uint256)
 
@@ -6870,814 +7311,2424 @@ _value // the uint8[100] value of the data
 
 ---
 
-### DataTypesAccess Module
+### DataStorageUtils Library
 
 
-The DataTypesAccess Module contract is found within the active-agreements bundle.
+The DataStorageUtils Library contract is found within the agreements bundle.
 
-#### addChild(address)
-
-
-**addChild(address)**
+#### getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
 
 
-Adds the given address as a child of this component
+**getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)**
+
+
+Returns the number of non-default entries in the array-type field specified in the given DataMap. Empty values are: 0 for int/uint, 0x0 for address, "" for bytes32, etc.) Currently only DataTypes.ADDRESSARRAY() and DataTypes.BYTES32ARRAY() are supported by this function
 
 ```endpoint
-CALL addChild(address)
+CALL getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
 ```
 
 #### Parameters
 
 ```solidity
-_child // the child to add
+_fullscan // if true the array will be scanned to its end, otherwise the function returns on the first encountered default value
+_key // a key pointing to a supported array-type field
+_map // the DataMap
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+the number of non-default entries
 ```
 
 
 ---
 
-#### compareVersion(address)
+#### getNumberOfEntries(address[100],bool)
 
 
-**compareVersion(address)**
+**getNumberOfEntries(address[100],bool)**
 
 
-Compares this contract's version to the version of the contract at the specified address.
+Returns the number of non-default entries in the given array.
 
 ```endpoint
-CALL compareVersion(address)
+CALL getNumberOfEntries(address[100],bool)
 ```
 
 #### Parameters
 
 ```solidity
-_other // the address to which this contract is compared
+_array // the array to scan
+_fullscan // whether to keep scanning to the end even if default values are encountered
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+the number of non-empty entries in the array
 ```
 
 
 ---
 
-#### compareVersion(uint8[3])
+#### getNumberOfEntries(bytes32[100],bool)
 
 
-**compareVersion(uint8[3])**
+**getNumberOfEntries(bytes32[100],bool)**
 
 
-Compares this contract's version to the specified version.
+Returns the number of non-default entries in the given array.
 
 ```endpoint
-CALL compareVersion(uint8[3])
+CALL getNumberOfEntries(bytes32[100],bool)
 ```
 
 #### Parameters
 
 ```solidity
-_version // the version to which this contract's version is compared
+_array // the array to scan
+_fullscan // whether to keep scanning to the end even if default values are encountered
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+the number of non-empty entries in the array
 ```
 
 
 ---
 
-#### getNumberOfChildren()
+#### keyAtIndex(DataStorageUtils.DataMap storage,uint256)
 
 
-**getNumberOfChildren()**
+**keyAtIndex(DataStorageUtils.DataMap storage,uint256)**
 
 
-returns the number of child sub-modules
+Returns the ID of the Data at the specified index in the given map
 
 ```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
+CALL keyAtIndex(DataStorageUtils.DataMap storage,uint256)
 ```
 
 
 ---
 
-#### getParent()
+#### remove(DataStorageUtils.DataMap storage,bytes32)
 
 
-**getParent()**
+**remove(DataStorageUtils.DataMap storage,bytes32)**
 
 
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
+Removes the Data registered at the specified key in the provided map. The _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
 
 ```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
+CALL remove(DataStorageUtils.DataMap storage,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the new owner
+_key // the key
+_map // the map
 
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
 ```
 
 
 ---
 
-#### setParent(address)
+
+### DefaultActiveAgreement Interface
 
 
-**setParent(address)**
+The DefaultActiveAgreement Interface contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
 
 
-Sets the parent of this component
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
 
 ```endpoint
-CALL setParent(address)
+CALL addEventListener(bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_parent // the parent
+_event // the event to subscribe to
 
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
 ```
 
 
 ---
 
-#### setRoot(address)
+#### addEventListener(bytes32,address)
 
 
-**setRoot(address)**
+**addEventListener(bytes32,address)**
 
 
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+Adds the msg.sender as listener for the specified event.
 
 ```endpoint
-CALL setRoot(address)
+CALL addEventListener(bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the hierarchy root
+_event // the event to subscribe to
+_listener // the address of an EventListener
 
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
 ```
 
 
 ---
 
-#### supportsInterface(bytes4)
+#### cancel()
 
 
-**supportsInterface(bytes4)**
+**cancel()**
 
 
-Returns whether the declared interface signature is supported by this contract
+Registers the msg.sender as having canceled the agreement. During formation (legal states DRAFT and FORMULATED), the agreement can canceled unilaterally by one of the parties to the agreement. During execution (legal state EXECUTED), the agreement can only be canceled if all parties agree to do so by invoking this function.
 
 ```endpoint
-CALL supportsInterface(bytes4)
+CALL cancel()
+```
+
+#### Return
+
+```json
+BaseErrors.INVALID_ACTOR() if the msg.sender is not a party on this agreement, BaseErrors.NO_ERROR() otherwise.
+```
+
+
+---
+
+#### getArchetype()
+
+
+**getArchetype()**
+
+
+Returns the archetype
+
+```endpoint
+CALL getArchetype()
+```
+
+#### Return
+
+```json
+the archetype address 
+```
+
+
+---
+
+#### getCreator()
+
+
+**getCreator()**
+
+
+Returns the creator
+
+```endpoint
+CALL getCreator()
+```
+
+#### Return
+
+```json
+the creator address
+```
+
+
+---
+
+#### getDataValueAsAddressArray(bytes32)
+
+
+**getDataValueAsAddressArray(bytes32)**
+
+
+Overriden method of DataStorage to return the agreement parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
+
+```endpoint
+CALL getDataValueAsAddressArray(bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_interfaceId // the signature of the ERC165 interface
+_id // the bytes32 ID of an address array
 
 ```
 
 #### Return
 
 ```json
-true if supported, false otherwise
+the address array
 ```
 
 
 ---
 
-#### upgrade(address)
+#### getEventLogReference()
 
 
-**upgrade(address)**
+**getEventLogReference()**
 
 
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+Returns the Hoard Address and Hoard Secret for the Event Log
 
 ```endpoint
-CALL upgrade(address)
+CALL getEventLogReference()
+```
+
+#### Return
+
+```json
+the Hoard Address and Hoard Secret for the Event Log
 ```
 
 
 ---
 
-### DefaultLifecycleModule
+#### getHoardAddress()
 
 
-The DefaultLifecycleModule contract is found within the active-agreements bundle.
-
-#### addChild(address)
+**getHoardAddress()**
 
 
-**addChild(address)**
-
-
-Adds the given address as a child of this component
+Returns the Hoard Address
 
 ```endpoint
-CALL addChild(address)
+CALL getHoardAddress()
+```
+
+#### Return
+
+```json
+the Hoard Address
+
+```
+
+
+---
+
+#### getLegalState()
+
+
+**getLegalState()**
+
+
+Returns the legal state of this agreement
+
+```endpoint
+CALL getLegalState()
+```
+
+#### Return
+
+```json
+the Agreements.LegalState as a uint
+```
+
+
+---
+
+#### getMaxNumberOfEvents()
+
+
+**getMaxNumberOfEvents()**
+
+
+Returns the max number of events for the event log
+
+```endpoint
+CALL getMaxNumberOfEvents()
+```
+
+#### Return
+
+```json
+the max number of events for the event log
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Gets name
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+name name
+```
+
+
+---
+
+#### getNumberOfArrayEntries(bytes32,bool)
+
+
+**getNumberOfArrayEntries(bytes32,bool)**
+
+
+Overridden method of DataStorage to return the number of parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
+
+```endpoint
+CALL getNumberOfArrayEntries(bytes32,bool)
 ```
 
 #### Parameters
 
 ```solidity
-_child // the child to add
+_fullscan // whether to scan beyond non-default values
+_id // the ID of the data field
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+the size of the specified array
 ```
 
 
 ---
 
-#### compareVersion(address)
+#### getNumberOfParties()
 
 
-**compareVersion(address)**
+**getNumberOfParties()**
 
 
-Compares this contract's version to the version of the contract at the specified address.
+Gets number of parties
 
 ```endpoint
-CALL compareVersion(address)
+CALL getNumberOfParties()
+```
+
+#### Return
+
+```json
+size number of parties
+```
+
+
+---
+
+#### getParty(uint256)
+
+
+**getParty(uint256)**
+
+
+Gets party
+
+```endpoint
+CALL getParty(uint256)
 ```
 
 #### Parameters
 
 ```solidity
-_other // the address to which this contract is compared
+_index // index
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of boundsparty party
 ```
 
 
 ---
 
-#### compareVersion(uint8[3])
+#### getSignatureDetails(address)
 
 
-**compareVersion(uint8[3])**
+**getSignatureDetails(address)**
 
 
-Compares this contract's version to the specified version.
+Returns the signee and timestamp of the signature of the given party.
 
 ```endpoint
-CALL compareVersion(uint8[3])
+CALL getSignatureDetails(address)
 ```
 
 #### Parameters
 
 ```solidity
-_version // the version to which this contract's version is compared
+_party // the signing party
 
 ```
 
 #### Return
 
 ```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+the address of the signee (if the party authorized a signee other than itself)the time of signing or 0 if the address is not a party to this agreement or has not signed yet
 ```
 
 
 ---
 
-#### getNumberOfChildren()
+#### gethoardSecret()
 
 
-**getNumberOfChildren()**
+**gethoardSecret()**
 
 
-returns the number of child sub-modules
+Returns the Hoard Secret
 
 ```endpoint
-CALL getNumberOfChildren()
+CALL gethoardSecret()
 ```
 
 #### Return
 
 ```json
-the number of children
+the Hoard Secret
 ```
 
 
 ---
 
-#### getNumberOfRegistrationContracts()
+#### isPrivate()
 
 
-**getNumberOfRegistrationContracts()**
+**isPrivate()**
 
 
-Returns the number of contracts registered in this module
+Returns the private flag
 
 ```endpoint
-CALL getNumberOfRegistrationContracts()
+CALL isPrivate()
 ```
 
 #### Return
 
 ```json
-0
+the private flag 
 ```
 
 
 ---
 
-#### getParent()
+#### isSignedBy(address)
 
 
-**getParent()**
+**isSignedBy(address)**
 
 
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getRegistrationContract(uint256)
-
-
-**getRegistrationContract(uint256)**
-
-
-Returns information about the contract registered at the specified index
+Returns whether the given account's signature is on the agreement.
 
 ```endpoint
-CALL getRegistrationContract(uint256)
-```
-
-#### Return
-
-```json
-("", 0x0)
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
+CALL isSignedBy(address)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
+_signee // The account to check
 
 ```
 
 #### Return
 
 ```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+true if the provided address is a recorded signature on the agreement, false otherwise
 ```
 
 
 ---
 
-#### setRoot(address)
+#### removeEventListener(bytes32)
 
 
-**setRoot(address)**
+**removeEventListener(bytes32)**
 
 
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+Removes the msg.sender from the list of listeners for the specified event.
 
 ```endpoint
-CALL setRoot(address)
+CALL removeEventListener(bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the hierarchy root
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### setEventLogReference(bytes32,bytes32)
+
+
+**setEventLogReference(bytes32,bytes32)**
+
+
+Sets the Hoard Address and Hoard Secret for the Event Log
+
+```endpoint
+CALL setEventLogReference(bytes32,bytes32)
+```
+
+
+---
+
+#### setFulfilled()
+
+
+**setFulfilled()**
+
+
+Sets the legal state of this agreement to Agreements.LegalState.FULFILLED. Note: All other legal states are set by internal logic.
+
+```endpoint
+CALL setFulfilled()
+```
+
+
+---
+
+#### sign()
+
+
+**sign()**
+
+
+Applies the msg.sender or tx.origin as a signature to this agreement, if the it can be authorized as a valid signee. The timestamp of an already existing signature is not overwritten!
+
+```endpoint
+CALL sign()
+```
+
+#### Return
+
+```json
+an error code indicating success or failure
+```
+
+
+---
+
+### DefaultActiveAgreementRegistry Interface
+
+
+The DefaultActiveAgreementRegistry Interface contract is found within the agreements bundle.
+
+#### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+
+
+**create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])**
+
+
+Creates an Active Agreement with the given parameters
+
+```endpoint
+CALL create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_hoardAddress // Address of agreement params in hoard
+_hoardSecret // Secret for hoard retrieval
+_name // name
+_parties // parties
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+error - BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype or _name is nullactiveAgreement - the new ActiveAgreement's address, if successfully created, 0x0 otherwise
 ```
 
 
 ---
 
-#### supportsInterface(bytes4)
+#### createUserAccount(address,address,bytes32)
 
 
-**supportsInterface(bytes4)**
+**createUserAccount(address,address,bytes32)**
 
 
-Returns whether the declared interface signature is supported by this contract
+Creates an AgreementPartyAccount with the specified parameters and adds it to the AccountsManager
 
 ```endpoint
-CALL supportsInterface(bytes4)
+CALL createUserAccount(address,address,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_interfaceId // the signature of the ERC165 interface
+_accountsManager // the AccountsManager address
+_id // id (optional)
+_owner // owner (optional)
 
 ```
 
 #### Return
 
 ```json
-true if supported, false otherwise
+error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
 ```
 
 
 ---
 
-#### upgrade(address)
+#### eventFired(bytes32,address)
 
 
-**upgrade(address)**
+**eventFired(bytes32,address)**
 
 
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+Overwrites AbstractEventListener function to receive updates from ActiveAgreements that are registered in this registry. Currently supports AGREEMENT_STATE_CHANGED
 
 ```endpoint
-CALL upgrade(address)
+CALL eventFired(bytes32,address)
 ```
 
 
 ---
+
+#### eventFired(bytes32,address,address)
+
+
+**eventFired(bytes32,address,address)**
+
+
+Overwrites AbstractEventListener function to receive updates from ActiveAgreements that are registered in this registry. Currently supports AGREEMENT_SIGNATURE_ADDED
+
+```endpoint
+CALL eventFired(bytes32,address,address)
+```
+
+
+---
+
+#### eventFired(bytes32,address,bytes32)
+
+
+**eventFired(bytes32,address,bytes32)**
+
+
+See EventListener.eventFired(bytes32,address,bytes32)
+
+```endpoint
+CALL eventFired(bytes32,address,bytes32)
+```
+
+
+---
+
+#### eventFired(bytes32,address,string)
+
+
+**eventFired(bytes32,address,string)**
+
+
+See EventListener.eventFired(bytes32,address,string)
+
+```endpoint
+CALL eventFired(bytes32,address,string)
+```
+
+
+---
+
+#### eventFired(bytes32,address,uint256)
+
+
+**eventFired(bytes32,address,uint256)**
+
+
+See EventListener.eventFired(bytes32,address,uint)
+
+```endpoint
+CALL eventFired(bytes32,address,uint256)
+```
+
+
+---
+
+#### getActiveAgreementAtIndex(uint256)
+
+
+**getActiveAgreementAtIndex(uint256)**
+
+
+Gets activeAgreement address at given index
+
+```endpoint
+CALL getActiveAgreementAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+the Active Agreement address
+```
+
+
+---
+
+#### getActiveAgreementData(address)
+
+
+**getActiveAgreementData(address)**
+
+
+Returns data about the Active Agreement at the specified address
+
+```endpoint
+CALL getActiveAgreementData(address)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // Active Agreement
+
+```
+
+#### Return
+
+```json
+archetype archetypename namehoardAddress Address of agreement params in hoardhoardSecret Secret for hoard retrieval
+```
+
+
+---
+
+#### getActiveAgreementsSize()
+
+
+**getActiveAgreementsSize()**
+
+
+Gets number of activeAgreements
+
+```endpoint
+CALL getActiveAgreementsSize()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getAgreementParameterAtIndex(address,uint256)
+
+
+**getAgreementParameterAtIndex(address,uint256)**
+
+
+Returns the process data ID at the specified index
+
+```endpoint
+CALL getAgreementParameterAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index
+
+```
+
+#### Return
+
+```json
+the data ID
+```
+
+
+---
+
+#### getAgreementParameterDetails(address,bytes32)
+
+
+**getAgreementParameterDetails(address,bytes32)**
+
+
+Returns information about the process data entry for the specified process and data ID
+
+```endpoint
+CALL getAgreementParameterDetails(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_address // the active agreement
+_dataId // the data ID
+
+```
+
+#### Return
+
+```json
+(process,id,uintValue,bytes32Value,addressValue,boolValue)
+```
+
+
+---
+
+#### getBpmService()
+
+
+**getBpmService()**
+
+
+Returns the BpmService address
+
+```endpoint
+CALL getBpmService()
+```
+
+#### Return
+
+```json
+address the BpmService
+```
+
+
+---
+
+#### getNumberOfAgreementParameters(address)
+
+
+**getNumberOfAgreementParameters(address)**
+
+
+Returns the number of agreement parameter entries.
+
+```endpoint
+CALL getNumberOfAgreementParameters(address)
+```
+
+#### Return
+
+```json
+the process data size
+```
+
+
+---
+
+#### getPartiesByActiveAgreementSize(address)
+
+
+**getPartiesByActiveAgreementSize(address)**
+
+
+Gets parties size for given Active Agreement
+
+```endpoint
+CALL getPartiesByActiveAgreementSize(address)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // Active Agreement
+
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getPartyByActiveAgreementAtIndex(address,uint256)
+
+
+**getPartyByActiveAgreementAtIndex(address,uint256)**
+
+
+Gets getPartyByActiveAgreementAtIndex
+
+```endpoint
+CALL getPartyByActiveAgreementAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // Active Agreement
+_index // index
+
+```
+
+#### Return
+
+```json
+party party
+```
+
+
+---
+
+#### getPartyByActiveAgreementData(address,address)
+
+
+**getPartyByActiveAgreementData(address,address)**
+
+
+Returns data about the given party's signature on the specified agreement.
+
+```endpoint
+CALL getPartyByActiveAgreementData(address,address)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // the ActiveAgreement
+_party // the signing party
+
+```
+
+#### Return
+
+```json
+signedBy the actual signature authorized by the partysignatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
+```
+
+
+---
+
+#### processStateChanged(address)
+
+
+**processStateChanged(address)**
+
+```endpoint
+CALL processStateChanged(address)
+```
+
+#### Parameters
+
+```solidity
+_pi // the process instance whose state has changed
+
+```
+
+
+---
+
+#### setBpmService(address)
+
+
+**setBpmService(address)**
+
+
+Sets the BpmService reference to use for controlling the agreement workflows.
+
+```endpoint
+CALL setBpmService(address)
+```
+
+#### Parameters
+
+```solidity
+_service // the BpmService
+
+```
+
+
+---
+
+#### setEventLogReference(address,bytes32,bytes32)
+
+
+**setEventLogReference(address,bytes32,bytes32)**
+
+
+Updates the hoard address and secret for the event log of the specified agreement
+
+```endpoint
+CALL setEventLogReference(address,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activeAgreement // Address of active agreement
+_eventLogHoardAddress // New hoard address of event log for agreement
+_eventLogHoardSecret // New hoard secret key of event log for agreement
+
+```
+
+
+---
+
+#### startFormation(address)
+
+
+**startFormation(address)**
+
+
+Creates a starts a ProcessInstance to handle the formation workflow as defined by the given agreement's archetype.
+
+```endpoint
+CALL startFormation(address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // an ActiveAgreement
+
+```
+
+#### Return
+
+```json
+error - BaseErrors.INVALID_PARAM_STATE() if the agreement is not in legal state FORMULATEDerror - BaseErrors.NO_ERROR() if the formation process was started successfully, or a different error code if there were problems in the processthe address of the ProcessInstance, if successful
+```
+
+
+---
+
+### DefaultArchetype
+
+
+The DefaultArchetype contract is found within the agreements bundle.
+
+#### activate()
+
+
+**activate()**
+
+
+Activates this archetype
+
+```endpoint
+CALL activate()
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR()
+```
+
+
+---
+
+#### addCustomField(uint8,bytes32)
+
+
+**addCustomField(uint8,bytes32)**
+
+
+Adds custom field
+
+```endpoint
+CALL addCustomField(uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_customField // customField
+_fieldType // field type (enum)
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if successful,
+BaseErrors.NULL_PARAM_NOT_ALLOWED() if _customField is empty,
+BaseErrors.RESOURCE_ALREADY_EXISTS() if _customField already exists
+```
+
+
+---
+
+#### addDocument(bytes32,bytes32,bytes32)
+
+
+**addDocument(bytes32,bytes32,bytes32)**
+
+
+Adds document
+
+```endpoint
+CALL addDocument(bytes32,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_hoardAddress // hoard address
+_name // name
+_secretKey // secret key
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS() if _name already exists in documentNames
+```
+
+
+---
+
+#### addJurisdiction(bytes2,bytes32)
+
+
+**addJurisdiction(bytes2,bytes32)**
+
+
+Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations. If the region is empty, the jurisdiction will only reference the country and the regions will be emptied, i.e. any prior regions for that country will be removed.
+
+```endpoint
+CALL addJurisdiction(bytes2,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_country // a ISO- code, e.g. 'US'
+_region // a region identifier from a IsoCountries contract
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if successful, and key of jurisdiction just added
+BaseErrors.INVALID_PARAM_VALUE() if _country is not in the DataTypes enum,
+```
+
+
+---
+
+#### deactivate()
+
+
+**deactivate()**
+
+
+Deactivates this archetype
+
+```endpoint
+CALL deactivate()
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR()
+```
+
+
+---
+
+#### getAuthor()
+
+
+**getAuthor()**
+
+
+Gets Author
+
+```endpoint
+CALL getAuthor()
+```
+
+#### Return
+
+```json
+author author
+```
+
+
+---
+
+#### getCustomFieldAtIndex(uint256)
+
+
+**getCustomFieldAtIndex(uint256)**
+
+
+Gets custom field at index
+
+```endpoint
+CALL getCustomFieldAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error error TBDcustomField custom field
+```
+
+
+---
+
+#### getCustomFieldType(bytes32)
+
+
+**getCustomFieldType(bytes32)**
+
+
+Gets custom field data type
+
+```endpoint
+CALL getCustomFieldType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_customField // custom field
+
+```
+
+#### Return
+
+```json
+error error TBDfieldType field type
+```
+
+
+---
+
+#### getDescription()
+
+
+**getDescription()**
+
+
+Gets description
+
+```endpoint
+CALL getDescription()
+```
+
+#### Return
+
+```json
+description
+```
+
+
+---
+
+#### getDocument(bytes32)
+
+
+**getDocument(bytes32)**
+
+
+Gets document with given name
+
+```endpoint
+CALL getDocument(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_name // document name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND() if documentsNames does not contain _namehoardAddress hoard addresssecretKey secret key
+```
+
+
+---
+
+#### getDocumentAtIndex(uint256)
+
+
+**getDocumentAtIndex(uint256)**
+
+
+Gets document name at index
+
+```endpoint
+CALL getDocumentAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsname
+```
+
+
+---
+
+#### getExecutionProcessDefinition()
+
+
+**getExecutionProcessDefinition()**
+
+
+Returns the address of the ProcessDefinition that orchestrates the agreement execution.
+
+```endpoint
+CALL getExecutionProcessDefinition()
+```
+
+#### Return
+
+```json
+the address of a ProcessDefinition
+```
+
+
+---
+
+#### getFormationProcessDefinition()
+
+
+**getFormationProcessDefinition()**
+
+
+Returns the address of the ProcessDefinition that orchestrates the agreement formation.
+
+```endpoint
+CALL getFormationProcessDefinition()
+```
+
+#### Return
+
+```json
+the address of a ProcessDefinition
+```
+
+
+---
+
+#### getJurisdictionAtIndex(uint256)
+
+
+**getJurisdictionAtIndex(uint256)**
+
+
+Retrieves the key for the jurisdiction at the specified index
+
+```endpoint
+CALL getJurisdictionAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // the index position
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsthe key of the jurisdiction or an empty bytes32 if the index was out of bounds
+```
+
+
+---
+
+#### getJurisdictionData(bytes32)
+
+
+**getJurisdictionData(bytes32)**
+
+
+Returns information about the jurisdiction with the specified key
+
+```endpoint
+CALL getJurisdictionData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_key // the key identifying the jurisdiction
+
+```
+
+#### Return
+
+```json
+the country and region identifiers (see IsoCountries), if the jurisdiction exists
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the archetype name
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the name
+```
+
+
+---
+
+#### getNumberOfCustomFields()
+
+
+**getNumberOfCustomFields()**
+
+
+Gets number of custom fields
+
+```endpoint
+CALL getNumberOfCustomFields()
+```
+
+#### Return
+
+```json
+size number of custom fields
+```
+
+
+---
+
+#### getNumberOfDocuments()
+
+
+**getNumberOfDocuments()**
+
+
+Gets number of documents
+
+```endpoint
+CALL getNumberOfDocuments()
+```
+
+#### Return
+
+```json
+size number of documents
+```
+
+
+---
+
+#### getNumberOfJurisdictions()
+
+
+**getNumberOfJurisdictions()**
+
+
+Returns the number jurisdictions for this archetype
+
+```endpoint
+CALL getNumberOfJurisdictions()
+```
+
+#### Return
+
+```json
+the number of jurisdictions
+```
+
+
+---
+
+#### isActive()
+
+
+**isActive()**
+
+
+Returns the active state
+
+```endpoint
+CALL isActive()
+```
+
+#### Return
+
+```json
+true if active, false otherwise
+```
+
+
+---
+
+#### isPrivate()
+
+
+**isPrivate()**
+
+
+Returns the private state
+
+```endpoint
+CALL isPrivate()
+```
+
+#### Return
+
+```json
+true if private, false otherwise
+```
+
+
+---
+
+### DefaultArchetypeRegistry
+
+
+The DefaultArchetypeRegistry contract is found within the agreements bundle.
+
+#### activate(address)
+
+
+**activate(address)**
+
+
+Sets active to true for given archetype
+
+```endpoint
+CALL activate(address)
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR()
+```
+
+
+---
+
+#### addDocument(address,bytes32,bytes32,bytes32)
+
+
+**addDocument(address,bytes32,bytes32,bytes32)**
+
+
+Adds Hoard document to the given Archetype
+
+```endpoint
+CALL addDocument(address,bytes32,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_hoardAddress // hoard address
+_name // name
+_secretKey // secret key
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() _archetype does not exist, or see DefaultArchetype
+```
+
+
+---
+
+#### addField(address,uint8,bytes32)
+
+
+**addField(address,uint8,bytes32)**
+
+
+Adds custom field to archetype
+
+```endpoint
+CALL addField(address,uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_fieldName // the field name
+_fieldType // data type (enum)
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addCustomField() function
+```
+
+
+---
+
+#### addFields(address,uint8[],bytes32[])
+
+
+**addFields(address,uint8[],bytes32[])**
+
+
+Adds the specified fields to the archetype. If one of the fields cannot be added, the operation aborts and returns that error code.
+
+```endpoint
+CALL addFields(address,uint8[],bytes32[])
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_fieldNames // the field names
+_fieldTypes // the field types
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
+```
+
+
+---
+
+#### addJurisdiction(address,bytes2,bytes32)
+
+
+**addJurisdiction(address,bytes2,bytes32)**
+
+
+Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations.
+
+```endpoint
+CALL addJurisdiction(address,bytes2,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_country // a ISO-3166-1 code, e.g. 'US'
+_region // a region identifier from a IsoCountries contract
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addJurisdiction() function
+```
+
+
+---
+
+#### addJurisdictions(address,bytes2[],bytes32[])
+
+
+**addJurisdictions(address,bytes2[],bytes32[])**
+
+
+Adds the given jurisdictions in the form of a country codes and region identifiers to this archetype. References codes defined via IsoCountries interface implementations.
+
+```endpoint
+CALL addJurisdictions(address,bytes2[],bytes32[])
+```
+
+#### Parameters
+
+```solidity
+_countries // an array of a ISO-3166-1 code, e.g. 'US'
+_regions // an array of region identifiers from a IsoCountries contract
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
+```
+
+
+---
+
+#### create(bytes32,address,string,bool,address,address)
+
+
+**create(bytes32,address,string,bool,address,address)**
+
+
+Creates a new archetype
+
+```endpoint
+CALL create(bytes32,address,string,bool,address,address)
+```
+
+#### Parameters
+
+```solidity
+_author // author
+_description // description
+_executionProcess // the address of a ProcessDefinition that orchestrates the agreement execution
+_formationProcess // the address of a ProcessDefinition that orchestrates the agreement formation
+_isPrivate // determines if the archetype's documents are encrypted
+_name // name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if either _name, _author, _formationProcess, or _executionProcess is nullarchetype - the new archetype's address, if successfully created
+```
+
+
+---
+
+#### deactivate(address)
+
+
+**deactivate(address)**
+
+
+Sets active to false for given archetype
+
+```endpoint
+CALL deactivate(address)
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR()
+```
+
+
+---
+
+#### getArchetypeAtIndex(uint256)
+
+
+**getArchetypeAtIndex(uint256)**
+
+
+Gets archetype address at given index
+
+```endpoint
+CALL getArchetypeAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+archetype archetype
+```
+
+
+---
+
+#### getArchetypeData(address)
+
+
+**getArchetypeData(address)**
+
+
+Returns data about an archetype
+
+```endpoint
+CALL getArchetypeData(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+
+```
+
+#### Return
+
+```json
+name namedescription descriptionauthor authoractive activeformationProcessDefinitionexecutionProcessDefinition
+```
+
+
+---
+
+#### getArchetypesSize()
+
+
+**getArchetypesSize()**
+
+
+Gets number of archetypes
+
+```endpoint
+CALL getArchetypesSize()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getDocumentByArchetypeAtIndex(address,uint256)
+
+
+**getDocumentByArchetypeAtIndex(address,uint256)**
+
+
+Gets document name by Archetype At index
+
+```endpoint
+CALL getDocumentByArchetypeAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_index // index
+
+```
+
+#### Return
+
+```json
+name name
+```
+
+
+---
+
+#### getDocumentByArchetypeData(address,bytes32)
+
+
+**getDocumentByArchetypeData(address,bytes32)**
+
+
+Returns data about the document at the specified address
+
+```endpoint
+CALL getDocumentByArchetypeData(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_name // name
+
+```
+
+#### Return
+
+```json
+_hoardAddress hoard address_secretKey secret key
+```
+
+
+---
+
+#### getDocumentsByArchetypeSize(address)
+
+
+**getDocumentsByArchetypeSize(address)**
+
+
+Gets documents size for given Archetype
+
+```endpoint
+CALL getDocumentsByArchetypeSize(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getFieldByArchetypeAtIndex(address,uint256)
+
+
+**getFieldByArchetypeAtIndex(address,uint256)**
+
+
+Gets field name by Archetype At index
+
+```endpoint
+CALL getFieldByArchetypeAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_index // index
+
+```
+
+#### Return
+
+```json
+name name
+```
+
+
+---
+
+#### getFieldByArchetypeData(address,bytes32)
+
+
+**getFieldByArchetypeData(address,bytes32)**
+
+
+Returns data about the field at with the specified name
+
+```endpoint
+CALL getFieldByArchetypeData(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_name // name
+
+```
+
+#### Return
+
+```json
+fieldType field type
+```
+
+
+---
+
+#### getFieldsByArchetypeSize(address)
+
+
+**getFieldsByArchetypeSize(address)**
+
+
+Gets fields size for given Archetype
+
+```endpoint
+CALL getFieldsByArchetypeSize(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getJurisdictionAtIndexForArchetype(address,uint256)
+
+
+**getJurisdictionAtIndexForArchetype(address,uint256)**
+
+
+Returns the jurisdiction key at the specified index for the given archetype
+
+```endpoint
+CALL getJurisdictionAtIndexForArchetype(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype address
+_index // the index of the jurisdiction
+
+```
+
+#### Return
+
+```json
+the jurisdiction primary key
+```
+
+
+---
+
+#### getJurisdictionDataForArchetype(address,bytes32)
+
+
+**getJurisdictionDataForArchetype(address,bytes32)**
+
+
+Returns data about the jurisdiction with the specified key in the given archetype
+
+```endpoint
+CALL getJurisdictionDataForArchetype(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype address
+_key // the jurisdiction key
+
+```
+
+#### Return
+
+```json
+country the jurisdiction's countryregion the jurisdiction's region
+```
+
+
+---
+
+#### getNumberOfJurisdictionsForArchetype(address)
+
+
+**getNumberOfJurisdictionsForArchetype(address)**
+
+
+Returns the number of jurisdictions for the given Archetype
+
+```endpoint
+CALL getNumberOfJurisdictionsForArchetype(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype address
+
+```
+
+#### Return
+
+```json
+the number of jurisdictions
+```
+
+
+---
+
+### DefaultEventEmitter
+
+
+The DefaultEventEmitter contract is found within the agreements bundle.
+
+#### addEventListener(bytes32)
+
+
+**addEventListener(bytes32)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+
+```
+
+
+---
+
+#### addEventListener(bytes32,address)
+
+
+**addEventListener(bytes32,address)**
+
+
+Adds the msg.sender as listener for the specified event.
+
+```endpoint
+CALL addEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to subscribe to
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+#### removeEventListener(bytes32)
+
+
+**removeEventListener(bytes32)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+
+```
+
+
+---
+
+#### removeEventListener(bytes32,address)
+
+
+**removeEventListener(bytes32,address)**
+
+
+Removes the msg.sender from the list of listeners for the specified event.
+
+```endpoint
+CALL removeEventListener(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_event // the event to unsubscribe from
+_listener // the address of an EventListener
+
+```
+
+
+---
+
+### DefaultUserAccount
+
+
+The DefaultUserAccount contract is found within the agreements bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns this account's ID
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
 
 ### ERC165 Interface
 
 
-The ERC165 Interface contract is found within the active-agreements bundle.
+The ERC165 Interface contract is found within the agreements bundle.
 
 #### supportsInterface(bytes4)
 
@@ -7708,863 +9759,35 @@ interfaceID // The interface identifier, as specified in ERC-165
 
 ---
 
-### Ecosystem Interface
+### ERC165Utils
 
 
-The Ecosystem Interface contract is found within the active-agreements bundle.
+The ERC165Utils contract is found within the agreements bundle.
 
-#### addOrganization(address)
-
-
-**addOrganization(address)**
+#### implementsInterface(address,bytes4)
 
 
-Adds the organization at the specified address to this Ecosystem.
+**implementsInterface(address,bytes4)**
+
+
+Detects whether the given contract implements the specified ERC165 interface signature. This is a modified implementation of the example in EIP 881 to avoid the use of the "staticcall" opcode. This function performs two invocations: 1. A "call" to the 0x01ffc9a7 function signature to test if it can be invoked 2. If step 1 returns 'true', the contract is cast to ERC165 and the supportsInterface(bytes4) function is invoked
 
 ```endpoint
-CALL addOrganization(address)
+CALL implementsInterface(address,bytes4)
 ```
 
 #### Parameters
 
 ```solidity
-_address // the Organization contract's address
+_contract // the contract to be examined
+_interfaceId // the signature of the interface for which to test
 
 ```
 
 #### Return
 
 ```json
-error code
-```
-
-
----
-
-#### createOrganization(bytes32,bytes32,address[10])
-
-
-**createOrganization(bytes32,bytes32,address[10])**
-
-
-Creates a new Organization with the specified parameters and adds it to this Ecosystem.
-
-```endpoint
-CALL createOrganization(bytes32,bytes32,address[10])
-```
-
-#### Parameters
-
-```solidity
-_approvers // the initial owners.
-_id // the organization's ID
-_name // the organization's name
-
-```
-
-#### Return
-
-```json
-error code and the address of the newly created organization, if successful
-```
-
-
----
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-Invoked by an EventEmitter for a named event without any additional data.
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-Invoked by an EventEmitter for a named event with an additional address payload.
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-Invoked by an EventEmitter for a named event with an additional bytes32 payload.
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-Invoked by an EventEmitter for a named event with an additional string payload.
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-Invoked by an EventEmitter for a named event with an additional uint payload.
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_data // the payload
-_event // the event name
-_source // the source of the event
-
-```
-
-
----
-
-#### getApproverAtIndex(address,uint256)
-
-
-**getApproverAtIndex(address,uint256)**
-
-
-Returns the approver's address at the given index position of the specified organization.
-
-```endpoint
-CALL getApproverAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the approver's address, if the position exists
-```
-
-
----
-
-#### getApproverData(address,address)
-
-
-**getApproverData(address,address)**
-
-
-Function supports SQLsol, but only returns the approver address parameter.
-
-```endpoint
-CALL getApproverData(address,address)
-```
-
-#### Parameters
-
-```solidity
-_approver // the approver's address
-_organization // the organization's address
-
-```
-
-
----
-
-#### getNumberOfApprovers(address)
-
-
-**getNumberOfApprovers(address)**
-
-
-Returns the number of registered approvers in the specified organization.
-
-```endpoint
-CALL getNumberOfApprovers(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-the number of approvers
-```
-
-
----
-
-#### getNumberOfOrganizations()
-
-
-**getNumberOfOrganizations()**
-
-
-Returns the number of registered organizations.
-
-```endpoint
-CALL getNumberOfOrganizations()
-```
-
-#### Return
-
-```json
-the number of organizations
-```
-
-
----
-
-#### getNumberOfUsers(address)
-
-
-**getNumberOfUsers(address)**
-
-
-returns the number of users associated with the specified organization
-
-```endpoint
-CALL getNumberOfUsers(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-
-```
-
-#### Return
-
-```json
-the number of users
-```
-
-
----
-
-#### getOrganization(bytes32)
-
-
-**getOrganization(bytes32)**
-
-
-Returns the address of the organization with the specified ID, if it exists
-
-```endpoint
-CALL getOrganization(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the organization's ID
-
-```
-
-#### Return
-
-```json
-the organization's address, if it exists
-```
-
-
----
-
-#### getOrganizationAtIndex(uint256)
-
-
-**getOrganizationAtIndex(uint256)**
-
-
-Returns the organization at the specified index.
-
-```endpoint
-CALL getOrganizationAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address of the organization
-```
-
-
----
-
-#### getOrganizationData(address)
-
-
-**getOrganizationData(address)**
-
-
-Returns the public data of the organization at the specified address
-
-```endpoint
-CALL getOrganizationData(address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the address of an organization
-
-```
-
-#### Return
-
-```json
-the organization's ID and name
-```
-
-
----
-
-#### getUserAtIndex(address,uint256)
-
-
-**getUserAtIndex(address,uint256)**
-
-
-Returns the user's address at the given index position in the specified organization.
-
-```endpoint
-CALL getUserAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_pos // the index position
-
-```
-
-#### Return
-
-```json
-the address or 0x0 if the position does not exist
-```
-
-
----
-
-#### getUserData(address,address)
-
-
-**getUserData(address,address)**
-
-
-Returns information about the specified user in the context of the given organization
-
-```endpoint
-CALL getUserData(address,address)
-```
-
-#### Parameters
-
-```solidity
-_organization // the organization's address
-_user // the user's address
-
-```
-
-#### Return
-
-```json
-active - whether the user is activated in the organization
-```
-
-
----
-
-#### organizationExists(bytes32)
-
-
-**organizationExists(bytes32)**
-
-
-Indicates whether the specified organization exists for the given organization id
-
-```endpoint
-CALL organizationExists(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // organization ID
-
-```
-
-#### Return
-
-```json
-bool exists
-```
-
-
----
-
-### Ecosystem Module
-
-
-The Ecosystem Module contract is found within the active-agreements bundle.
-
-#### addChild(address)
-
-
-**addChild(address)**
-
-
-Adds the given address as a child of this component
-
-```endpoint
-CALL addChild(address)
-```
-
-#### Parameters
-
-```solidity
-_child // the child to add
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getNumberOfChildren()
-
-
-**getNumberOfChildren()**
-
-
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
-```
-
-
----
-
-#### setRoot(address)
-
-
-**setRoot(address)**
-
-
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
-
-```endpoint
-CALL setRoot(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the hierarchy root
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
-```
-
-
----
-
-#### supportsInterface(bytes4)
-
-
-**supportsInterface(bytes4)**
-
-
-Returns whether the declared interface signature is supported by this contract
-
-```endpoint
-CALL supportsInterface(bytes4)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the signature of the ERC165 interface
-
-```
-
-#### Return
-
-```json
-true if supported, false otherwise
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
+true if the contract implements the interface, false otherwise
 ```
 
 
@@ -8573,7 +9796,7 @@ CALL upgrade(address)
 ### EventEmitter Interface
 
 
-The EventEmitter Interface contract is found within the active-agreements bundle.
+The EventEmitter Interface contract is found within the agreements bundle.
 
 #### addEventListener(bytes32)
 
@@ -8668,7 +9891,7 @@ _listener // the address of an EventListener
 ### EventListener
 
 
-The EventListener contract is found within the active-agreements bundle.
+The EventListener contract is found within the agreements bundle.
 
 #### eventFired(bytes32,address)
 
@@ -8789,1051 +10012,13 @@ _source // the source of the event
 
 ---
 
-### HierarchyEnabled
 
-
-The HierarchyEnabled contract is found within the active-agreements bundle.
-
-#### addChild(address)
-
-
-**addChild(address)**
-
-
-Adds the given address as a child of this component
-
-```endpoint
-CALL addChild(address)
-```
-
-#### Parameters
-
-```solidity
-_child // the child to add
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
-```
-
-
----
-
-#### getNumberOfChildren()
-
-
-**getNumberOfChildren()**
-
-
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
-```
-
-
----
-
-#### setRoot(address)
-
-
-**setRoot(address)**
-
-
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
-
-```endpoint
-CALL setRoot(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the hierarchy root
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
-```
-
-
----
-
-### IsoCountries Interface
-
-
-The IsoCountries Interface contract is found within the active-agreements bundle.
-
-#### appendNewVersion(address)
-
-
-**appendNewVersion(address)**
-
-
-Appends the given version as the latest in version linked list
-
-```endpoint
-CALL appendNewVersion(address)
-```
-
-#### Return
-
-```json
-error - failure to append due to various reasons
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getTargetVersion(uint8[3])
-
-
-**getTargetVersion(uint8[3])**
-
-
-Retrieves the specified version
-
-```endpoint
-CALL getTargetVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_targetVer // - the version to retrieve
-
-```
-
-#### Return
-
-```json
-targetAddr - address of the version to retrieve, 0x0 if not found
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLatest(address)
-
-
-**setLatest(address)**
-
-
-Sets the latest version, and recursively sets latest for preceeding links
-
-```endpoint
-CALL setLatest(address)
-```
-
-#### Parameters
-
-```solidity
-_latest // - the latest version
-
-```
-
-#### Return
-
-```json
-success - representing whether latest was successfully set for all links
-```
-
-
----
-
-#### setPredecessor()
-
-
-**setPredecessor()**
-
-
-Sets the predecessor to msg.sender who should also have the same owner
-
-```endpoint
-CALL setPredecessor()
-```
-
-#### Return
-
-```json
-error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
-```
-
-
----
-
-### IsoCurrencies Interface
-
-
-The IsoCurrencies Interface contract is found within the active-agreements bundle.
-
-#### appendNewVersion(address)
-
-
-**appendNewVersion(address)**
-
-
-Appends the given version as the latest in version linked list
-
-```endpoint
-CALL appendNewVersion(address)
-```
-
-#### Return
-
-```json
-error - failure to append due to various reasons
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getTargetVersion(uint8[3])
-
-
-**getTargetVersion(uint8[3])**
-
-
-Retrieves the specified version
-
-```endpoint
-CALL getTargetVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_targetVer // - the version to retrieve
-
-```
-
-#### Return
-
-```json
-targetAddr - address of the version to retrieve, 0x0 if not found
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLatest(address)
-
-
-**setLatest(address)**
-
-
-Sets the latest version, and recursively sets latest for preceeding links
-
-```endpoint
-CALL setLatest(address)
-```
-
-#### Parameters
-
-```solidity
-_latest // - the latest version
-
-```
-
-#### Return
-
-```json
-success - representing whether latest was successfully set for all links
-```
-
-
----
-
-#### setPredecessor()
-
-
-**setPredecessor()**
-
-
-Sets the predecessor to msg.sender who should also have the same owner
-
-```endpoint
-CALL setPredecessor()
-```
-
-#### Return
-
-```json
-error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
-```
-
-
----
-
-### LifecycleEnabled
-
-
-The LifecycleEnabled contract is found within the active-agreements bundle.
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the new owner
-
-```
-
-
----
-
-### LifecycleModule
-
-
-The LifecycleModule contract is found within the active-agreements bundle.
-
-#### addChild(address)
-
-
-**addChild(address)**
-
-
-Adds the given address as a child of this component
-
-```endpoint
-CALL addChild(address)
-```
-
-#### Parameters
-
-```solidity
-_child // the child to add
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getNumberOfChildren()
-
-
-**getNumberOfChildren()**
-
-
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getNumberOfRegistrationContracts()
-
-
-**getNumberOfRegistrationContracts()**
-
-
-Is called when this module is being added to a ContractLocator, e.g. a LifecycleHub or DOUG to give the module the chance to register contracts contained in this module.
-
-```endpoint
-CALL getNumberOfRegistrationContracts()
-```
-
-#### Return
-
-```json
-the number of contracts
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getRegistrationContract(uint256)
-
-
-**getRegistrationContract(uint256)**
-
-
-Returns information about the contract registered at the specified index.
-
-```endpoint
-CALL getRegistrationContract(uint256)
-```
-
-#### Return
-
-```json
-the registered name and address as (bytes32,address)
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-To be implemented to signal whether this contract should be destroyed after a successful upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Parameters
-
-```solidity
-predecessor // the address from which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Parameters
-
-```solidity
-successor // the address to which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
-```
-
-
----
-
-#### setRoot(address)
-
-
-**setRoot(address)**
-
-
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
-
-```endpoint
-CALL setRoot(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the hierarchy root
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
-```
-
-
----
-
-#### supportsInterface(bytes4)
-
-
-**supportsInterface(bytes4)**
-
-
-Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
-
-```endpoint
-CALL supportsInterface(bytes4)
-```
-
-#### Parameters
-
-```solidity
-interfaceID // The interface identifier, as specified in ERC-165
-
-```
-
-#### Return
-
-```json
-`true` if the contract implements `interfaceID` and
-`interfaceID` is not 0xffffffff, `false` otherwise
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
-```
-
-
----
 
 
 ### Mappings Library Public API Contract
 
 
-The Mappings Library Public API Contract contract is found within the active-agreements bundle.
+The Mappings Library Public API Contract contract is found within the agreements bundle.
 
 #### addToArray(Mappings.AddressAddressArrayMap storage,address,address,bool)
 
@@ -13346,71 +13531,10 @@ errorvaluenextIndex the next index, if there is one
 
 ---
 
-### Migratable Interface
-
-
-The Migratable Interface contract is found within the active-agreements bundle.
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Parameters
-
-```solidity
-predecessor // the address from which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Parameters
-
-```solidity
-successor // the address to which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
 ### Named Interface
 
 
-The Named Interface contract is found within the active-agreements bundle.
+The Named Interface contract is found within the agreements bundle.
 
 #### getName()
 
@@ -13436,7 +13560,7 @@ the bytes32 name
 ### NamedElement Interface
 
 
-The NamedElement Interface contract is found within the active-agreements bundle.
+The NamedElement Interface contract is found within the agreements bundle.
 
 #### getId()
 
@@ -13483,7 +13607,7 @@ the bytes32 name
 ### Organization Interface
 
 
-The Organization Interface contract is found within the active-agreements bundle.
+The Organization Interface contract is found within the agreements bundle.
 
 #### addEventListener(bytes32)
 
@@ -13829,10 +13953,633 @@ interfaceID // The interface identifier, as specified in ERC-165
 ---
 
 
+### ProcessDefinition Interface
+
+
+The ProcessDefinition Interface contract is found within the agreements bundle.
+
+#### addProcessInterfaceImplementation(address,bytes32)
+
+
+**addProcessInterfaceImplementation(address,bytes32)**
+
+
+Adds the specified process interface to the list of supported process interfaces of this ProcessDefinition
+
+```endpoint
+CALL addProcessInterfaceImplementation(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the ID of the interface
+_model // the model defining the interface
+
+```
+
+#### Return
+
+```json
+an error code signaling success or failure
+```
+
+
+---
+
+#### createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
+
+
+**createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)**
+
+
+Creates a new activity definition with the specified parameters.
+
+```endpoint
+CALL createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityType // the BpmModel.ActivityType [TASK|SUBPROCESS]
+_application // the application handling the execution of the activity
+_assignee // the ID of the participant performing the activity (for USER tasks only)
+_behavior // the BpmModel.TaskBehavior [SEND|SENDRECEIVE|RECEIVE]
+_id // the activity ID
+_multiInstance // whether the activity represents multiple instances
+_subProcessDefinitionId // references a subprocess definition (only for SUBPROCESS ActivityType)
+_subProcessModelId // references the model containg a subprocess definition (only for SUBPROCESS ActivityType)
+_taskType // the BpmModel.TaskType [DUMMY|USER|SERVICE|EVENT]
+
+```
+
+#### Return
+
+```json
+an error code indicating success or failure
+```
+
+
+---
+
+#### createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+
+
+**createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)**
+
+
+Create a data mapping for the specified activity and direction.
+
+```endpoint
+CALL createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_accessPath // the access path offered by the application
+_activityId // the ID of the activity in this ProcessDefinition
+_dataPath // a data path (key) to use for data lookup on a DataStorage.
+_dataStorage // an optional address of a DataStorage as basis for the data path other than the default one
+_dataStorageId // an optional key to identify a DataStorage as basis for the data path other than the default one
+_direction // the BpmModel.Direction [IN|OUT]
+
+```
+
+
+---
+
+#### createTransition(bytes32,bytes32)
+
+
+**createTransition(bytes32,bytes32)**
+
+
+Creates a transition between the specified source and target activities.
+
+```endpoint
+CALL createTransition(bytes32,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_sourceActivity // the start of the transition
+_targetActivity // the end of the transition
+
+```
+
+#### Return
+
+```json
+an error code indicating success or failure
+```
+
+
+---
+
+#### getActivityAtIndex(uint256)
+
+
+**getActivityAtIndex(uint256)**
+
+
+Returns the ID of the ActivityDefinition at the specified index position of the given Process Definition
+
+```endpoint
+CALL getActivityAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // the index position
+
+```
+
+#### Return
+
+```json
+bytes32 the ActivityDefinition ID, if it exists
+```
+
+
+---
+
+#### getActivityData(bytes32)
+
+
+**getActivityData(bytes32)**
+
+
+Returns information about the activity definition with the given ID.
+
+```endpoint
+CALL getActivityData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the bytes32 id of the activity definition
+
+```
+
+#### Return
+
+```json
+activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
+```
+
+
+---
+
+#### getActivityInputGateway(bytes32)
+
+
+**getActivityInputGateway(bytes32)**
+
+
+Returns the input gateway type of the specified activity.
+
+```endpoint
+CALL getActivityInputGateway(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity
+
+```
+
+#### Return
+
+```json
+the BpmModel.GatewayType
+```
+
+
+---
+
+#### getActivityOutputGateway(bytes32)
+
+
+**getActivityOutputGateway(bytes32)**
+
+
+Returns the output gateway type of the specified activity.
+
+```endpoint
+CALL getActivityOutputGateway(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity
+
+```
+
+#### Return
+
+```json
+the BpmModel.GatewayType
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getImplementedProcessInterfaceAtIndex(uint256)
+
+
+**getImplementedProcessInterfaceAtIndex(uint256)**
+
+
+Returns information about the process interface at the given index
+
+```endpoint
+CALL getImplementedProcessInterfaceAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+modelAddress the interface's modelinterfaceId the interface ID
+```
+
+
+---
+
+#### getInDataMappingAtIndex(bytes32,uint256)
+
+
+**getInDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the IN data mapping of the specified activity at the given index
+
+```endpoint
+CALL getInDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
+#### getModel()
+
+
+**getModel()**
+
+
+Returns the address of the model which contains this process definition
+
+```endpoint
+CALL getModel()
+```
+
+#### Return
+
+```json
+the model address
+```
+
+
+---
+
+#### getName()
+
+
+**getName()**
+
+
+Returns the name of this contract.
+
+```endpoint
+CALL getName()
+```
+
+#### Return
+
+```json
+the bytes32 name
+```
+
+
+---
+
+#### getNumberOfActivities()
+
+
+**getNumberOfActivities()**
+
+
+Returns the number of activity definitions in this ProcessDefinition.
+
+```endpoint
+CALL getNumberOfActivities()
+```
+
+#### Return
+
+```json
+the number of activity definitions
+```
+
+
+---
+
+#### getNumberOfImplementedProcessInterfaces()
+
+
+**getNumberOfImplementedProcessInterfaces()**
+
+
+Returns the number of implemented process interfaces implemented by this ProcessDefinition
+
+```endpoint
+CALL getNumberOfImplementedProcessInterfaces()
+```
+
+#### Return
+
+```json
+the number of process interfaces
+```
+
+
+---
+
+#### getNumberOfInDataMappings(bytes32)
+
+
+**getNumberOfInDataMappings(bytes32)**
+
+
+Returns the number of IN data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfInDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of IN data mappings
+```
+
+
+---
+
+#### getNumberOfOutDataMappings(bytes32)
+
+
+**getNumberOfOutDataMappings(bytes32)**
+
+
+Returns the number of OUT data mappings for the specified activity.
+
+```endpoint
+CALL getNumberOfOutDataMappings(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+
+```
+
+#### Return
+
+```json
+the number of OUT data mappings
+```
+
+
+---
+
+#### getOutDataMappingAtIndex(bytes32,uint256)
+
+
+**getOutDataMappingAtIndex(bytes32,uint256)**
+
+
+Returns information about the OUT data mapping of the specified activity at the given index
+
+```endpoint
+CALL getOutDataMappingAtIndex(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity in this ProcessDefinition
+_idx // the index position
+
+```
+
+#### Return
+
+```json
+accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
+```
+
+
+---
+
+#### getStartActivity()
+
+
+**getStartActivity()**
+
+
+Returns the ID of the start activity of this process definition. If the process is valid, this value must be set.
+
+```endpoint
+CALL getStartActivity()
+```
+
+#### Return
+
+```json
+the ID of the identified start activity
+```
+
+
+---
+
+#### implementsProcessInterface(address,bytes32)
+
+
+**implementsProcessInterface(address,bytes32)**
+
+
+indicates whether this ProcessDefinition implements the specified interface
+
+```endpoint
+CALL implementsProcessInterface(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the ID of the interface
+_model // the model defining the interface
+
+```
+
+#### Return
+
+```json
+true if the interface is supported, false otherwise
+```
+
+
+---
+
+#### isValid()
+
+
+**isValid()**
+
+
+Returns the current validity state
+
+```endpoint
+CALL isValid()
+```
+
+#### Return
+
+```json
+true if valid, false otherwise
+```
+
+
+---
+
+#### setActivityInputGateway(bytes32,uint8)
+
+
+**setActivityInputGateway(bytes32,uint8)**
+
+
+Sets the input gateway of the specified activity to the given type.
+
+```endpoint
+CALL setActivityInputGateway(bytes32,uint8)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity
+_type // the gateway type
+
+```
+
+
+---
+
+#### setActivityOutputGateway(bytes32,uint8)
+
+
+**setActivityOutputGateway(bytes32,uint8)**
+
+
+Sets the output gateway of the specified activity to the given type.
+
+```endpoint
+CALL setActivityOutputGateway(bytes32,uint8)
+```
+
+#### Parameters
+
+```solidity
+_activityId // the ID of the activity
+_type // the gateway type
+
+```
+
+
+---
+
+#### validate()
+
+
+**validate()**
+
+
+Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag.
+
+```endpoint
+CALL validate()
+```
+
+#### Return
+
+```json
+valid - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
+```
+
+
+---
+
 ### ProcessInstance Interface
 
 
-The ProcessInstance Interface contract is found within the active-agreements bundle.
+The ProcessInstance Interface contract is found within the agreements bundle.
 
 #### addProcessStateChangeListener(address)
 
@@ -15777,7 +16524,7 @@ _value // the uint8[100] value of the data
 ### ProcessModel Interface
 
 
-The ProcessModel Interface contract is found within the active-agreements bundle.
+The ProcessModel Interface contract is found within the agreements bundle.
 
 #### addEventListener(bytes32)
 
@@ -16435,7 +17182,7 @@ _listener // the address of an EventListener
 ### ProcessModelRepository Interface
 
 
-The ProcessModelRepository Interface contract is found within the active-agreements bundle.
+The ProcessModelRepository Interface contract is found within the agreements bundle.
 
 #### activateModel(address)
 
@@ -16978,7 +17725,7 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 ### ProcessStateChangeEmitter
 
 
-The ProcessStateChangeEmitter contract is found within the active-agreements bundle.
+The ProcessStateChangeEmitter contract is found within the agreements bundle.
 
 #### addProcessStateChangeListener(address)
 
@@ -17020,7 +17767,7 @@ CALL notifyProcessStateChange()
 ### ProcessStateChangeListener
 
 
-The ProcessStateChangeListener contract is found within the active-agreements bundle.
+The ProcessStateChangeListener contract is found within the agreements bundle.
 
 #### processStateChanged(address)
 
@@ -17047,7 +17794,7 @@ _pi // the process instance whose state changed
 ### Signable
 
 
-The Signable contract is found within the active-agreements bundle.
+The Signable contract is found within the agreements bundle.
 
 #### sign()
 
@@ -17070,391 +17817,10 @@ a return code indicating success or type of failure
 
 ---
 
-### SandardsModule
-
-
-The SandardsModule contract is found within the active-agreements bundle.
-
-#### addChild(address)
-
-
-**addChild(address)**
-
-
-Adds the given address as a child of this component
-
-```endpoint
-CALL addChild(address)
-```
-
-#### Parameters
-
-```solidity
-_child // the child to add
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getNumberOfChildren()
-
-
-**getNumberOfChildren()**
-
-
-returns the number of child sub-modules
-
-```endpoint
-CALL getNumberOfChildren()
-```
-
-#### Return
-
-```json
-the number of children
-```
-
-
----
-
-#### getParent()
-
-
-**getParent()**
-
-
-Returns the parent address
-
-```endpoint
-CALL getParent()
-```
-
-#### Return
-
-```json
-the parent or 0x0, if this is the root of the hierarchy
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-#### Return
-
-```json
-false
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Default implementation of Upgradeable.migrateFrom(address).
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Default implementation of Upgradeable.migrateTo(address).
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Return
-
-```json
-BaseErrors.UNSUPPORTED_OPERATION()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLifecycleOwner(address)
-
-
-**setLifecycleOwner(address)**
-
-
-Sets the lifecycle owner to the given address
-
-```endpoint
-CALL setLifecycleOwner(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the new owner
-
-```
-
-
----
-
-#### setParent(address)
-
-
-**setParent(address)**
-
-
-Sets the parent of this component
-
-```endpoint
-CALL setParent(address)
-```
-
-#### Parameters
-
-```solidity
-_parent // the parent
-
-```
-
-#### Return
-
-```json
-NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
-```
-
-
----
-
-#### setRoot(address)
-
-
-**setRoot(address)**
-
-
-Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
-
-```endpoint
-CALL setRoot(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the hierarchy root
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
-```
-
-
----
-
-#### supportsInterface(bytes4)
-
-
-**supportsInterface(bytes4)**
-
-
-Returns whether the declared interface signature is supported by this contract
-
-```endpoint
-CALL supportsInterface(bytes4)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the signature of the ERC165 interface
-
-```
-
-#### Return
-
-```json
-true if supported, false otherwise
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
-```
-
-
----
-
 ### SystemOwned
 
 
-The SystemOwned contract is found within the active-agreements bundle.
+The SystemOwned contract is found within the agreements bundle.
 
 #### transferSystemOwnership(address)
 
@@ -17473,4173 +17839,6 @@ CALL transferSystemOwnership(address)
 ```solidity
 _newOwner // The address to transfer ownership to.
 
-```
-
-
----
-
-### Upgradeable
-
-
-The Upgradeable contract is found within the active-agreements bundle.
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-To be implemented to signal whether this contract should be destroyed after a successful upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Parameters
-
-```solidity
-predecessor // the address from which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Parameters
-
-```solidity
-successor // the address to which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
-```
-
-
----
-
-### VersionLinkedAppendOnly Interface
-
-
-The VersionLinkedAppendOnly Interface contract is found within the active-agreements bundle.
-
-#### appendNewVersion(address)
-
-
-**appendNewVersion(address)**
-
-
-Appends the given version as the latest in version linked list
-
-```endpoint
-CALL appendNewVersion(address)
-```
-
-#### Return
-
-```json
-error - failure to append due to various reasons
-```
-
-
----
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getTargetVersion(uint8[3])
-
-
-**getTargetVersion(uint8[3])**
-
-
-Retrieves the specified version
-
-```endpoint
-CALL getTargetVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_targetVer // - the version to retrieve
-
-```
-
-#### Return
-
-```json
-targetAddr - address of the version to retrieve, 0x0 if not found
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-#### setLatest(address)
-
-
-**setLatest(address)**
-
-
-Sets the latest version, and recursively sets latest for preceeding links
-
-```endpoint
-CALL setLatest(address)
-```
-
-#### Parameters
-
-```solidity
-_latest // - the latest version
-
-```
-
-#### Return
-
-```json
-success - representing whether latest was successfully set for all links
-```
-
-
----
-
-#### setPredecessor()
-
-
-**setPredecessor()**
-
-
-Sets the predecessor to msg.sender who should also have the same owner
-
-```endpoint
-CALL setPredecessor()
-```
-
-#### Return
-
-```json
-error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
-```
-
-
----
-
-### Versioned
-
-
-The Versioned contract is found within the active-agreements bundle.
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
-```
-
-
----
-
-## agreements
-
-### AbstractDataStorage
-
-
-The AbstractDataStorage contract is found within the agreements bundle.
-
-#### getNumberOfArrayEntries(bytes32,bool)
-
-
-**getNumberOfArrayEntries(bytes32,bool)**
-
-
-Returns the number of non-default entries in the specified array-type DataStorage field
-
-```endpoint
-CALL getNumberOfArrayEntries(bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_fullscan // if false the function will return as soon as a default value (0 for int/uint, 0x0 for address, "" for bytes32, etc.) is encountered, if true the array will be scanned to its end
-_id // the key under which to find the array-type value
-
-```
-
-#### Return
-
-```json
-the number of non-default entries in the array
-```
-
-
----
-
-### AbstractEventListener
-
-
-The AbstractEventListener contract is found within the agreements bundle.
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-See EventListener.eventFired(bytes32,address)
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-See EventListener.eventFired(bytes32,address,address)
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-See EventListener.eventFired(bytes32,address,bytes32)
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-See EventListener.eventFired(bytes32,address,string)
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-See EventListener.eventFired(bytes32,address,uint)
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-
----
-
-### AgreementSignatureCheck Interface
-
-
-The AgreementSignatureCheck Interface contract is found within the agreements bundle.
-
-#### complete(address,bytes32,bytes32,address)
-
-
-**complete(address,bytes32,bytes32,address)**
-
-
-Treats the provided DataStorage as the agreement and checks if the TX performer has applied a signature. The function will throw if the presence of the signature could not be established. NOTE: Not used parameters 
-
-```endpoint
-CALL complete(address,bytes32,bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_dataStorage // the Agreement
-_txPerformer // the address performing the transaction
-
-```
-
-
----
-
-
-
-### Archetype Interface
-
-
-The Archetype Interface contract is found within the agreements bundle.
-
-#### activate()
-
-
-**activate()**
-
-
-Activates this archetype
-
-```endpoint
-CALL activate()
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### addCustomField(uint8,bytes32)
-
-
-**addCustomField(uint8,bytes32)**
-
-
-Adds a custom field with the specified type and name to the archetype
-
-```endpoint
-CALL addCustomField(uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // customField
-_dataType // data type (enum)
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### addDocument(bytes32,bytes32,bytes32)
-
-
-**addDocument(bytes32,bytes32,bytes32)**
-
-
-Adds the document specified by the given parameters to the archetype
-
-```endpoint
-CALL addDocument(bytes32,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_hoardAddress // hoard address
-_name // name
-_secretKey // secret key
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### addJurisdiction(bytes2,bytes32)
-
-
-**addJurisdiction(bytes2,bytes32)**
-
-
-Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations.
-
-```endpoint
-CALL addJurisdiction(bytes2,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_country // a ISO- code, e.g. 'US'
-_region // a region identifier from a IsoCountries contract
-
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-key of the jurisdiction just added
-```
-
-
----
-
-#### deactivate()
-
-
-**deactivate()**
-
-
-Deactivates this archetype
-
-```endpoint
-CALL deactivate()
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### getAuthor()
-
-
-**getAuthor()**
-
-
-Gets Author
-
-```endpoint
-CALL getAuthor()
-```
-
-#### Return
-
-```json
-author author
-```
-
-
----
-
-#### getCustomFieldAtIndex(uint256)
-
-
-**getCustomFieldAtIndex(uint256)**
-
-
-Gets custom field at index
-
-```endpoint
-CALL getCustomFieldAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error error TBDcustomField custom field
-```
-
-
----
-
-#### getCustomFieldDataType(bytes32)
-
-
-**getCustomFieldDataType(bytes32)**
-
-
-Gets custom field data type
-
-```endpoint
-CALL getCustomFieldDataType(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // custom field
-
-```
-
-#### Return
-
-```json
-error error TBDdataType data type
-```
-
-
----
-
-#### getDescription()
-
-
-**getDescription()**
-
-
-Gets description
-
-```endpoint
-CALL getDescription()
-```
-
-#### Return
-
-```json
-description
-```
-
-
----
-
-#### getDocument(bytes32)
-
-
-**getDocument(bytes32)**
-
-
-Gets document with given name
-
-```endpoint
-CALL getDocument(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_name // document name
-
-```
-
-#### Return
-
-```json
-externalContent external content
-```
-
-
----
-
-#### getDocumentAtIndex(uint256)
-
-
-**getDocumentAtIndex(uint256)**
-
-
-Gets document name at index
-
-```endpoint
-CALL getDocumentAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsname
-```
-
-
----
-
-#### getExecutionProcessDefinition()
-
-
-**getExecutionProcessDefinition()**
-
-
-Returns the address of the ProcessDefinition that orchestrates the agreement execution.
-
-```endpoint
-CALL getExecutionProcessDefinition()
-```
-
-#### Return
-
-```json
-the address of a ProcessDefinition
-```
-
-
----
-
-#### getFormationProcessDefinition()
-
-
-**getFormationProcessDefinition()**
-
-
-Returns the address of the ProcessDefinition that orchestrates the agreement formation.
-
-```endpoint
-CALL getFormationProcessDefinition()
-```
-
-#### Return
-
-```json
-the address of a ProcessDefinition
-```
-
-
----
-
-#### getJurisdictionAtIndex(uint256)
-
-
-**getJurisdictionAtIndex(uint256)**
-
-
-Retrieves the key for the jurisdiction at the specified index
-
-```endpoint
-CALL getJurisdictionAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index position
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsthe key of the jurisdiction or an empty bytes32 if the index was out of bounds
-```
-
-
----
-
-#### getJurisdictionData(bytes32)
-
-
-**getJurisdictionData(bytes32)**
-
-
-Returns information about the jurisdiction with the specified key
-
-```endpoint
-CALL getJurisdictionData(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key identifying the jurisdiction
-
-```
-
-#### Return
-
-```json
-the country and region identifiers (see IsoCountries), if the jurisdiction exists
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
-#### getNumberOfCustomFields()
-
-
-**getNumberOfCustomFields()**
-
-
-Gets number of custom fields
-
-```endpoint
-CALL getNumberOfCustomFields()
-```
-
-#### Return
-
-```json
-size number of custom fields
-```
-
-
----
-
-#### getNumberOfDocuments()
-
-
-**getNumberOfDocuments()**
-
-
-Gets number of documents
-
-```endpoint
-CALL getNumberOfDocuments()
-```
-
-#### Return
-
-```json
-size number of documents
-```
-
-
----
-
-#### getNumberOfJurisdictions()
-
-
-**getNumberOfJurisdictions()**
-
-
-Returns the number jurisdictions for this archetype
-
-```endpoint
-CALL getNumberOfJurisdictions()
-```
-
-#### Return
-
-```json
-the number of jurisdictions
-```
-
-
----
-
-#### isActive()
-
-
-**isActive()**
-
-
-Returns the active state
-
-```endpoint
-CALL isActive()
-```
-
-#### Return
-
-```json
-true if active, false otherwise
-```
-
-
----
-
-#### isPrivate()
-
-
-**isPrivate()**
-
-
-Returns the private state
-
-```endpoint
-CALL isPrivate()
-```
-
-#### Return
-
-```json
-true if private, false otherwise
-```
-
-
----
-
-### ArrayUtils Library Interface
-
-
-The ArrayUtils Library Interface contract is found within the agreements bundle.
-
-#### contains(address[],address)
-
-
-**contains(address[],address)**
-
-
-Returns whether the specified value is present in the given array
-
-```endpoint
-CALL contains(address[],address)
-```
-
-#### Parameters
-
-```solidity
-_list // the array
-_value // the value
-
-```
-
-#### Return
-
-```json
-true if the value is found in the array, false otherwise
-```
-
-
----
-
-#### contains(bytes32[],bytes32)
-
-
-**contains(bytes32[],bytes32)**
-
-
-Returns whether the specified value is present in the given array
-
-```endpoint
-CALL contains(bytes32[],bytes32)
-```
-
-#### Parameters
-
-```solidity
-_list // the array
-_value // the value
-
-```
-
-#### Return
-
-```json
-true if the value is found in the array, false otherwise
-```
-
-
----
-
-#### contains(int256[],int256)
-
-
-**contains(int256[],int256)**
-
-
-Returns whether the specified value is present in the given array
-
-```endpoint
-CALL contains(int256[],int256)
-```
-
-#### Parameters
-
-```solidity
-_list // the array
-_value // the value
-
-```
-
-#### Return
-
-```json
-true if the value is found in the array, false otherwise
-```
-
-
----
-
-#### contains(uint256[],uint256)
-
-
-**contains(uint256[],uint256)**
-
-
-Returns whether the specified value is present in the given array
-
-```endpoint
-CALL contains(uint256[],uint256)
-```
-
-#### Parameters
-
-```solidity
-_list // the array
-_value // the value
-
-```
-
-#### Return
-
-```json
-true if the value is found in the array, false otherwise
-```
-
-
----
-
-
-### DataStorageUtils Library
-
-
-The DataStorageUtils Library contract is found within the agreements bundle.
-
-#### getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
-
-
-**getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)**
-
-
-Returns the number of non-default entries in the array-type field specified in the given DataMap. Empty values are: 0 for int/uint, 0x0 for address, "" for bytes32, etc.) Currently only DataTypes.ADDRESSARRAY() and DataTypes.BYTES32ARRAY() are supported by this function
-
-```endpoint
-CALL getNumberOfArrayEntries(DataStorageUtils.DataMap storage,bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_fullscan // if true the array will be scanned to its end, otherwise the function returns on the first encountered default value
-_key // a key pointing to a supported array-type field
-_map // the DataMap
-
-```
-
-#### Return
-
-```json
-the number of non-default entries
-```
-
-
----
-
-#### getNumberOfEntries(address[100],bool)
-
-
-**getNumberOfEntries(address[100],bool)**
-
-
-Returns the number of non-default entries in the given array.
-
-```endpoint
-CALL getNumberOfEntries(address[100],bool)
-```
-
-#### Parameters
-
-```solidity
-_array // the array to scan
-_fullscan // whether to keep scanning to the end even if default values are encountered
-
-```
-
-#### Return
-
-```json
-the number of non-empty entries in the array
-```
-
-
----
-
-#### getNumberOfEntries(bytes32[100],bool)
-
-
-**getNumberOfEntries(bytes32[100],bool)**
-
-
-Returns the number of non-default entries in the given array.
-
-```endpoint
-CALL getNumberOfEntries(bytes32[100],bool)
-```
-
-#### Parameters
-
-```solidity
-_array // the array to scan
-_fullscan // whether to keep scanning to the end even if default values are encountered
-
-```
-
-#### Return
-
-```json
-the number of non-empty entries in the array
-```
-
-
----
-
-#### keyAtIndex(DataStorageUtils.DataMap storage,uint256)
-
-
-**keyAtIndex(DataStorageUtils.DataMap storage,uint256)**
-
-
-Returns the ID of the Data at the specified index in the given map
-
-```endpoint
-CALL keyAtIndex(DataStorageUtils.DataMap storage,uint256)
-```
-
-
----
-
-#### remove(DataStorageUtils.DataMap storage,bytes32)
-
-
-**remove(DataStorageUtils.DataMap storage,bytes32)**
-
-
-Removes the Data registered at the specified key in the provided map. The _map.keys array may get re-ordered by this operation: unless the removed entry was the last element in the map's keys, the last key will be moved into the void position created by the removal.
-
-```endpoint
-CALL remove(DataStorageUtils.DataMap storage,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key
-_map // the map
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR or BaseErrors.RESOURCE_NOT_FOUND.
-```
-
-
----
-
-
-### DefaultActiveAgreement Interface
-
-
-The DefaultActiveAgreement Interface contract is found within the agreements bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### getArchetype()
-
-
-**getArchetype()**
-
-
-Returns the archetype
-
-```endpoint
-CALL getArchetype()
-```
-
-#### Return
-
-```json
-the archetype address 
-```
-
-
----
-
-#### getCreator()
-
-
-**getCreator()**
-
-
-Returns the creator
-
-```endpoint
-CALL getCreator()
-```
-
-#### Return
-
-```json
-the creator address
-```
-
-
----
-
-#### getDataValueAsAddressArray(bytes32)
-
-
-**getDataValueAsAddressArray(bytes32)**
-
-
-Overriden method of DataStorage to return the agreement parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
-
-```endpoint
-CALL getDataValueAsAddressArray(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the bytes32 ID of an address array
-
-```
-
-#### Return
-
-```json
-the address array
-```
-
-
----
-
-#### getHoardAddress()
-
-
-**getHoardAddress()**
-
-
-Returns the Hoard Address
-
-```endpoint
-CALL getHoardAddress()
-```
-
-#### Return
-
-```json
-the Hoard Address
-
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Gets name
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-name name
-```
-
-
----
-
-#### getNumberOfArrayEntries(bytes32,bool)
-
-
-**getNumberOfArrayEntries(bytes32,bool)**
-
-
-Overridden method of DataStorage to return the number of parties for special ID DATA_FIELD_AGREEMENT_PARTIES.
-
-```endpoint
-CALL getNumberOfArrayEntries(bytes32,bool)
-```
-
-#### Parameters
-
-```solidity
-_fullscan // whether to scan beyond non-default values
-_id // the ID of the data field
-
-```
-
-#### Return
-
-```json
-the size of the specified array
-```
-
-
----
-
-#### getNumberOfParties()
-
-
-**getNumberOfParties()**
-
-
-Gets number of parties
-
-```endpoint
-CALL getNumberOfParties()
-```
-
-#### Return
-
-```json
-size number of parties
-```
-
-
----
-
-#### getParty(uint256)
-
-
-**getParty(uint256)**
-
-
-Gets party
-
-```endpoint
-CALL getParty(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index out of boundsparty party
-```
-
-
----
-
-#### getSignatureDetails(address)
-
-
-**getSignatureDetails(address)**
-
-
-Returns the signee and timestamp of the signature of the given party.
-
-```endpoint
-CALL getSignatureDetails(address)
-```
-
-#### Parameters
-
-```solidity
-_party // the signing party
-
-```
-
-#### Return
-
-```json
-the address of the signee (if the party authorized a signee other than itself)the time of signing or 0 if the address is not a party to this agreement or has not signed yet
-```
-
-
----
-
-#### gethoardSecret()
-
-
-**gethoardSecret()**
-
-
-Returns the Hoard Secret
-
-```endpoint
-CALL gethoardSecret()
-```
-
-#### Return
-
-```json
-the Hoard Secret
-```
-
-
----
-
-#### isPrivate()
-
-
-**isPrivate()**
-
-
-Returns the private flag
-
-```endpoint
-CALL isPrivate()
-```
-
-#### Return
-
-```json
-the private flag 
-```
-
-
----
-
-#### isSignedBy(address)
-
-
-**isSignedBy(address)**
-
-
-Returns whether the given account's signature is on the agreement.
-
-```endpoint
-CALL isSignedBy(address)
-```
-
-#### Parameters
-
-```solidity
-_signee // The account to check
-
-```
-
-#### Return
-
-```json
-true if the provided address is a recorded signature on the agreement, false otherwise
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### sign()
-
-
-**sign()**
-
-
-Applies the msg.sender or tx.origin as a signature to this agreement, if the it can be authorized as a valid signee. The timestamp of an already existing signature is not overwritten!
-
-```endpoint
-CALL sign()
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-### DefaultActiveAgreementRegistry Interface
-
-
-The DefaultActiveAgreementRegistry Interface contract is found within the agreements bundle.
-
-#### create(address,bytes32,address,bytes32,bytes32,bool,address[])
-
-
-**create(address,bytes32,address,bytes32,bytes32,bool,address[])**
-
-
-Creates an Active Agreement with the given parameters
-
-```endpoint
-CALL create(address,bytes32,address,bytes32,bytes32,bool,address[])
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_hoardAddress // Address of agreement params in hoard
-_hoardSecret // Secret for hoard retrieval
-_name // name
-_parties // parties
-
-```
-
-#### Return
-
-```json
-error - BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype or _name is nullactiveAgreement - the new ActiveAgreement's address, if successfully created, 0x0 otherwise
-```
-
-
----
-
-#### eventFired(bytes32,address)
-
-
-**eventFired(bytes32,address)**
-
-
-See EventListener.eventFired(bytes32,address)
-
-```endpoint
-CALL eventFired(bytes32,address)
-```
-
-
----
-
-#### eventFired(bytes32,address,address)
-
-
-**eventFired(bytes32,address,address)**
-
-
-Overwrites AbstractEventListener function to receive updates from ActiveAgreements. Currently supports AGREEMENT_SIGNATURE_ADDED
-
-```endpoint
-CALL eventFired(bytes32,address,address)
-```
-
-
----
-
-#### eventFired(bytes32,address,bytes32)
-
-
-**eventFired(bytes32,address,bytes32)**
-
-
-See EventListener.eventFired(bytes32,address,bytes32)
-
-```endpoint
-CALL eventFired(bytes32,address,bytes32)
-```
-
-
----
-
-#### eventFired(bytes32,address,string)
-
-
-**eventFired(bytes32,address,string)**
-
-
-See EventListener.eventFired(bytes32,address,string)
-
-```endpoint
-CALL eventFired(bytes32,address,string)
-```
-
-
----
-
-#### eventFired(bytes32,address,uint256)
-
-
-**eventFired(bytes32,address,uint256)**
-
-
-See EventListener.eventFired(bytes32,address,uint)
-
-```endpoint
-CALL eventFired(bytes32,address,uint256)
-```
-
-
----
-
-#### getActiveAgreementAtIndex(uint256)
-
-
-**getActiveAgreementAtIndex(uint256)**
-
-
-Gets activeAgreement address at given index
-
-```endpoint
-CALL getActiveAgreementAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-the Active Agreement address
-```
-
-
----
-
-#### getActiveAgreementData(address)
-
-
-**getActiveAgreementData(address)**
-
-
-Returns data about the Active Agreement at the specified address
-
-```endpoint
-CALL getActiveAgreementData(address)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // Active Agreement
-
-```
-
-#### Return
-
-```json
-archetype archetypename namehoardAddress Address of agreement params in hoardhoardSecret Secret for hoard retrieval
-```
-
-
----
-
-#### getActiveAgreementsSize()
-
-
-**getActiveAgreementsSize()**
-
-
-Gets number of activeAgreements
-
-```endpoint
-CALL getActiveAgreementsSize()
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
-#### getAgreementParameterAtIndex(address,uint256)
-
-
-**getAgreementParameterAtIndex(address,uint256)**
-
-
-Returns the process data ID at the specified index
-
-```endpoint
-CALL getAgreementParameterAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index
-
-```
-
-#### Return
-
-```json
-the data ID
-```
-
-
----
-
-#### getAgreementParameterDetails(address,bytes32)
-
-
-**getAgreementParameterDetails(address,bytes32)**
-
-
-Returns information about the process data entry for the specified process and data ID
-
-```endpoint
-CALL getAgreementParameterDetails(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_address // the active agreement
-_dataId // the data ID
-
-```
-
-#### Return
-
-```json
-(process,id,uintValue,bytes32Value,addressValue,boolValue)
-```
-
-
----
-
-#### getBpmService()
-
-
-**getBpmService()**
-
-
-Returns the BpmService address
-
-```endpoint
-CALL getBpmService()
-```
-
-#### Return
-
-```json
-address the BpmService
-```
-
-
----
-
-#### getNumberOfAgreementParameters(address)
-
-
-**getNumberOfAgreementParameters(address)**
-
-
-Returns the number of agreement parameter entries.
-
-```endpoint
-CALL getNumberOfAgreementParameters(address)
-```
-
-#### Return
-
-```json
-the process data size
-```
-
-
----
-
-#### getPartiesByActiveAgreementSize(address)
-
-
-**getPartiesByActiveAgreementSize(address)**
-
-
-Gets parties size for given Active Agreement
-
-```endpoint
-CALL getPartiesByActiveAgreementSize(address)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // Active Agreement
-
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
-#### getPartyByActiveAgreementAtIndex(address,uint256)
-
-
-**getPartyByActiveAgreementAtIndex(address,uint256)**
-
-
-Gets getPartyByActiveAgreementAtIndex
-
-```endpoint
-CALL getPartyByActiveAgreementAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // Active Agreement
-_index // index
-
-```
-
-#### Return
-
-```json
-party party
-```
-
-
----
-
-#### getPartyByActiveAgreementData(address,address)
-
-
-**getPartyByActiveAgreementData(address,address)**
-
-
-Returns data about the given party's signature on the specified agreement.
-
-```endpoint
-CALL getPartyByActiveAgreementData(address,address)
-```
-
-#### Parameters
-
-```solidity
-_activeAgreement // the ActiveAgreement
-_party // the signing party
-
-```
-
-#### Return
-
-```json
-signedBy the actual signature authorized by the partysignatureTimestamp the timestamp when the party has signed, or 0 if not signed yet
-```
-
-
----
-
-#### processStateChanged(address)
-
-
-**processStateChanged(address)**
-
-```endpoint
-CALL processStateChanged(address)
-```
-
-#### Parameters
-
-```solidity
-_pi // the process instance whose state has changed
-
-```
-
-
----
-
-#### setBpmService(address)
-
-
-**setBpmService(address)**
-
-
-Sets the BpmService reference to use for controlling the agreement workflows.
-
-```endpoint
-CALL setBpmService(address)
-```
-
-#### Parameters
-
-```solidity
-_service // the BpmService
-
-```
-
-
----
-
-#### startFormation(address)
-
-
-**startFormation(address)**
-
-
-Creates a starts a ProcessInstance to handle the formation workflow as defined by the given agreement's archetype.
-
-```endpoint
-CALL startFormation(address)
-```
-
-#### Parameters
-
-```solidity
-_agreement // an ActiveAgreement
-
-```
-
-#### Return
-
-```json
-error - an error code indicating success or failurethe address of the ProcessInstance, if successful
-```
-
-
----
-
-### DefaultArchetype
-
-
-The DefaultArchetype contract is found within the agreements bundle.
-
-#### activate()
-
-
-**activate()**
-
-
-Activates this archetype
-
-```endpoint
-CALL activate()
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR()
-```
-
-
----
-
-#### addCustomField(uint8,bytes32)
-
-
-**addCustomField(uint8,bytes32)**
-
-
-Adds custom field
-
-```endpoint
-CALL addCustomField(uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // customField
-_dataType // data type (enum)
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if successful,
-BaseErrors.INVALID_PARAM_VALUE() if _dataType is not in the DataTypes enum,
-BaseErrors.NULL_PARAM_NOT_ALLOWED() if _customField is empty,
-BaseErrors.RESOURCE_ALREADY_EXISTS() if _customField already exists
-```
-
-
----
-
-#### addDocument(bytes32,bytes32,bytes32)
-
-
-**addDocument(bytes32,bytes32,bytes32)**
-
-
-Adds document
-
-```endpoint
-CALL addDocument(bytes32,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_hoardAddress // hoard address
-_name // name
-_secretKey // secret key
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_ALREADY_EXISTS() if _name already exists in documentNames
-```
-
-
----
-
-#### addJurisdiction(bytes2,bytes32)
-
-
-**addJurisdiction(bytes2,bytes32)**
-
-
-Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations. If the region is empty, the jurisdiction will only reference the country and the regions will be emptied, i.e. any prior regions for that country will be removed.
-
-```endpoint
-CALL addJurisdiction(bytes2,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_country // a ISO- code, e.g. 'US'
-_region // a region identifier from a IsoCountries contract
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if successful, and key of jurisdiction just added
-BaseErrors.INVALID_PARAM_VALUE() if _country is not in the DataTypes enum,
-```
-
-
----
-
-#### deactivate()
-
-
-**deactivate()**
-
-
-Deactivates this archetype
-
-```endpoint
-CALL deactivate()
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR()
-```
-
-
----
-
-#### getAuthor()
-
-
-**getAuthor()**
-
-
-Gets Author
-
-```endpoint
-CALL getAuthor()
-```
-
-#### Return
-
-```json
-author author
-```
-
-
----
-
-#### getCustomFieldAtIndex(uint256)
-
-
-**getCustomFieldAtIndex(uint256)**
-
-
-Gets custom field at index
-
-```endpoint
-CALL getCustomFieldAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error error TBDcustomField custom field
-```
-
-
----
-
-#### getCustomFieldDataType(bytes32)
-
-
-**getCustomFieldDataType(bytes32)**
-
-
-Gets custom field data type
-
-```endpoint
-CALL getCustomFieldDataType(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // custom field
-
-```
-
-#### Return
-
-```json
-error error TBDdataType data type
-```
-
-
----
-
-#### getDescription()
-
-
-**getDescription()**
-
-
-Gets description
-
-```endpoint
-CALL getDescription()
-```
-
-#### Return
-
-```json
-description
-```
-
-
----
-
-#### getDocument(bytes32)
-
-
-**getDocument(bytes32)**
-
-
-Gets document with given name
-
-```endpoint
-CALL getDocument(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_name // document name
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.RESOURCE_NOT_FOUND() if documentsNames does not contain _namehoardAddress hoard addresssecretKey secret key
-```
-
-
----
-
-#### getDocumentAtIndex(uint256)
-
-
-**getDocumentAtIndex(uint256)**
-
-
-Gets document name at index
-
-```endpoint
-CALL getDocumentAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsname
-```
-
-
----
-
-#### getExecutionProcessDefinition()
-
-
-**getExecutionProcessDefinition()**
-
-
-Returns the address of the ProcessDefinition that orchestrates the agreement execution.
-
-```endpoint
-CALL getExecutionProcessDefinition()
-```
-
-#### Return
-
-```json
-the address of a ProcessDefinition
-```
-
-
----
-
-#### getFormationProcessDefinition()
-
-
-**getFormationProcessDefinition()**
-
-
-Returns the address of the ProcessDefinition that orchestrates the agreement formation.
-
-```endpoint
-CALL getFormationProcessDefinition()
-```
-
-#### Return
-
-```json
-the address of a ProcessDefinition
-```
-
-
----
-
-#### getJurisdictionAtIndex(uint256)
-
-
-**getJurisdictionAtIndex(uint256)**
-
-
-Retrieves the key for the jurisdiction at the specified index
-
-```endpoint
-CALL getJurisdictionAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index position
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR() or BaseErrors.INDEX_OUT_OF_BOUNDS() if index is out of boundsthe key of the jurisdiction or an empty bytes32 if the index was out of bounds
-```
-
-
----
-
-#### getJurisdictionData(bytes32)
-
-
-**getJurisdictionData(bytes32)**
-
-
-Returns information about the jurisdiction with the specified key
-
-```endpoint
-CALL getJurisdictionData(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_key // the key identifying the jurisdiction
-
-```
-
-#### Return
-
-```json
-the country and region identifiers (see IsoCountries), if the jurisdiction exists
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the archetype name
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the name
-```
-
-
----
-
-#### getNumberOfCustomFields()
-
-
-**getNumberOfCustomFields()**
-
-
-Gets number of custom fields
-
-```endpoint
-CALL getNumberOfCustomFields()
-```
-
-#### Return
-
-```json
-size number of custom fields
-```
-
-
----
-
-#### getNumberOfDocuments()
-
-
-**getNumberOfDocuments()**
-
-
-Gets number of documents
-
-```endpoint
-CALL getNumberOfDocuments()
-```
-
-#### Return
-
-```json
-size number of documents
-```
-
-
----
-
-#### getNumberOfJurisdictions()
-
-
-**getNumberOfJurisdictions()**
-
-
-Returns the number jurisdictions for this archetype
-
-```endpoint
-CALL getNumberOfJurisdictions()
-```
-
-#### Return
-
-```json
-the number of jurisdictions
-```
-
-
----
-
-#### isActive()
-
-
-**isActive()**
-
-
-Returns the active state
-
-```endpoint
-CALL isActive()
-```
-
-#### Return
-
-```json
-true if active, false otherwise
-```
-
-
----
-
-#### isPrivate()
-
-
-**isPrivate()**
-
-
-Returns the private state
-
-```endpoint
-CALL isPrivate()
-```
-
-#### Return
-
-```json
-true if private, false otherwise
-```
-
-
----
-
-### DefaultArchetypeRegistry
-
-
-The DefaultArchetypeRegistry contract is found within the agreements bundle.
-
-#### activate(address)
-
-
-**activate(address)**
-
-
-Sets active to true for given archetype
-
-```endpoint
-CALL activate(address)
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR()
-```
-
-
----
-
-#### addDocument(address,bytes32,bytes32,bytes32)
-
-
-**addDocument(address,bytes32,bytes32,bytes32)**
-
-
-Adds Hoard document to the given Archetype
-
-```endpoint
-CALL addDocument(address,bytes32,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_hoardAddress // hoard address
-_name // name
-_secretKey // secret key
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() _archetype does not exist, or see DefaultArchetype
-```
-
-
----
-
-#### addField(address,uint8,bytes32)
-
-
-**addField(address,uint8,bytes32)**
-
-
-Adds custom field to archetype
-
-```endpoint
-CALL addField(address,uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // the archetype address
-_dataType // data type (enum)
-_fieldName // the field name
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addCustomField() function
-```
-
-
----
-
-#### addFields(address,uint8[],bytes32[])
-
-
-**addFields(address,uint8[],bytes32[])**
-
-
-Adds the specified fields to the archetype. If one of the fields cannot be added, the operation aborts and returns that error code.
-
-```endpoint
-CALL addFields(address,uint8[],bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_archetype // the archetype address
-_dataTypes // the data types
-_fieldNames // the field names
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
-```
-
-
----
-
-#### addJurisdiction(address,bytes2,bytes32)
-
-
-**addJurisdiction(address,bytes2,bytes32)**
-
-
-Adds the given jurisdiction in the form of a country code and region identifier to this archetype. References codes defined via IsoCountries interface implementations.
-
-```endpoint
-CALL addJurisdiction(address,bytes2,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_country // a ISO-3166-1 code, e.g. 'US'
-_region // a region identifier from a IsoCountries contract
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addJurisdiction() function
-```
-
-
----
-
-#### addJurisdictions(address,bytes2[],bytes32[])
-
-
-**addJurisdictions(address,bytes2[],bytes32[])**
-
-
-Adds the given jurisdictions in the form of a country codes and region identifiers to this archetype. References codes defined via IsoCountries interface implementations.
-
-```endpoint
-CALL addJurisdictions(address,bytes2[],bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_countries // an array of a ISO-3166-1 code, e.g. 'US'
-_regions // an array of region identifiers from a IsoCountries contract
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
-```
-
-
----
-
-#### create(bytes32,address,string,bool,address,address)
-
-
-**create(bytes32,address,string,bool,address,address)**
-
-
-Creates a new archetype
-
-```endpoint
-CALL create(bytes32,address,string,bool,address,address)
-```
-
-#### Parameters
-
-```solidity
-_author // author
-_description // description
-_executionProcess // the address of a ProcessDefinition that orchestrates the agreement execution
-_formationProcess // the address of a ProcessDefinition that orchestrates the agreement formation
-_isPrivate // determines if the archetype's documents are encrypted
-_name // name
-
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if either _name, _author, _formationProcess, or _executionProcess is nullarchetype - the new archetype's address, if successfully created
-```
-
-
----
-
-#### deactivate(address)
-
-
-**deactivate(address)**
-
-
-Sets active to false for given archetype
-
-```endpoint
-CALL deactivate(address)
-```
-
-#### Return
-
-```json
-error BaseErrors.NO_ERROR()
-```
-
-
----
-
-#### getArchetypeAtIndex(uint256)
-
-
-**getArchetypeAtIndex(uint256)**
-
-
-Gets archetype address at given index
-
-```endpoint
-CALL getArchetypeAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-archetype archetype
-```
-
-
----
-
-#### getArchetypeData(address)
-
-
-**getArchetypeData(address)**
-
-
-Returns data about an archetype
-
-```endpoint
-CALL getArchetypeData(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // the archetype address
-
-```
-
-#### Return
-
-```json
-name namedescription descriptionauthor authoractive activeformationProcessDefinitionexecutionProcessDefinition
-```
-
-
----
-
-#### getArchetypesSize()
-
-
-**getArchetypesSize()**
-
-
-Gets number of archetypes
-
-```endpoint
-CALL getArchetypesSize()
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
-#### getDocumentByArchetypeAtIndex(address,uint256)
-
-
-**getDocumentByArchetypeAtIndex(address,uint256)**
-
-
-Gets document name by Archetype At index
-
-```endpoint
-CALL getDocumentByArchetypeAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_index // index
-
-```
-
-#### Return
-
-```json
-name name
-```
-
-
----
-
-#### getDocumentByArchetypeData(address,bytes32)
-
-
-**getDocumentByArchetypeData(address,bytes32)**
-
-
-Returns data about the document at the specified address
-
-```endpoint
-CALL getDocumentByArchetypeData(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_name // name
-
-```
-
-#### Return
-
-```json
-_hoardAddress hoard address_secretKey secret key
-```
-
-
----
-
-#### getDocumentsByArchetypeSize(address)
-
-
-**getDocumentsByArchetypeSize(address)**
-
-
-Gets documents size for given Archetype
-
-```endpoint
-CALL getDocumentsByArchetypeSize(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
-#### getFieldByArchetypeAtIndex(address,uint256)
-
-
-**getFieldByArchetypeAtIndex(address,uint256)**
-
-
-Gets field name by Archetype At index
-
-```endpoint
-CALL getFieldByArchetypeAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_index // index
-
-```
-
-#### Return
-
-```json
-name name
-```
-
-
----
-
-#### getFieldByArchetypeData(address,bytes32)
-
-
-**getFieldByArchetypeData(address,bytes32)**
-
-
-Returns data about the field at with the specified name
-
-```endpoint
-CALL getFieldByArchetypeData(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_name // name
-
-```
-
-#### Return
-
-```json
-dataType data type
-```
-
-
----
-
-#### getFieldsByArchetypeSize(address)
-
-
-**getFieldsByArchetypeSize(address)**
-
-
-Gets fields size for given Archetype
-
-```endpoint
-CALL getFieldsByArchetypeSize(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
-#### getJurisdictionAtIndexForArchetype(address,uint256)
-
-
-**getJurisdictionAtIndexForArchetype(address,uint256)**
-
-
-Returns the jurisdiction key at the specified index for the given archetype
-
-```endpoint
-CALL getJurisdictionAtIndexForArchetype(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype address
-_index // the index of the jurisdiction
-
-```
-
-#### Return
-
-```json
-the jurisdiction primary key
-```
-
-
----
-
-#### getJurisdictionDataForArchetype(address,bytes32)
-
-
-**getJurisdictionDataForArchetype(address,bytes32)**
-
-
-Returns data about the jurisdiction with the specified key in the given archetype
-
-```endpoint
-CALL getJurisdictionDataForArchetype(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype address
-_key // the jurisdiction key
-
-```
-
-#### Return
-
-```json
-country the jurisdiction's countryregion the jurisdiction's region
-```
-
-
----
-
-#### getNumberOfJurisdictionsForArchetype(address)
-
-
-**getNumberOfJurisdictionsForArchetype(address)**
-
-
-Returns the number of jurisdictions for the given Archetype
-
-```endpoint
-CALL getNumberOfJurisdictionsForArchetype(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype address
-
-```
-
-#### Return
-
-```json
-the number of jurisdictions
-```
-
-
----
-
-### DefaultEventEmitter
-
-
-The DefaultEventEmitter contract is found within the agreements bundle.
-
-#### addEventListener(bytes32)
-
-
-**addEventListener(bytes32)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-
-```
-
-
----
-
-#### addEventListener(bytes32,address)
-
-
-**addEventListener(bytes32,address)**
-
-
-Adds the msg.sender as listener for the specified event.
-
-```endpoint
-CALL addEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to subscribe to
-_listener // the address of an EventListener
-
-```
-
-
----
-
-#### removeEventListener(bytes32)
-
-
-**removeEventListener(bytes32)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-
-```
-
-
----
-
-#### removeEventListener(bytes32,address)
-
-
-**removeEventListener(bytes32,address)**
-
-
-Removes the msg.sender from the list of listeners for the specified event.
-
-```endpoint
-CALL removeEventListener(bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_event // the event to unsubscribe from
-_listener // the address of an EventListener
-
-```
-
-
----
-
-
-### ERC165Utils
-
-
-The ERC165Utils contract is found within the agreements bundle.
-
-#### implementsInterface(address,bytes4)
-
-
-**implementsInterface(address,bytes4)**
-
-
-Detects whether the given contract implements the specified ERC165 interface signature. This is a modified implementation of the example in EIP 881 to avoid the use of the "staticcall" opcode. This function performs two invocations: 1. A "call" to the 0x01ffc9a7 function signature to test if it can be invoked 2. If step 1 returns 'true', the contract is cast to ERC165 and the supportsInterface(bytes4) function is invoked
-
-```endpoint
-CALL implementsInterface(address,bytes4)
-```
-
-#### Parameters
-
-```solidity
-_contract // the contract to be examined
-_interfaceId // the signature of the interface for which to test
-
-```
-
-#### Return
-
-```json
-true if the contract implements the interface, false otherwise
-```
-
-
----
-
-### ProcessDefinition Interface
-
-
-The ProcessDefinition Interface contract is found within the agreements bundle.
-
-#### addProcessInterfaceImplementation(address,bytes32)
-
-
-**addProcessInterfaceImplementation(address,bytes32)**
-
-
-Adds the specified process interface to the list of supported process interfaces of this ProcessDefinition
-
-```endpoint
-CALL addProcessInterfaceImplementation(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the ID of the interface
-_model // the model defining the interface
-
-```
-
-#### Return
-
-```json
-an error code signaling success or failure
-```
-
-
----
-
-#### createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
-
-
-**createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)**
-
-
-Creates a new activity definition with the specified parameters.
-
-```endpoint
-CALL createActivityDefinition(bytes32,uint8,uint8,uint8,bytes32,bool,bytes32,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityType // the BpmModel.ActivityType [TASK|SUBPROCESS]
-_application // the application handling the execution of the activity
-_assignee // the ID of the participant performing the activity (for USER tasks only)
-_behavior // the BpmModel.TaskBehavior [SEND|SENDRECEIVE|RECEIVE]
-_id // the activity ID
-_multiInstance // whether the activity represents multiple instances
-_subProcessDefinitionId // references a subprocess definition (only for SUBPROCESS ActivityType)
-_subProcessModelId // references the model containg a subprocess definition (only for SUBPROCESS ActivityType)
-_taskType // the BpmModel.TaskType [DUMMY|USER|SERVICE|EVENT]
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-#### createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
-
-
-**createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)**
-
-
-Create a data mapping for the specified activity and direction.
-
-```endpoint
-CALL createDataMapping(bytes32,uint8,bytes32,bytes32,bytes32,address)
-```
-
-#### Parameters
-
-```solidity
-_accessPath // the access path offered by the application
-_activityId // the ID of the activity in this ProcessDefinition
-_dataPath // a data path (key) to use for data lookup on a DataStorage.
-_dataStorage // an optional address of a DataStorage as basis for the data path other than the default one
-_dataStorageId // an optional key to identify a DataStorage as basis for the data path other than the default one
-_direction // the BpmModel.Direction [IN|OUT]
-
-```
-
-
----
-
-#### createTransition(bytes32,bytes32)
-
-
-**createTransition(bytes32,bytes32)**
-
-
-Creates a transition between the specified source and target activities.
-
-```endpoint
-CALL createTransition(bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_sourceActivity // the start of the transition
-_targetActivity // the end of the transition
-
-```
-
-#### Return
-
-```json
-an error code indicating success or failure
-```
-
-
----
-
-#### getActivityAtIndex(uint256)
-
-
-**getActivityAtIndex(uint256)**
-
-
-Returns the ID of the ActivityDefinition at the specified index position of the given Process Definition
-
-```endpoint
-CALL getActivityAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // the index position
-
-```
-
-#### Return
-
-```json
-bytes32 the ActivityDefinition ID, if it exists
-```
-
-
----
-
-#### getActivityData(bytes32)
-
-
-**getActivityData(bytes32)**
-
-
-Returns information about the activity definition with the given ID.
-
-```endpoint
-CALL getActivityData(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the bytes32 id of the activity definition
-
-```
-
-#### Return
-
-```json
-activityType the BpmModel.ActivityType as uint8taskType the BpmModel.TaskType as uint8taskBehavior the BpmModel.TaskBehavior as uint8assignee the ID of the activity's assignee (for interactive activities)multiInstance whether the activity is a multi-instanceapplication the activity's applicationsubProcessModelId the ID of a process model (for subprocess activities)subProcessDefinitionId the ID of a process definition (for subprocess activities)
-```
-
-
----
-
-#### getActivityInputGateway(bytes32)
-
-
-**getActivityInputGateway(bytes32)**
-
-
-Returns the input gateway type of the specified activity.
-
-```endpoint
-CALL getActivityInputGateway(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity
-
-```
-
-#### Return
-
-```json
-the BpmModel.GatewayType
-```
-
-
----
-
-#### getActivityOutputGateway(bytes32)
-
-
-**getActivityOutputGateway(bytes32)**
-
-
-Returns the output gateway type of the specified activity.
-
-```endpoint
-CALL getActivityOutputGateway(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity
-
-```
-
-#### Return
-
-```json
-the BpmModel.GatewayType
-```
-
-
----
-
-#### getId()
-
-
-**getId()**
-
-
-Returns the identifier of this contract.
-
-```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getImplementedProcessInterfaceAtIndex(uint256)
-
-
-**getImplementedProcessInterfaceAtIndex(uint256)**
-
-
-Returns information about the process interface at the given index
-
-```endpoint
-CALL getImplementedProcessInterfaceAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_idx // the index position
-
-```
-
-#### Return
-
-```json
-modelAddress the interface's modelinterfaceId the interface ID
-```
-
-
----
-
-#### getInDataMappingAtIndex(bytes32,uint256)
-
-
-**getInDataMappingAtIndex(bytes32,uint256)**
-
-
-Returns information about the IN data mapping of the specified activity at the given index
-
-```endpoint
-CALL getInDataMappingAtIndex(bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity in this ProcessDefinition
-_idx // the index position
-
-```
-
-#### Return
-
-```json
-accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
-```
-
-
----
-
-#### getModel()
-
-
-**getModel()**
-
-
-Returns the address of the model which contains this process definition
-
-```endpoint
-CALL getModel()
-```
-
-#### Return
-
-```json
-the model address
-```
-
-
----
-
-#### getName()
-
-
-**getName()**
-
-
-Returns the name of this contract.
-
-```endpoint
-CALL getName()
-```
-
-#### Return
-
-```json
-the bytes32 name
-```
-
-
----
-
-#### getNumberOfActivities()
-
-
-**getNumberOfActivities()**
-
-
-Returns the number of activity definitions in this ProcessDefinition.
-
-```endpoint
-CALL getNumberOfActivities()
-```
-
-#### Return
-
-```json
-the number of activity definitions
-```
-
-
----
-
-#### getNumberOfImplementedProcessInterfaces()
-
-
-**getNumberOfImplementedProcessInterfaces()**
-
-
-Returns the number of implemented process interfaces implemented by this ProcessDefinition
-
-```endpoint
-CALL getNumberOfImplementedProcessInterfaces()
-```
-
-#### Return
-
-```json
-the number of process interfaces
-```
-
-
----
-
-#### getNumberOfInDataMappings(bytes32)
-
-
-**getNumberOfInDataMappings(bytes32)**
-
-
-Returns the number of IN data mappings for the specified activity.
-
-```endpoint
-CALL getNumberOfInDataMappings(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity in this ProcessDefinition
-
-```
-
-#### Return
-
-```json
-the number of IN data mappings
-```
-
-
----
-
-#### getNumberOfOutDataMappings(bytes32)
-
-
-**getNumberOfOutDataMappings(bytes32)**
-
-
-Returns the number of OUT data mappings for the specified activity.
-
-```endpoint
-CALL getNumberOfOutDataMappings(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity in this ProcessDefinition
-
-```
-
-#### Return
-
-```json
-the number of OUT data mappings
-```
-
-
----
-
-#### getOutDataMappingAtIndex(bytes32,uint256)
-
-
-**getOutDataMappingAtIndex(bytes32,uint256)**
-
-
-Returns information about the OUT data mapping of the specified activity at the given index
-
-```endpoint
-CALL getOutDataMappingAtIndex(bytes32,uint256)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity in this ProcessDefinition
-_idx // the index position
-
-```
-
-#### Return
-
-```json
-accessPath the access path on the applicationdataPath a data path (key) to use for identifying the data location in a DataStorage contractdataStorageId a key to identify a secondary DataStorage as basis for the data path other than the default onedataStorage an address of a DataStorage as basis for the data path other than the default one
-```
-
-
----
-
-#### getStartActivity()
-
-
-**getStartActivity()**
-
-
-Returns the ID of the start activity of this process definition. If the process is valid, this value must be set.
-
-```endpoint
-CALL getStartActivity()
-```
-
-#### Return
-
-```json
-the ID of the identified start activity
-```
-
-
----
-
-#### implementsProcessInterface(address,bytes32)
-
-
-**implementsProcessInterface(address,bytes32)**
-
-
-indicates whether this ProcessDefinition implements the specified interface
-
-```endpoint
-CALL implementsProcessInterface(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_interfaceId // the ID of the interface
-_model // the model defining the interface
-
-```
-
-#### Return
-
-```json
-true if the interface is supported, false otherwise
-```
-
-
----
-
-#### isValid()
-
-
-**isValid()**
-
-
-Returns the current validity state
-
-```endpoint
-CALL isValid()
-```
-
-#### Return
-
-```json
-true if valid, false otherwise
-```
-
-
----
-
-#### setActivityInputGateway(bytes32,uint8)
-
-
-**setActivityInputGateway(bytes32,uint8)**
-
-
-Sets the input gateway of the specified activity to the given type.
-
-```endpoint
-CALL setActivityInputGateway(bytes32,uint8)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity
-_type // the gateway type
-
-```
-
-
----
-
-#### setActivityOutputGateway(bytes32,uint8)
-
-
-**setActivityOutputGateway(bytes32,uint8)**
-
-
-Sets the output gateway of the specified activity to the given type.
-
-```endpoint
-CALL setActivityOutputGateway(bytes32,uint8)
-```
-
-#### Parameters
-
-```solidity
-_activityId // the ID of the activity
-_type // the gateway type
-
-```
-
-
----
-
-#### validate()
-
-
-**validate()**
-
-
-Validates the coherence of the process definition in terms of the diagram and its configuration and sets the valid flag.
-
-```endpoint
-CALL validate()
-```
-
-#### Return
-
-```json
-valid - boolean indicating validityerrorMessage - empty string if valid, otherwise contains a hint what failed
 ```
 
 
@@ -21757,6 +17956,376 @@ v // The number to be converted.
 
 ```json
 the bytes32 representation
+```
+
+
+---
+
+### UserAccount Interface
+
+
+The UserAccount Interface contract is found within the agreements bundle.
+
+#### getId()
+
+
+**getId()**
+
+
+Returns the identifier of this contract.
+
+```endpoint
+CALL getId()
+```
+
+#### Return
+
+```json
+the bytes32 ID
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+#### Return
+
+```json
+the owner address
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
+### Versioned
+
+
+The Versioned contract is found within the agreements bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+### WorkflowProxy
+
+
+The WorkflowProxy contract is found within the agreements bundle.
+
+#### completeActivity(bytes32,address)
+
+
+**completeActivity(bytes32,address)**
+
+
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+
+```endpoint
+CALL completeActivity(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
+
+```
+
+#### Return
+
+```json
+error code if the completion failed
+```
+
+
+---
+
+### WorkflowUserAccount
+
+
+The WorkflowUserAccount contract is found within the agreements bundle.
+
+#### completeActivity(bytes32,address)
+
+
+**completeActivity(bytes32,address)**
+
+
+Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+
+```endpoint
+CALL completeActivity(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_activityInstanceId // the task ID
+_service // the BpmService required for lookup and access to the BpmRuntimeDb
+
+```
+
+#### Return
+
+```json
+error code if the completion failed
+```
+
+
+---
+
+#### getId()
+
+
+**getId()**
+
+
+Returns this account's ID
+
+```endpoint
+CALL getId()
+```
+
+
+---
+
+#### getOrganization()
+
+
+**getOrganization()**
+
+
+Returns this user account's organization, if it is associated with one.
+
+```endpoint
+CALL getOrganization()
+```
+
+#### Return
+
+```json
+the organization's address or 0x0
+```
+
+
+---
+
+#### getOwner()
+
+
+**getOwner()**
+
+
+Returns this account's owner
+
+```endpoint
+CALL getOwner()
+```
+
+
+---
+
+#### setOrganization(address)
+
+
+**setOrganization(address)**
+
+
+Sets the organization of this user account
+
+```endpoint
+CALL setOrganization(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address with which to associate this user account
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
 ```
 
 
@@ -24626,37 +21195,6 @@ _startedBy // the address of an account that regarded as the starting user
 
 ---
 
-#### createUserAccount(address,address,bytes32,bytes32)
-
-
-**createUserAccount(address,address,bytes32,bytes32)**
-
-
-Creates a WorkflowUserAccount with the specified parameters and adds it to the AccountsManager
-
-```endpoint
-CALL createUserAccount(address,address,bytes32,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_accountsManager // the AccountsManager address
-_id // id (optional)
-_owner // owner (optional)
-_secret // secret
-
-```
-
-#### Return
-
-```json
-error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount user account address, or 0x0 if not successful
-```
-
-
----
-
 #### fireActivityUpdateEvent(address,bytes32)
 
 
@@ -25448,475 +21986,521 @@ CALL notifyProcessStateChange()
 
 ---
 
-### DefaultUserAccount
+### Ecosystem Interface
 
 
-The DefaultUserAccount contract is found within the bpm-runtime bundle.
+The Ecosystem Interface contract is found within the bpm-runtime bundle.
 
-#### getId()
-
-
-**getId()**
+#### addOrganization(address)
 
 
-Returns this account's ID
-
-```endpoint
-CALL getId()
-```
+**addOrganization(address)**
 
 
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns this user account's organization, if it is associated with one.
+Adds the organization at the specified address to this Ecosystem.
 
 ```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization's address or 0x0
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-
----
-
-#### secretIsValid(bytes32)
-
-
-**secretIsValid(bytes32)**
-
-
-Validates secret
-
-```endpoint
-CALL secretIsValid(bytes32)
+CALL addOrganization(address)
 ```
 
 #### Parameters
 
 ```solidity
-_secret // _secret
+_address // the Organization contract's address
 
 ```
 
 #### Return
 
 ```json
-whether _secret is valid
+error code
 ```
 
 
 ---
 
-#### setOrganization(address)
+#### createOrganization(bytes32,bytes32,address[10])
 
 
-**setOrganization(address)**
+**createOrganization(bytes32,bytes32,address[10])**
 
 
-Sets the organization of this user account
+Creates a new Organization with the specified parameters and adds it to this Ecosystem.
 
 ```endpoint
-CALL setOrganization(address)
+CALL createOrganization(bytes32,bytes32,address[10])
 ```
 
 #### Parameters
 
 ```solidity
-_organization // the organization's address with which to associate this user account
+_approvers // the initial owners.
+_id // the organization's ID
+_name // the organization's name
 
 ```
 
 #### Return
 
 ```json
-BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+error code and the address of the newly created organization, if successful
 ```
 
 
 ---
 
-
-### UserAccount Interface
-
-
-The UserAccount Interface contract is found within the bpm-runtime bundle.
-
-#### getId()
+#### eventFired(bytes32,address)
 
 
-**getId()**
+**eventFired(bytes32,address)**
 
 
-Returns the identifier of this contract.
+Invoked by an EventEmitter for a named event without any additional data.
 
 ```endpoint
-CALL getId()
-```
-
-#### Return
-
-```json
-the bytes32 ID
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns this user account's organization, if it is associated with one.
-
-```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization's address or 0x0
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-#### Return
-
-```json
-the owner address
-```
-
-
----
-
-#### secretIsValid(bytes32)
-
-
-**secretIsValid(bytes32)**
-
-
-Validates secret
-
-```endpoint
-CALL secretIsValid(bytes32)
+CALL eventFired(bytes32,address)
 ```
 
 #### Parameters
 
 ```solidity
-_secret // _secret
+_event // the event name
+_source // the source of the event
 
-```
-
-#### Return
-
-```json
-whether _secret is valid
 ```
 
 
 ---
 
-#### setOrganization(address)
+#### eventFired(bytes32,address,address)
 
 
-**setOrganization(address)**
+**eventFired(bytes32,address,address)**
 
 
-Sets the organization of this user account
+Invoked by an EventEmitter for a named event with an additional address payload.
 
 ```endpoint
-CALL setOrganization(address)
+CALL eventFired(bytes32,address,address)
 ```
 
 #### Parameters
 
 ```solidity
-_organization // the organization's address with which to associate this user account
+_data // the payload
+_event // the event name
+_source // the source of the event
 
-```
-
-#### Return
-
-```json
-error code indicating success or failure
 ```
 
 
 ---
 
-### WorkflowProxy
+#### eventFired(bytes32,address,bytes32)
 
 
-The WorkflowProxy contract is found within the bpm-runtime bundle.
-
-#### completeActivity(bytes32,address)
+**eventFired(bytes32,address,bytes32)**
 
 
-**completeActivity(bytes32,address)**
-
-
-Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+Invoked by an EventEmitter for a named event with an additional bytes32 payload.
 
 ```endpoint
-CALL completeActivity(bytes32,address)
+CALL eventFired(bytes32,address,bytes32)
 ```
 
 #### Parameters
 
 ```solidity
-_activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_data // the payload
+_event // the event name
+_source // the source of the event
 
-```
-
-#### Return
-
-```json
-error code if the completion failed
 ```
 
 
 ---
 
-#### sign(address)
+#### eventFired(bytes32,address,string)
 
 
-**sign(address)**
+**eventFired(bytes32,address,string)**
 
 
-Signs the provided Signable contract
+Invoked by an EventEmitter for a named event with an additional string payload.
 
 ```endpoint
-CALL sign(address)
+CALL eventFired(bytes32,address,string)
 ```
 
 #### Parameters
 
 ```solidity
-_signable // the address of a Signable
+_data // the payload
+_event // the event name
+_source // the source of the event
 
-```
-
-#### Return
-
-```json
-error code if the signing failed
 ```
 
 
 ---
 
-### WorkflowUserAccount
+#### eventFired(bytes32,address,uint256)
 
 
-The WorkflowUserAccount contract is found within the bpm-runtime bundle.
-
-#### completeActivity(bytes32,address)
+**eventFired(bytes32,address,uint256)**
 
 
-**completeActivity(bytes32,address)**
-
-
-Completes the specified activity using the given BpmService to locate the relevant ProcessInstance. This sets the msg.sender of the call to the address of this proxy contract, so that it can be used to authorize the task completion.
+Invoked by an EventEmitter for a named event with an additional uint payload.
 
 ```endpoint
-CALL completeActivity(bytes32,address)
+CALL eventFired(bytes32,address,uint256)
 ```
 
 #### Parameters
 
 ```solidity
-_activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_data // the payload
+_event // the event name
+_source // the source of the event
 
-```
-
-#### Return
-
-```json
-error code if the completion failed
 ```
 
 
 ---
 
-#### getId()
+#### getApproverAtIndex(address,uint256)
 
 
-**getId()**
+**getApproverAtIndex(address,uint256)**
 
 
-Returns this account's ID
-
-```endpoint
-CALL getId()
-```
-
-
----
-
-#### getOrganization()
-
-
-**getOrganization()**
-
-
-Returns this user account's organization, if it is associated with one.
+Returns the approver's address at the given index position of the specified organization.
 
 ```endpoint
-CALL getOrganization()
-```
-
-#### Return
-
-```json
-the organization's address or 0x0
-```
-
-
----
-
-#### getOwner()
-
-
-**getOwner()**
-
-
-Returns this account's owner
-
-```endpoint
-CALL getOwner()
-```
-
-
----
-
-#### secretIsValid(bytes32)
-
-
-**secretIsValid(bytes32)**
-
-
-Validates secret
-
-```endpoint
-CALL secretIsValid(bytes32)
+CALL getApproverAtIndex(address,uint256)
 ```
 
 #### Parameters
 
 ```solidity
-_secret // _secret
+_organization // the organization's address
+_pos // the index position
 
 ```
 
 #### Return
 
 ```json
-whether _secret is valid
+the approver's address, if the position exists
 ```
 
 
 ---
 
-#### setOrganization(address)
+#### getApproverData(address,address)
 
 
-**setOrganization(address)**
+**getApproverData(address,address)**
 
 
-Sets the organization of this user account
+Function supports SQLsol, but only returns the approver address parameter.
 
 ```endpoint
-CALL setOrganization(address)
+CALL getApproverData(address,address)
 ```
 
 #### Parameters
 
 ```solidity
-_organization // the organization's address with which to associate this user account
+_approver // the approver's address
+_organization // the organization's address
 
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
 ```
 
 
 ---
 
-#### sign(address)
+#### getNumberOfApprovers(address)
 
 
-**sign(address)**
+**getNumberOfApprovers(address)**
 
 
-Signs the provided Signable contract
+Returns the number of registered approvers in the specified organization.
 
 ```endpoint
-CALL sign(address)
+CALL getNumberOfApprovers(address)
 ```
 
 #### Parameters
 
 ```solidity
-_signable // the address of a Signable
+_organization // the organization's address
 
 ```
 
 #### Return
 
 ```json
-error code if the signing failed
+the number of approvers
+```
+
+
+---
+
+#### getNumberOfOrganizations()
+
+
+**getNumberOfOrganizations()**
+
+
+Returns the number of registered organizations.
+
+```endpoint
+CALL getNumberOfOrganizations()
+```
+
+#### Return
+
+```json
+the number of organizations
+```
+
+
+---
+
+#### getNumberOfUsers(address)
+
+
+**getNumberOfUsers(address)**
+
+
+returns the number of users associated with the specified organization
+
+```endpoint
+CALL getNumberOfUsers(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+
+```
+
+#### Return
+
+```json
+the number of users
+```
+
+
+---
+
+#### getOrganization(bytes32)
+
+
+**getOrganization(bytes32)**
+
+
+Returns the address of the organization with the specified ID, if it exists
+
+```endpoint
+CALL getOrganization(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the organization's ID
+
+```
+
+#### Return
+
+```json
+the organization's address, if it exists
+```
+
+
+---
+
+#### getOrganizationAtIndex(uint256)
+
+
+**getOrganizationAtIndex(uint256)**
+
+
+Returns the organization at the specified index.
+
+```endpoint
+CALL getOrganizationAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address of the organization
+```
+
+
+---
+
+#### getOrganizationData(address)
+
+
+**getOrganizationData(address)**
+
+
+Returns the public data of the organization at the specified address
+
+```endpoint
+CALL getOrganizationData(address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the address of an organization
+
+```
+
+#### Return
+
+```json
+the organization's ID and name
+```
+
+
+---
+
+#### getUserAtIndex(address,uint256)
+
+
+**getUserAtIndex(address,uint256)**
+
+
+Returns the user's address at the given index position in the specified organization.
+
+```endpoint
+CALL getUserAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+_pos // the index position
+
+```
+
+#### Return
+
+```json
+the address or 0x0 if the position does not exist
+```
+
+
+---
+
+#### getUserData(address,address)
+
+
+**getUserData(address,address)**
+
+
+Returns information about the specified user in the context of the given organization
+
+```endpoint
+CALL getUserData(address,address)
+```
+
+#### Parameters
+
+```solidity
+_organization // the organization's address
+_user // the user's address
+
+```
+
+#### Return
+
+```json
+active - whether the user is activated in the organization
+```
+
+
+---
+
+#### organizationExists(bytes32)
+
+
+**organizationExists(bytes32)**
+
+
+Indicates whether the specified organization exists for the given organization id
+
+```endpoint
+CALL organizationExists(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // organization ID
+
+```
+
+#### Return
+
+```json
+bool exists
 ```
 
 
 ---
 
 ## commons-auth
+
+### AbstractERC165
+
+
+The AbstractERC165 contract is found within the commons-auth bundle.
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
+```
+
+
+---
 
 ### AuthorizationsManager
 
@@ -26571,7 +23155,7 @@ CALL addUserAccount(address)
 #### Return
 
 ```json
-NO_ERROR, RESOURCE_NOT_FOUND if the organization does not exist, RESOURCE_ALREADY_EXISTS if the user account is already registered
+NO_ERROR, RESOURCE_ALREADY_EXISTS if the user account ID is already registered
 ```
 
 
@@ -26638,16 +23222,16 @@ bool exists
 
 ---
 
-#### createUserAccount(address,bytes32,bytes32)
+#### createUserAccount(address,bytes32)
 
 
-**createUserAccount(address,bytes32,bytes32)**
+**createUserAccount(address,bytes32)**
 
 
 Creates and adds a user account
 
 ```endpoint
-CALL createUserAccount(address,bytes32,bytes32)
+CALL createUserAccount(address,bytes32)
 ```
 
 #### Parameters
@@ -26655,14 +23239,13 @@ CALL createUserAccount(address,bytes32,bytes32)
 ```solidity
 _id // id (optional)
 _owner // owner (optional)
-_secret // secret
 
 ```
 
 #### Return
 
 ```json
-error BaseErrors.NO_ERROR() or BaseErrors.RUNTIME_ERROR() if a runtime erroruserAccount user account
+error BaseErrors.NO_ERROR() or RESOURCE_ALREADY_EXISTS if the user account ID is already registereduserAccount user account
 ```
 
 
@@ -31604,6 +28187,231 @@ CALL patch()
 
 ---
 
+### VersionLinkedAppendOnly Interface
+
+
+The VersionLinkedAppendOnly Interface contract is found within the commons-collections bundle.
+
+#### appendNewVersion(address)
+
+
+**appendNewVersion(address)**
+
+
+Appends the given version as the latest in version linked list
+
+```endpoint
+CALL appendNewVersion(address)
+```
+
+#### Return
+
+```json
+error - failure to append due to various reasons
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getTargetVersion(uint8[3])
+
+
+**getTargetVersion(uint8[3])**
+
+
+Retrieves the specified version
+
+```endpoint
+CALL getTargetVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_targetVer // - the version to retrieve
+
+```
+
+#### Return
+
+```json
+targetAddr - address of the version to retrieve, 0x0 if not found
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLatest(address)
+
+
+**setLatest(address)**
+
+
+Sets the latest version, and recursively sets latest for preceeding links
+
+```endpoint
+CALL setLatest(address)
+```
+
+#### Parameters
+
+```solidity
+_latest // - the latest version
+
+```
+
+#### Return
+
+```json
+success - representing whether latest was successfully set for all links
+```
+
+
+---
+
+#### setPredecessor()
+
+
+**setPredecessor()**
+
+
+Sets the predecessor to msg.sender who should also have the same owner
+
+```endpoint
+CALL setPredecessor()
+```
+
+#### Return
+
+```json
+error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
+
 ## commons-management
 
 ### ContractLocator Interface
@@ -33462,6 +30270,587 @@ CALL upgrade(address)
 
 ---
 
+### DefaultLifecycleModule
+
+
+The DefaultLifecycleModule contract is found within the commons-management bundle.
+
+#### addChild(address)
+
+
+**addChild(address)**
+
+
+Adds the given address as a child of this component
+
+```endpoint
+CALL addChild(address)
+```
+
+#### Parameters
+
+```solidity
+_child // the child to add
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getNumberOfChildren()
+
+
+**getNumberOfChildren()**
+
+
+returns the number of child sub-modules
+
+```endpoint
+CALL getNumberOfChildren()
+```
+
+#### Return
+
+```json
+the number of children
+```
+
+
+---
+
+#### getNumberOfRegistrationContracts()
+
+
+**getNumberOfRegistrationContracts()**
+
+
+Returns the number of contracts registered in this module
+
+```endpoint
+CALL getNumberOfRegistrationContracts()
+```
+
+#### Return
+
+```json
+0
+```
+
+
+---
+
+#### getParent()
+
+
+**getParent()**
+
+
+Returns the parent address
+
+```endpoint
+CALL getParent()
+```
+
+#### Return
+
+```json
+the parent or 0x0, if this is the root of the hierarchy
+```
+
+
+---
+
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+("", 0x0)
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+default implementation returns false. Overwrite to return true, if the module should be destroyed after an upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+#### Return
+
+```json
+false
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Default implementation of Upgradeable.migrateFrom(address).
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Return
+
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Default implementation of Upgradeable.migrateTo(address).
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Return
+
+```json
+BaseErrors.UNSUPPORTED_OPERATION()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLifecycleOwner(address)
+
+
+**setLifecycleOwner(address)**
+
+
+Sets the lifecycle owner to the given address
+
+```endpoint
+CALL setLifecycleOwner(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the new owner
+
+```
+
+
+---
+
+#### setParent(address)
+
+
+**setParent(address)**
+
+
+Sets the parent of this component
+
+```endpoint
+CALL setParent(address)
+```
+
+#### Parameters
+
+```solidity
+_parent // the parent
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+```
+
+
+---
+
+#### setRoot(address)
+
+
+**setRoot(address)**
+
+
+Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+
+```endpoint
+CALL setRoot(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the hierarchy root
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Returns whether the declared interface signature is supported by this contract
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+_interfaceId // the signature of the ERC165 interface
+
+```
+
+#### Return
+
+```json
+true if supported, false otherwise
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### HierarchyEnabled
+
+
+The HierarchyEnabled contract is found within the commons-management bundle.
+
+#### addChild(address)
+
+
+**addChild(address)**
+
+
+Adds the given address as a child of this component
+
+```endpoint
+CALL addChild(address)
+```
+
+#### Parameters
+
+```solidity
+_child // the child to add
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+```
+
+
+---
+
+#### getNumberOfChildren()
+
+
+**getNumberOfChildren()**
+
+
+returns the number of child sub-modules
+
+```endpoint
+CALL getNumberOfChildren()
+```
+
+#### Return
+
+```json
+the number of children
+```
+
+
+---
+
+#### getParent()
+
+
+**getParent()**
+
+
+Returns the parent address
+
+```endpoint
+CALL getParent()
+```
+
+#### Return
+
+```json
+the parent or 0x0, if this is the root of the hierarchy
+```
+
+
+---
+
+#### setParent(address)
+
+
+**setParent(address)**
+
+
+Sets the parent of this component
+
+```endpoint
+CALL setParent(address)
+```
+
+#### Parameters
+
+```solidity
+_parent // the parent
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+```
+
+
+---
+
+#### setRoot(address)
+
+
+**setRoot(address)**
+
+
+Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+
+```endpoint
+CALL setRoot(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the hierarchy root
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+### LifecycleEnabled
+
+
+The LifecycleEnabled contract is found within the commons-management bundle.
+
+#### setLifecycleOwner(address)
+
+
+**setLifecycleOwner(address)**
+
+
+Sets the lifecycle owner to the given address
+
+```endpoint
+CALL setLifecycleOwner(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the new owner
+
+```
+
+
+---
+
 ### LifecycleHub
 
 
@@ -33951,12 +31340,1168 @@ CALL upgrade(address)
 
 ---
 
+### LifecycleModule
+
+
+The LifecycleModule contract is found within the commons-management bundle.
+
+#### addChild(address)
+
+
+**addChild(address)**
+
+
+Adds the given address as a child of this component
+
+```endpoint
+CALL addChild(address)
+```
+
+#### Parameters
+
+```solidity
+_child // the child to add
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or INVALID_PARAM_VALUE if the parent-child relationship cannot be established.
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getNumberOfChildren()
+
+
+**getNumberOfChildren()**
+
+
+returns the number of child sub-modules
+
+```endpoint
+CALL getNumberOfChildren()
+```
+
+#### Return
+
+```json
+the number of children
+```
+
+
+---
+
+#### getNumberOfRegistrationContracts()
+
+
+**getNumberOfRegistrationContracts()**
+
+
+Is called when this module is being added to a ContractLocator, e.g. a LifecycleHub or DOUG to give the module the chance to register contracts contained in this module.
+
+```endpoint
+CALL getNumberOfRegistrationContracts()
+```
+
+#### Return
+
+```json
+the number of contracts
+```
+
+
+---
+
+#### getParent()
+
+
+**getParent()**
+
+
+Returns the parent address
+
+```endpoint
+CALL getParent()
+```
+
+#### Return
+
+```json
+the parent or 0x0, if this is the root of the hierarchy
+```
+
+
+---
+
+#### getRegistrationContract(uint256)
+
+
+**getRegistrationContract(uint256)**
+
+
+Returns information about the contract registered at the specified index.
+
+```endpoint
+CALL getRegistrationContract(uint256)
+```
+
+#### Return
+
+```json
+the registered name and address as (bytes32,address)
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLifecycleOwner(address)
+
+
+**setLifecycleOwner(address)**
+
+
+Sets the lifecycle owner to the given address
+
+```endpoint
+CALL setLifecycleOwner(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the new owner
+
+```
+
+
+---
+
+#### setParent(address)
+
+
+**setParent(address)**
+
+
+Sets the parent of this component
+
+```endpoint
+CALL setParent(address)
+```
+
+#### Parameters
+
+```solidity
+_parent // the parent
+
+```
+
+#### Return
+
+```json
+NO_ERROR if successful or OVERWRITE_NOT_ALLOWED if this module's parent had already been set.
+```
+
+
+---
+
+#### setRoot(address)
+
+
+**setRoot(address)**
+
+
+Sets the hierarchy root to the given address, if it had not been set before and is not empty (0x0) If the root had already been set, only the root as msg.sender can change it to a new value.
+
+```endpoint
+CALL setRoot(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the hierarchy root
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() when successful, BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.OVERWRITE_NOT_ALLOWED() if already set and caller is not the current root
+```
+
+
+---
+
+#### supportsInterface(bytes4)
+
+
+**supportsInterface(bytes4)**
+
+
+Interface identification is specified in ERC-165. This function  uses less than 30,000 gas.
+
+```endpoint
+CALL supportsInterface(bytes4)
+```
+
+#### Parameters
+
+```solidity
+interfaceID // The interface identifier, as specified in ERC-165
+
+```
+
+#### Return
+
+```json
+`true` if the contract implements `interfaceID` and
+`interfaceID` is not 0xffffffff, `false` otherwise
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### Migratable Interface
+
+
+The Migratable Interface contract is found within the commons-management bundle.
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+### Upgradeable
+
+
+The Upgradeable contract is found within the commons-management bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ## commons-standards
+
+### IsoCountries Interface
+
+
+The IsoCountries Interface contract is found within the commons-standards bundle.
+
+#### appendNewVersion(address)
+
+
+**appendNewVersion(address)**
+
+
+Appends the given version as the latest in version linked list
+
+```endpoint
+CALL appendNewVersion(address)
+```
+
+#### Return
+
+```json
+error - failure to append due to various reasons
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getTargetVersion(uint8[3])
+
+
+**getTargetVersion(uint8[3])**
+
+
+Retrieves the specified version
+
+```endpoint
+CALL getTargetVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_targetVer // - the version to retrieve
+
+```
+
+#### Return
+
+```json
+targetAddr - address of the version to retrieve, 0x0 if not found
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLatest(address)
+
+
+**setLatest(address)**
+
+
+Sets the latest version, and recursively sets latest for preceeding links
+
+```endpoint
+CALL setLatest(address)
+```
+
+#### Parameters
+
+```solidity
+_latest // - the latest version
+
+```
+
+#### Return
+
+```json
+success - representing whether latest was successfully set for all links
+```
+
+
+---
+
+#### setPredecessor()
+
+
+**setPredecessor()**
+
+
+Sets the predecessor to msg.sender who should also have the same owner
+
+```endpoint
+CALL setPredecessor()
+```
+
+#### Return
+
+```json
+error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
 
 ### IsoCountries100 Interface
 
 
 The IsoCountries100 Interface contract is found within the commons-standards bundle.
+
+#### appendNewVersion(address)
+
+
+**appendNewVersion(address)**
+
+
+Appends the given version as the latest in version linked list
+
+```endpoint
+CALL appendNewVersion(address)
+```
+
+#### Return
+
+```json
+error - failure to append due to various reasons
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getTargetVersion(uint8[3])
+
+
+**getTargetVersion(uint8[3])**
+
+
+Retrieves the specified version
+
+```endpoint
+CALL getTargetVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_targetVer // - the version to retrieve
+
+```
+
+#### Return
+
+```json
+targetAddr - address of the version to retrieve, 0x0 if not found
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### setLatest(address)
+
+
+**setLatest(address)**
+
+
+Sets the latest version, and recursively sets latest for preceeding links
+
+```endpoint
+CALL setLatest(address)
+```
+
+#### Parameters
+
+```solidity
+_latest // - the latest version
+
+```
+
+#### Return
+
+```json
+success - representing whether latest was successfully set for all links
+```
+
+
+---
+
+#### setPredecessor()
+
+
+**setPredecessor()**
+
+
+Sets the predecessor to msg.sender who should also have the same owner
+
+```endpoint
+CALL setPredecessor()
+```
+
+#### Return
+
+```json
+error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
+
+### IsoCurrencies Interface
+
+
+The IsoCurrencies Interface contract is found within the commons-standards bundle.
 
 #### appendNewVersion(address)
 

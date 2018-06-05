@@ -16,17 +16,7 @@ POST /agreements
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| name | String | <p>Human readable name of the Active Agreement (limit: 32 ASCII characters)</p>|
-| archetype | String | <p>Address of the parent Archetype of the Active Agreement</p>|
-| isPrivate | Boolean | <p>Whether the encryption framework of the Active Agreement is operational or not</p>|
-| password | String | <p>A secret string which is used to trigger the encryption system for the Active Agreements's documents</p>|
-| parties | String[] | <p>The addresses of the parties to the Active Agreement</p>|
-| values | Object[] | <p>The &quot;custom-field-name&quot; and values of the parameters.</p>|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -64,11 +54,7 @@ GET /agreements/:address
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| password | String | <p>The password to trigger the decryption key for an opaque Agreement</p>|
 
 #### Example Requests
 
@@ -122,6 +108,9 @@ GET /agreements
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -164,6 +153,122 @@ Success Objects Array
 
 
 
+### Cancel an Agreement
+
+<p>Cancels an agreement if the authenticated user is a member of the agreement parties, or a member of an organization that is an agreement party</p>
+
+```endpoint
+PUT /agreements
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/cancel
+```
+
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Sign an Agreement
+
+<p>Signs an agreement by the authenticated user</p>
+
+```endpoint
+PUT /agreements
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/sign
+```
+
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Add a Fulfillment Event to an Agreement
+
+
+
+```endpoint
+POST /agreements/:address/events/:eventName
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/events/nameOfEvent
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+ "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
+ "secretKey": ABCDEF0123456789ABCDEF0123456789,
+ "salt": ""
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| address | String | <p>The hoard address of the updated event log</p>|
+| secretKey | String | <p>The hoard secret key of the updated event log</p>|
+| salt | String | <p>The hoard salt of the updated event log</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
 ## Archetypes
 
 ### Create an Archetype
@@ -178,22 +283,7 @@ POST /archetypes
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| name | String | <p>Human readable name of the Archetype (limit: 32 ASCII characters)</p>|
-| author | String | <p>Controller contract of the user or organization that created the Archetype</p>|
-| description | String | <p>Short human readable description of the Archetype</p>|
-| isPrivate | Boolean | <p><strong>(Optional)</strong> Whether the encryption framework of the Archetype is operational or not</p>|
-| password | String | <p>A secret string which is used to trigger the encryption system for the Archetype's documents</p>|
-| fields | Object[] | <p><strong>(Optional)</strong> The &quot;name&quot; (limit: 32 ASCII characters) and &quot;type&quot; of all custom parameters used by the Archetype</p>|
-| documents | Object[] | <p><strong>(Optional)</strong>  The &quot;name&quot;, &quot;hoardAddress&quot; and &quot;secretKey&quot; (if any) sufficient to provide the information regarding the relevant documents associated with the Archetype</p>|
-| jurisdictions | Object[] | <p>The &quot;country&quot; and &quot;regions&quot; which the Archetype has been registered as relevant to. The &quot;country&quot; is registered as an ISO standard two character string and &quot;regions&quot; is an array of addresses relating to the controlling contracts for the region (see <a href="#">ISO standards manipulation</a> section).</p>|
-| formationProcessDefinition | String | <p>Address of the formation process definition controller</p>|
-| executionProcessDefinition | String | <p>Address of the execution process definition controller</p>|
-| fulfillmentEvents | String[] | <p>Empty string of events that relate to fulfillment of the rights and conditions of the contract</p>|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -231,11 +321,7 @@ GET /archetypes/:address
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| password | String | <p>The password to trigger the decryption key for an opaque Archetype</p>|
 
 #### Example Requests
 
@@ -298,6 +384,9 @@ GET /archetypes
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -354,12 +443,7 @@ PUT /archetypes/:address/:configurationSection
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| param | Object | <p>The object param</p>|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -399,13 +483,7 @@ POST /login
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| user | String | <p>The user's userName</p>|
-| password | String | <p>The user's password</p>|
-| Param | json | <p>Object { &quot;user&quot;: &quot;username/id&quot;, &quot;password&quot;: &quot;superhardtoguess&quot; }</p>|
 
 #### Example Requests
 
@@ -446,6 +524,58 @@ Success Object
 
 
 
+### Log out a User
+
+
+
+```endpoint
+POST /logout
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /logout
+```
+
+
+
+
+
+
+### Request password reset for a user account
+
+<p>Sends an email with a password recovery code to the given email address</p>
+
+```endpoint
+POST /password-recovery
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /password-recovery
+```
+
+
+
+
+
+
 ### Register a User
 
 
@@ -458,13 +588,7 @@ POST /register
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| user | String | <p>The user's userName</p>|
-| password | String | <p>The user's password</p>|
-| Param | json | <p>Object { &quot;user&quot;: &quot;username/id&quot;, &quot;password&quot;: &quot;superhardtoguess&quot; }</p>|
 
 #### Example Requests
 
@@ -490,6 +614,58 @@ curl -iX POST /register
 | User |  | <p>Exists</p>|
 
 
+### Reset password for user account
+
+<p>Resets the user's password with the given password, if the recovery code is valid</p>
+
+```endpoint
+PUT /password-recovery/:recoveryCode
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /password-recovery/vdk7bd2esdf3234...
+```
+
+
+
+
+
+
+### Validates the given password recovery code
+
+<p>Checks if the given password recovery code is valid</p>
+
+```endpoint
+GET /password-recovery/:recoveryCode
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX GET /password-recovery/vdk7bd2esdf3234...
+```
+
+
+
+
+
+
 ## Content
 
 ### Create Dummy Content
@@ -504,11 +680,7 @@ POST /dummy
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -539,6 +711,9 @@ GET /hoard
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -565,11 +740,7 @@ POST /models
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -596,6 +767,9 @@ curl -iX POST /models
 ```endpoint
 POST /process
 ```
+
+
+
 
 
 
@@ -637,6 +811,9 @@ GET /activity-instances
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -656,6 +833,9 @@ curl -i /activity-instances?processInstance=150D431B160790B2462D8CC683C87FEA2F1C
 ```endpoint
 GET /definitions
 ```
+
+
+
 
 
 
@@ -704,52 +884,6 @@ Success Objects Array
 
 
 
-### Read Single Process Data Definition
-
-
-
-```endpoint
-GET /datatypes/:id
-```
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /datatypes/:id
-```
-
-
-
-
-
-
-### Read Process Data Definitions
-
-
-
-```endpoint
-GET /datatypes
-```
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /datatypes
-```
-
-
-
-
-
-
 ### Read Execution Process Definition
 
 
@@ -757,6 +891,9 @@ curl -i /datatypes
 ```endpoint
 GET /definitions/execution
 ```
+
+
+
 
 
 
@@ -773,6 +910,58 @@ curl -i /definitions/execution
 
 
 
+### Read Single Field Type
+
+
+
+```endpoint
+GET /fieldTypes/:id
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /fieldTypes/:id
+```
+
+
+
+
+
+
+### Read Field Types
+
+
+
+```endpoint
+GET /fieldTypes
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /fieldTypes
+```
+
+
+
+
+
+
 ### Read Formation Process Definition
 
 
@@ -780,6 +969,9 @@ curl -i /definitions/execution
 ```endpoint
 GET /definitions/formation
 ```
+
+
+
 
 
 
@@ -831,6 +1023,9 @@ GET /processInstanceCount
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -850,6 +1045,9 @@ curl -i /processInstanceCount
 ```endpoint
 GET /models
 ```
+
+
+
 
 
 
@@ -908,11 +1106,7 @@ GET /tasks
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -968,11 +1162,7 @@ POST /startProcess
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -1004,11 +1194,7 @@ POST /validateProcess
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -1041,6 +1227,9 @@ POST /bpmn/model
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1064,11 +1253,19 @@ Success Object
             "id": "Process_1",
             "address": "B19BA0D61DD95958C4B6B8F11B03477C24738D53",
             "startActivity": "Task_0m3bxv3"
+            "interfaceId": "Agreement Formation",
+            "name": "Process Name",
+            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
+            "participants": "[{"id":"Lane_0dcbbm2","name":"Lane Label 1","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"seller"}]"
         },
         {
             "id": "Process_2",
             "address": "696133F794C0B87C0E40FEE4144648798C508379",
             "startActivity": "Task_0a1ijkc"
+            "interfaceId": "Agreement Execution",
+            "name": "Process Name",
+            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
+            "participants": "[{"id":"Lane_0dcttm4","name":"Lane Label 2","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"buyer"}]"
         }
     ]
 }
@@ -1098,14 +1295,7 @@ POST /organizations
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| id | String | <p>Organization's machine readable ID</p>|
-| name | String | <p>Organization's human readable name</p>|
-| approvers | String[] | <p>Organization's approvers are the adminsistrators of that organization and may approve the addition of new users into the organization, set the roles of users within the organization, as well as remove users from the organization. This array is optional. If no approvers are passed, the currently logged-in user's address is used as the single approver of for the new organization.</p>|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -1143,11 +1333,7 @@ GET /organizations
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| approver | String | <p>If the optional query parameter is given causes a JOIN query to retrieve only organizations where the specified user is an approver.</p>|
 
 #### Example Requests
 
@@ -1191,11 +1377,7 @@ GET /organizations/:address/users
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| active | Boolean | <p>The <code>active</code> flag is an optional filter. Leaving it off will return all users associated with the organization.</p>|
 
 #### Example Requests
 
@@ -1248,6 +1430,9 @@ GET /organizations/:address
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1288,11 +1473,7 @@ DELETE /organizations/:orgid/users/:userAccount
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -1330,11 +1511,7 @@ PUT /organizations/:orgid/users/:userAccount
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| token | String | <p>JWT token which is acquired via the /register and/or /login endpoints</p>_Size range: 20_<br>|
 
 #### Example Requests
 
@@ -1373,6 +1550,9 @@ PUT /tasks/:id/complete
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1394,6 +1574,9 @@ curl -i /task/:id/complete
 ```endpoint
 GET /iso/countries
 ```
+
+
+
 
 
 
@@ -1443,6 +1626,9 @@ GET /iso/countries/:alpha2
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1482,6 +1668,9 @@ Success Object
 ```endpoint
 GET /iso/currencies
 ```
+
+
+
 
 
 
@@ -1536,6 +1725,9 @@ GET /iso/currencies/:alpha3
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1574,6 +1766,9 @@ Success Objects Array
 ```endpoint
 GET /iso/countries/:alpha2/regions
 ```
+
+
+
 
 
 
@@ -1634,6 +1829,9 @@ GET /users
 
 
 
+
+
+
 #### Example Requests
 
 
@@ -1682,11 +1880,7 @@ GET /users
 
 
 
-#### Parameters
 
-| Parameter     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| organization | String | <p>If the optional parameter is given filters users accordingly. May give the API the following options <code>&lt;orgAddress&gt;|null|notnull</code></p>|
 
 #### Example Requests
 
@@ -1733,6 +1927,9 @@ Success Objects Array
 ```endpoint
 GET /users/:address/agreements
 ```
+
+
+
 
 
 
