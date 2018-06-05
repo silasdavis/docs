@@ -27,3 +27,4 @@ jobs:
             git add -A :/
             git commit -m "Automatic document generation: $CIRCLE_SHA1" || true
             git push origin master
+
