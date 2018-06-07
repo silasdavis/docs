@@ -2845,7 +2845,7 @@ the Active Agreement address
 **getActiveAgreementData(address)**
 
 
-Returns data about the Active Agreement at the specified address
+Returns data about the ActiveAgreement at the specified address
 
 ```endpoint
 CALL getActiveAgreementData(address)
@@ -2854,14 +2854,14 @@ CALL getActiveAgreementData(address)
 #### Parameters
 
 ```solidity
-activeAgreement // activeAgreement
+_activeAgreement // Active Agreement
 
 ```
 
 #### Return
 
 ```json
-archetype archetypename name
+archetype - the agreement's archetype adressname - the name of the agreementcreator - the creator of the agreementhoardAddress - address of the agreement parameters in hoard (only used when agreement is private)hoardSecret - secret for retrieval of hoard parameterseventLogHoardAddress - address of the agreement's event log in hoardeventLogHoardSecret - secret for retrieval of the hoard event log filemaxNumberOfEvents - the maximum number of events allowed to be stored for this agreementisPrivate - whether the agreement's parameters are private, i.e. stored off-chain in hoardlegalState - the agreement's Agreement.LegalState as uint8formationProcessInstance - the address of the process instance representing the formation of this agreementexecutionProcessInstance - the address of the process instance representing the execution of this agreement
 ```
 
 
@@ -2981,7 +2981,7 @@ CALL getNumberOfAgreementParameters(address)
 #### Return
 
 ```json
-the process data size
+the number of parameters
 ```
 
 
@@ -3333,6 +3333,28 @@ _agreement // the address of a ActiveAgreement
 
 ```json
 error code if the signing failed
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -8041,7 +8063,7 @@ error BaseErrors.RESOURCE_ALREADY_EXISTS() or BaseErrors.NO_ERROR()userAccount u
 **eventFired(bytes32,address)**
 
 
-Overwrites AbstractEventListener function to receive updates from ActiveAgreements that are registered in this registry. Currently supports AGREEMENT_STATE_CHANGED
+Overwrites AbstractEventListener function to receive updates from ActiveAgreements that are registered in this registry. Currently supports AGREEMENT_STATE_CHANGED and EVENT_LOG_UPDATED
 
 ```endpoint
 CALL eventFired(bytes32,address)
@@ -8144,7 +8166,7 @@ the Active Agreement address
 **getActiveAgreementData(address)**
 
 
-Returns data about the Active Agreement at the specified address
+Returns data about the ActiveAgreement at the specified address
 
 ```endpoint
 CALL getActiveAgreementData(address)
@@ -8160,7 +8182,7 @@ _activeAgreement // Active Agreement
 #### Return
 
 ```json
-archetype archetypename namehoardAddress Address of agreement params in hoardhoardSecret Secret for hoard retrieval
+archetype - the agreement's archetype adressname - the name of the agreementcreator - the creator of the agreementhoardAddress - address of the agreement parameters in hoard (only used when agreement is private)hoardSecret - secret for retrieval of hoard parameterseventLogHoardAddress - address of the agreement's event log in hoardeventLogHoardSecret - secret for retrieval of the hoard event log filemaxNumberOfEvents - the maximum number of events allowed to be stored for this agreementisPrivate - whether the agreement's parameters are private, i.e. stored off-chain in hoardlegalState - the agreement's Agreement.LegalState as uint8formationProcessInstance - the address of the process instance representing the formation of this agreementexecutionProcessInstance - the address of the process instance representing the execution of this agreement
 ```
 
 
@@ -8193,7 +8215,7 @@ size size
 **getAgreementParameterAtIndex(address,uint256)**
 
 
-Returns the process data ID at the specified index
+Returns the ID of the agreement parameter value at the given index.
 
 ```endpoint
 CALL getAgreementParameterAtIndex(address,uint256)
@@ -8209,7 +8231,7 @@ _pos // the index
 #### Return
 
 ```json
-the data ID
+the parameter ID
 ```
 
 
@@ -8231,7 +8253,7 @@ CALL getAgreementParameterDetails(address,bytes32)
 
 ```solidity
 _address // the active agreement
-_dataId // the data ID
+_dataId // the parameter ID
 
 ```
 
@@ -8271,7 +8293,7 @@ address the BpmService
 **getNumberOfAgreementParameters(address)**
 
 
-Returns the number of agreement parameter entries.
+Returns the number of agreement parameter values.
 
 ```endpoint
 CALL getNumberOfAgreementParameters(address)
@@ -8280,7 +8302,7 @@ CALL getNumberOfAgreementParameters(address)
 #### Return
 
 ```json
-the process data size
+the number of parameters
 ```
 
 
@@ -8384,7 +8406,7 @@ CALL processStateChanged(address)
 #### Parameters
 
 ```solidity
-_pi // the process instance whose state has changed
+_processInstance // the process instance whose state has changed
 
 ```
 
@@ -8459,7 +8481,7 @@ _agreement // an ActiveAgreement
 #### Return
 
 ```json
-error - BaseErrors.INVALID_PARAM_STATE() if the agreement is not in legal state FORMULATEDerror - BaseErrors.NO_ERROR() if the formation process was started successfully, or a different error code if there were problems in the processthe address of the ProcessInstance, if successful
+error - BaseErrors.INVALID_PARAM_STATE() if the agreement is not in legal state FORMULATEDerror - BaseErrors.OVERWRITE_NOT_ALLOWED() if there is an ongoing formation process for the agreementerror - BaseErrors.NO_ERROR() if the formation process was started successfully, or a different error code if there were problems in the processthe address of the ProcessInstance, if successful
 ```
 
 
@@ -9719,6 +9741,28 @@ _organization // the organization's address with which to associate this user ac
 
 ```json
 BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -13952,6 +13996,59 @@ interfaceID // The interface identifier, as specified in ERC-165
 
 ---
 
+### Owned
+
+
+The Owned contract is found within the agreements bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+### OwnerTransferable
+
+
+The OwnerTransferable contract is found within the agreements bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
 
 ### ProcessDefinition Interface
 
@@ -14580,6 +14677,28 @@ valid - boolean indicating validityerrorMessage - empty string if valid, otherwi
 
 
 The ProcessInstance Interface contract is found within the agreements bundle.
+
+#### abort(address)
+
+
+**abort(address)**
+
+
+Aborts this ProcessInstance and halts any ongoing activities. After the abort the ProcessInstance cannot be resurrected.
+
+```endpoint
+CALL abort(address)
+```
+
+#### Parameters
+
+```solidity
+_service // the BpmService to emit update events for ActivityInstances
+
+```
+
+
+---
 
 #### addProcessStateChangeListener(address)
 
@@ -16521,6 +16640,28 @@ _value // the uint8[100] value of the data
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### ProcessModel Interface
 
 
@@ -17844,6 +17985,33 @@ _newOwner // The address to transfer ownership to.
 
 ---
 
+### SystemOwnerTransferable
+
+
+The SystemOwnerTransferable contract is found within the agreements bundle.
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### TypeUtils Library Interface
 
 
@@ -18326,6 +18494,28 @@ _organization // the organization's address with which to associate this user ac
 
 ```json
 BaseErrors.NO_ERROR() or BaseErrors.OVERWRITE_NOT_ALLOWED() if the organization is already set
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -18930,6 +19120,28 @@ CALL setActivityOutputGateway(bytes32,uint8)
 ```solidity
 _activityId // the ID of the activity
 _type // the gateway type
+
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
 
 ```
 
@@ -20181,6 +20393,28 @@ CALL notifyProcessStateChange()
 
 The BpmApi Interface Library contract is found within the bpm-runtime bundle.
 
+#### abort(BpmRuntime.ProcessInstance storage,BpmService)
+
+
+**abort(BpmRuntime.ProcessInstance storage,BpmService)**
+
+
+Aborts the given ProcessInstance and all of its activities
+
+```endpoint
+CALL abort(BpmRuntime.ProcessInstance storage,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_processInstance // the process instance to abort
+
+```
+
+
+---
+
 #### addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 
 
@@ -20572,6 +20806,28 @@ target - either the address of an account or the address of another DataStorage 
 
 
 The BpmRuntimeImpl Implementation Library contract is found within the bpm-runtime bundle.
+
+#### abort(BpmRuntime.ProcessInstance storage,BpmService)
+
+
+**abort(BpmRuntime.ProcessInstance storage,BpmService)**
+
+
+Aborts the given ProcessInstance and all of its activities
+
+```endpoint
+CALL abort(BpmRuntime.ProcessInstance storage,BpmService)
+```
+
+#### Parameters
+
+```solidity
+_processInstance // the process instance to abort
+
+```
+
+
+---
 
 #### addActivity(BpmRuntime.ProcessGraph storage,bytes32)
 
@@ -21177,7 +21433,7 @@ The DefaultBpmService contract is found within the bpm-runtime bundle.
 **createDefaultProcessInstance(address,address,bytes32)**
 
 
-Creates a new ProcessInstance initiated with the provided parameters. This ProcessInstance can be further customized and then submitted to the #startProcessInstance(ProcessInstance) function for execution.
+Creates a new ProcessInstance initiated with the provided parameters. This ProcessInstance can be further customized and then submitted to the #startProcessInstance(ProcessInstance) function for execution. The ownership of the created ProcessInstance is transfered to the msg.sender, i.e. the caller of this function will be the owner of the ProcessInstance.
 
 ```endpoint
 CALL createDefaultProcessInstance(address,address,bytes32)
@@ -21188,7 +21444,7 @@ CALL createDefaultProcessInstance(address,address,bytes32)
 ```solidity
 _activityInstanceId // the ID of a subprocess activity instance that initiated this ProcessInstance (optional)
 _processDefinition // the address of a ProcessDefinition
-_startedBy // the address of an account that regarded as the starting user
+_startedBy // the address of an account that regarded as the starting user. If empty, the msg.sender is used.
 
 ```
 
@@ -21702,6 +21958,28 @@ BaseErrors.NO_ERROR() if successful or an error code from initializing or execut
 
 The DefaultProcessInstance contract is found within the bpm-runtime bundle.
 
+#### abort(address)
+
+
+**abort(address)**
+
+
+Aborts this ProcessInstance and halts any ongoing activities. After the abort the ProcessInstance cannot be resurrected.
+
+```endpoint
+CALL abort(address)
+```
+
+#### Parameters
+
+```solidity
+_service // the BpmService to emit update events for ActivityInstances
+
+```
+
+
+---
+
 #### addProcessStateChangeListener(address)
 
 
@@ -21981,6 +22259,28 @@ Notifies listeners about a process state change
 
 ```endpoint
 CALL notifyProcessStateChange()
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -22920,6 +23220,28 @@ error NO_ERROR or RUNTIME_ERROR
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### Client Registry
 
 
@@ -23079,6 +23401,28 @@ returns the size of the mapping, i.e. the number of currently stored entries
 
 ```endpoint
 CALL size()
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -23629,6 +23973,28 @@ Returns this account's owner
 
 ```endpoint
 CALL getOwner()
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -24676,6 +25042,28 @@ Function that can be actively checked to detect if the contract is a destructibl
 
 ```endpoint
 CALL isDestructible()
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -28187,6 +28575,28 @@ CALL patch()
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### VersionLinkedAppendOnly Interface
 
 
@@ -28407,6 +28817,28 @@ CALL setPredecessor()
 
 ```json
 error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -29061,6 +29493,28 @@ interfaceID // The interface identifier, as specified in ERC-165
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -29176,6 +29630,28 @@ _name // the registration key
 
 ```json
 BaseErrors.NO_ERROR, if removal successful. If unsuccessful BaseErrors.RESOURCE_NOT_FOUND
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -29739,6 +30215,28 @@ true if supported, false otherwise
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -30255,6 +30753,28 @@ true if supported, false otherwise
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -30673,6 +31193,28 @@ _interfaceId // the signature of the ERC165 interface
 
 ```json
 true if supported, false otherwise
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -31325,6 +31867,28 @@ interfaceID // The interface identifier, as specified in ERC-165
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 #### upgrade(address)
 
 
@@ -31752,6 +32316,28 @@ interfaceID // The interface identifier, as specified in ERC-165
 ```json
 `true` if the contract implements `interfaceID` and
 `interfaceID` is not 0xffffffff, `false` otherwise
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -32273,6 +32859,28 @@ error - if a predecessor is already set (i.e. no overwriting allowed), or if the
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### IsoCountries100 Interface
 
 
@@ -32493,6 +33101,28 @@ CALL setPredecessor()
 
 ```json
 error - if a predecessor is already set (i.e. no overwriting allowed), or if there is a owner mismatch
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -32723,6 +33353,28 @@ error - if a predecessor is already set (i.e. no overwriting allowed), or if the
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### IsoCurrencies100 Interface
 
 
@@ -32948,6 +33600,28 @@ error - if a predecessor is already set (i.e. no overwriting allowed), or if the
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ## commons-utils
 
 
@@ -33073,6 +33747,28 @@ _hash // the desired version hash
 
 ```json
 the creator address, or 0x0 if the version does not exist
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -33422,6 +34118,28 @@ true if all configured signatories have signed that version, false otherwise
 
 ---
 
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### DefaultDocument
 
 
@@ -33542,6 +34260,28 @@ _hash // the desired version hash
 
 ```json
 the creator address, or 0x0 if the version does not exist
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
