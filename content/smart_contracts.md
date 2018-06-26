@@ -42,6 +42,170 @@ the number of non-default entries in the array
 
 ---
 
+### DbUpgradeable
+
+
+The DbUpgradeable contract is found within the agreements bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### AbstractEventListener
 
 
@@ -304,6 +468,62 @@ bool exists
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### createUserAccount(address,bytes32)
 
 
@@ -392,6 +612,171 @@ CALL getUserAccount(bytes32)
 
 ---
 
+#### getUserAccountDataById(bytes32)
+
+
+**getUserAccountDataById(bytes32)**
+
+
+Gets hashed user account ID and user account address for the specified user account ID.
+
+```endpoint
+CALL getUserAccountDataById(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the user account ID
+
+```
+
+#### Return
+
+```json
+error RESOURCE_NOT_FOUND or NO_ERRORaddr user account addresshashedId hashed user account ID
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
 #### removeUserFromOrganization(address,address)
 
 
@@ -416,6 +801,21 @@ _userAccount // the user
 
 ```json
 error code indicating success or failure
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
 ```
 
 
@@ -2632,6 +3032,62 @@ an error code indicating success or failure
 
 The ActiveAgreementRegistry Interface contract is found within the agreements bundle.
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
 
 
@@ -3073,6 +3529,143 @@ signedBy the actual signature authorized by the partysignatureTimestamp the time
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
 #### processStateChanged(address)
 
 
@@ -3169,6 +3762,48 @@ error - an error code indicating success or failurethe address of the ProcessIns
 
 ---
 
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### ActiveAgreementRegistryDb Interface
+
+
+The ActiveAgreementRegistryDb Interface contract is found within the agreements bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ### AgreementPartyAccount
 
 
@@ -3218,7 +3853,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmServiceDb
 
 ```
 
@@ -3409,7 +4044,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmServiceDb
 
 ```
 
@@ -3579,6 +4214,62 @@ an error code indicating success or failure
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
 
 
@@ -3686,6 +4377,143 @@ the number of applications
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
 #### setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
 
 
@@ -3717,6 +4545,21 @@ an error code indicating success or failure
 
 ---
 
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### Archetype Interface
 
 
@@ -3732,35 +4575,6 @@ Activates this archetype
 
 ```endpoint
 CALL activate()
-```
-
-#### Return
-
-```json
-error code indicating success or failure
-```
-
-
----
-
-#### addCustomField(uint8,bytes32)
-
-
-**addCustomField(uint8,bytes32)**
-
-
-Adds a custom field with the specified type and name to the archetype
-
-```endpoint
-CALL addCustomField(uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // customField
-_fieldType // field type (enum)
-
 ```
 
 #### Return
@@ -3832,6 +4646,35 @@ key of the jurisdiction just added
 
 ---
 
+#### addParameter(uint8,bytes32)
+
+
+**addParameter(uint8,bytes32)**
+
+
+Adds a parameter with the specified type and name to the archetype
+
+```endpoint
+CALL addParameter(uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_parameter // parameter
+_parameterType // parameter type (enum)
+
+```
+
+#### Return
+
+```json
+error code indicating success or failure
+```
+
+
+---
+
 #### deactivate()
 
 
@@ -3869,62 +4712,6 @@ CALL getAuthor()
 
 ```json
 author author
-```
-
-
----
-
-#### getCustomFieldAtIndex(uint256)
-
-
-**getCustomFieldAtIndex(uint256)**
-
-
-Gets custom field at index
-
-```endpoint
-CALL getCustomFieldAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error error TBDcustomField custom field
-```
-
-
----
-
-#### getCustomFieldType(bytes32)
-
-
-**getCustomFieldType(bytes32)**
-
-
-Gets custom field data type
-
-```endpoint
-CALL getCustomFieldType(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // custom field
-
-```
-
-#### Return
-
-```json
-error error TBDfieldType field type
 ```
 
 
@@ -4126,27 +4913,6 @@ the bytes32 name
 
 ---
 
-#### getNumberOfCustomFields()
-
-
-**getNumberOfCustomFields()**
-
-
-Gets number of custom fields
-
-```endpoint
-CALL getNumberOfCustomFields()
-```
-
-#### Return
-
-```json
-size number of custom fields
-```
-
-
----
-
 #### getNumberOfDocuments()
 
 
@@ -4184,6 +4950,83 @@ CALL getNumberOfJurisdictions()
 
 ```json
 the number of jurisdictions
+```
+
+
+---
+
+#### getNumberOfParameters()
+
+
+**getNumberOfParameters()**
+
+
+Gets number of parameters
+
+```endpoint
+CALL getNumberOfParameters()
+```
+
+#### Return
+
+```json
+size number of parameters
+```
+
+
+---
+
+#### getParameterAtIndex(uint256)
+
+
+**getParameterAtIndex(uint256)**
+
+
+Gets parameter at index
+
+```endpoint
+CALL getParameterAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error error TBDcustomField parameter
+```
+
+
+---
+
+#### getParameterType(bytes32)
+
+
+**getParameterType(bytes32)**
+
+
+Gets parameter data type
+
+```endpoint
+CALL getParameterType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_parameter // parameter
+
+```
+
+#### Return
+
+```json
+error error TBDparameterType parameter type
 ```
 
 
@@ -4288,64 +5131,6 @@ error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() _archetype does not
 
 ---
 
-#### addField(address,uint8,bytes32)
-
-
-**addField(address,uint8,bytes32)**
-
-
-Adds the specified custom field to the archetype
-
-```endpoint
-CALL addField(address,uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // customField
-_fieldType // field type (enum)
-
-```
-
-#### Return
-
-```json
-a return code indicating success or failure
-```
-
-
----
-
-#### addFields(address,uint8[],bytes32[])
-
-
-**addFields(address,uint8[],bytes32[])**
-
-
-Adds the specified custom field to the archetype
-
-```endpoint
-CALL addFields(address,uint8[],bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_customFields // customField
-_fieldTypes // field type (enum) array
-
-```
-
-#### Return
-
-```json
-a return code indicating success or failure
-```
-
-
----
-
 #### addJurisdiction(address,bytes2,bytes32)
 
 
@@ -4399,6 +5184,120 @@ _regions // an array of region identifiers from a IsoCountries contract
 
 ```json
 a return code indicating success or failure
+```
+
+
+---
+
+#### addParameter(address,uint8,bytes32)
+
+
+**addParameter(address,uint8,bytes32)**
+
+
+Adds the specified parameter to the archetype
+
+```endpoint
+CALL addParameter(address,uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_parameterName // parameter name
+_parameterType // parameter type (enum)
+
+```
+
+#### Return
+
+```json
+a return code indicating success or failure
+```
+
+
+---
+
+#### addParameters(address,uint8[],bytes32[])
+
+
+**addParameters(address,uint8[],bytes32[])**
+
+
+Adds the specified parameters to the archetype
+
+```endpoint
+CALL addParameters(address,uint8[],bytes32[])
+```
+
+#### Parameters
+
+```solidity
+_parameterNames // parameter names array
+_parameterTypes // parameter type (enum) array
+
+```
+
+#### Return
+
+```json
+a return code indicating success or failure
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
 ```
 
 
@@ -4621,92 +5520,6 @@ size size
 
 ---
 
-#### getFieldByArchetypeAtIndex(address,uint256)
-
-
-**getFieldByArchetypeAtIndex(address,uint256)**
-
-
-Gets field name by Archetype At index
-
-```endpoint
-CALL getFieldByArchetypeAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_index // index
-
-```
-
-#### Return
-
-```json
-name name
-```
-
-
----
-
-#### getFieldByArchetypeData(address,bytes32)
-
-
-**getFieldByArchetypeData(address,bytes32)**
-
-
-Returns data about the field at with the specified name
-
-```endpoint
-CALL getFieldByArchetypeData(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_name // name
-
-```
-
-#### Return
-
-```json
-fieldType field type
-```
-
-
----
-
-#### getFieldsByArchetypeSize(address)
-
-
-**getFieldsByArchetypeSize(address)**
-
-
-Gets fields size for given Archetype
-
-```endpoint
-CALL getFieldsByArchetypeSize(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
 #### getJurisdictionAtIndexForArchetype(address,uint256)
 
 
@@ -4788,6 +5601,271 @@ _archetype // archetype address
 
 ```json
 the number of jurisdictions
+```
+
+
+---
+
+#### getParameterByArchetypeAtIndex(address,uint256)
+
+
+**getParameterByArchetypeAtIndex(address,uint256)**
+
+
+Gets parameter name by Archetype At index
+
+```endpoint
+CALL getParameterByArchetypeAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_index // index
+
+```
+
+#### Return
+
+```json
+name name
+```
+
+
+---
+
+#### getParameterByArchetypeData(address,bytes32)
+
+
+**getParameterByArchetypeData(address,bytes32)**
+
+
+Returns data about the parameter at with the specified name
+
+```endpoint
+CALL getParameterByArchetypeData(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_name // name
+
+```
+
+#### Return
+
+```json
+parameterType parameter type
+```
+
+
+---
+
+#### getParametersByArchetypeSize(address)
+
+
+**getParametersByArchetypeSize(address)**
+
+
+Gets parameters size for given Archetype
+
+```endpoint
+CALL getParametersByArchetypeSize(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### ArchetypeRegistryDb Interface
+
+
+The ArchetypeRegistryDb Interface contract is found within the agreements bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -4917,179 +5995,66 @@ true if the value is found in the array, false otherwise
 
 
 
-### BpmRuntimeDb
-
-
-The BpmRuntimeDb contract is found within the agreements bundle.
-
-#### addActivityInstance(bytes32)
-
-
-**addActivityInstance(bytes32)**
-
-
-Adds the given ActivityInstance ID to the registered activity instances. Can only be invoked by an already registered ProcessInstance. The sending ProcessInstance (msg.sender) is recorded as well.
-
-```endpoint
-CALL addActivityInstance(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_id // the globally unique ID of an ActivityInstance
-
-```
-
-
----
-
-#### addProcessInstance(address)
-
-
-**addProcessInstance(address)**
-
-
-Adds the given address to the registered process instances. Can only be invoked by the owner of this BpmRuntimeDb.
-
-```endpoint
-CALL addProcessInstance(address)
-```
-
-#### Parameters
-
-```solidity
-_address // the address of a ProcessInstance
-
-```
-
-
----
-
-#### getNumberOfActivityInstances()
-
-
-**getNumberOfActivityInstances()**
-
-
-Returns the number of registered activity instances.
-
-```endpoint
-CALL getNumberOfActivityInstances()
-```
-
-#### Return
-
-```json
-the number of activity instances
-```
-
-
----
-
-#### getNumberOfProcessInstances()
-
-
-**getNumberOfProcessInstances()**
-
-
-Returns the number of registered process instances.
-
-```endpoint
-CALL getNumberOfProcessInstances()
-```
-
-#### Return
-
-```json
-the number of process instances
-```
-
-
----
-
-#### getProcessInstanceAtIndex(uint256)
-
-
-**getProcessInstanceAtIndex(uint256)**
-
-
-Returns the process instance address at the specified index
-
-```endpoint
-CALL getProcessInstanceAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_pos // the index
-
-```
-
-#### Return
-
-```json
-the process instance address
-```
-
-
----
-
-#### getProcessInstanceForActivity(bytes32)
-
-
-**getProcessInstanceForActivity(bytes32)**
-
-
-Returns the address of the ProcessInstance of the specified ActivityInstance ID
-
-```endpoint
-CALL getProcessInstanceForActivity(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_aiId // the ID of an ActivityInstance
-
-```
-
-#### Return
-
-```json
-the ProcessInstance address or 0x0 if it cannot be found
-```
-
-
----
-
-#### transferSystemOwnership(address)
-
-
-**transferSystemOwnership(address)**
-
-
-Allows the current owner to transfer control of the contract to a new owner.
-
-```endpoint
-CALL transferSystemOwnership(address)
-```
-
-#### Parameters
-
-```solidity
-_newOwner // The address to transfer ownership to.
-
-```
-
-
----
-
 ### BpmService Interface
 
 
 The BpmService Interface contract is found within the agreements bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
 
 #### createDefaultProcessInstance(address,address,bytes32)
 
@@ -5235,6 +6200,27 @@ CALL getApplicationRegistry()
 
 ```json
 the ApplicationRegistry
+```
+
+
+---
+
+#### getBpmServiceDb()
+
+
+**getBpmServiceDb()**
+
+
+Returns a reference to the BpmServiceDb currently used by this BpmService
+
+```endpoint
+CALL getBpmServiceDb()
+```
+
+#### Return
+
+```json
+the BpmServiceDb
 ```
 
 
@@ -5465,22 +6451,138 @@ the address of the repository
 
 ---
 
-#### getRuntimeDb()
+#### getVersion()
 
 
-**getRuntimeDb()**
+**getVersion()**
 
 
-Returns a reference to the BpmRuntimeDb currently used by this BpmService
+Returns the version as 3-digit array
 
 ```endpoint
-CALL getRuntimeDb()
+CALL getVersion()
 ```
 
 #### Return
 
 ```json
-the BpmRuntimeDb
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
 ```
 
 
@@ -5612,6 +6714,190 @@ _pi // the ProcessInstance
 
 ```json
 BaseErrors.NO_ERROR() if successful or an error code from initializing or executing the ProcessInstance
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### BpmServiceDb
+
+
+The BpmServiceDb contract is found within the agreements bundle.
+
+#### addActivityInstance(bytes32)
+
+
+**addActivityInstance(bytes32)**
+
+
+Adds the given ActivityInstance ID to the registered activity instances. Can only be invoked by an already registered ProcessInstance. The sending ProcessInstance (msg.sender) is recorded as well.
+
+```endpoint
+CALL addActivityInstance(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the globally unique ID of an ActivityInstance
+
+```
+
+
+---
+
+#### addProcessInstance(address)
+
+
+**addProcessInstance(address)**
+
+
+Adds the given address to the registered process instances. Can only be invoked by the owner of this BpmServiceDb.
+
+```endpoint
+CALL addProcessInstance(address)
+```
+
+#### Parameters
+
+```solidity
+_address // the address of a ProcessInstance
+
+```
+
+
+---
+
+#### getNumberOfActivityInstances()
+
+
+**getNumberOfActivityInstances()**
+
+
+Returns the number of registered activity instances.
+
+```endpoint
+CALL getNumberOfActivityInstances()
+```
+
+#### Return
+
+```json
+the number of activity instances
+```
+
+
+---
+
+#### getNumberOfProcessInstances()
+
+
+**getNumberOfProcessInstances()**
+
+
+Returns the number of registered process instances.
+
+```endpoint
+CALL getNumberOfProcessInstances()
+```
+
+#### Return
+
+```json
+the number of process instances
+```
+
+
+---
+
+#### getProcessInstanceAtIndex(uint256)
+
+
+**getProcessInstanceAtIndex(uint256)**
+
+
+Returns the process instance address at the specified index
+
+```endpoint
+CALL getProcessInstanceAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_pos // the index
+
+```
+
+#### Return
+
+```json
+the process instance address
+```
+
+
+---
+
+#### getProcessInstanceForActivity(bytes32)
+
+
+**getProcessInstanceForActivity(bytes32)**
+
+
+Returns the address of the ProcessInstance of the specified ActivityInstance ID
+
+```endpoint
+CALL getProcessInstanceForActivity(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_aiId // the ID of an ActivityInstance
+
+```
+
+#### Return
+
+```json
+the ProcessInstance address or 0x0 if it cannot be found
+```
+
+
+---
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -7995,6 +9281,62 @@ an error code indicating success or failure
 
 The DefaultActiveAgreementRegistry Interface contract is found within the agreements bundle.
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
 
 
@@ -8394,6 +9736,72 @@ signedBy the actual signature authorized by the partysignatureTimestamp the time
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
 #### processStateChanged(address)
 
 
@@ -8487,6 +9895,43 @@ error - BaseErrors.INVALID_PARAM_STATE() if the agreement is not in legal state 
 
 ---
 
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### DefaultArchetype
 
 
@@ -8508,37 +9953,6 @@ CALL activate()
 
 ```json
 error BaseErrors.NO_ERROR()
-```
-
-
----
-
-#### addCustomField(uint8,bytes32)
-
-
-**addCustomField(uint8,bytes32)**
-
-
-Adds custom field
-
-```endpoint
-CALL addCustomField(uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // customField
-_fieldType // field type (enum)
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if successful,
-BaseErrors.NULL_PARAM_NOT_ALLOWED() if _customField is empty,
-BaseErrors.RESOURCE_ALREADY_EXISTS() if _customField already exists
 ```
 
 
@@ -8604,6 +10018,37 @@ BaseErrors.INVALID_PARAM_VALUE() if _country is not in the DataTypes enum,
 
 ---
 
+#### addParameter(uint8,bytes32)
+
+
+**addParameter(uint8,bytes32)**
+
+
+Adds parameter
+
+```endpoint
+CALL addParameter(uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_parameterName // parameter name
+_parameterType // parameter type (enum)
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if successful,
+BaseErrors.NULL_PARAM_NOT_ALLOWED() if _parameter is empty,
+BaseErrors.RESOURCE_ALREADY_EXISTS() if _parameter already exists
+```
+
+
+---
+
 #### deactivate()
 
 
@@ -8641,62 +10086,6 @@ CALL getAuthor()
 
 ```json
 author author
-```
-
-
----
-
-#### getCustomFieldAtIndex(uint256)
-
-
-**getCustomFieldAtIndex(uint256)**
-
-
-Gets custom field at index
-
-```endpoint
-CALL getCustomFieldAtIndex(uint256)
-```
-
-#### Parameters
-
-```solidity
-_index // index
-
-```
-
-#### Return
-
-```json
-error error TBDcustomField custom field
-```
-
-
----
-
-#### getCustomFieldType(bytes32)
-
-
-**getCustomFieldType(bytes32)**
-
-
-Gets custom field data type
-
-```endpoint
-CALL getCustomFieldType(bytes32)
-```
-
-#### Parameters
-
-```solidity
-_customField // custom field
-
-```
-
-#### Return
-
-```json
-error error TBDfieldType field type
 ```
 
 
@@ -8898,27 +10287,6 @@ the name
 
 ---
 
-#### getNumberOfCustomFields()
-
-
-**getNumberOfCustomFields()**
-
-
-Gets number of custom fields
-
-```endpoint
-CALL getNumberOfCustomFields()
-```
-
-#### Return
-
-```json
-size number of custom fields
-```
-
-
----
-
 #### getNumberOfDocuments()
 
 
@@ -8956,6 +10324,83 @@ CALL getNumberOfJurisdictions()
 
 ```json
 the number of jurisdictions
+```
+
+
+---
+
+#### getNumberOfParameters()
+
+
+**getNumberOfParameters()**
+
+
+Gets number of parameters
+
+```endpoint
+CALL getNumberOfParameters()
+```
+
+#### Return
+
+```json
+size number of parameters
+```
+
+
+---
+
+#### getParameterAtIndex(uint256)
+
+
+**getParameterAtIndex(uint256)**
+
+
+Gets parameter at index
+
+```endpoint
+CALL getParameterAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // index
+
+```
+
+#### Return
+
+```json
+error error TBDparameter parameter
+```
+
+
+---
+
+#### getParameterType(bytes32)
+
+
+**getParameterType(bytes32)**
+
+
+Gets parameter data type
+
+```endpoint
+CALL getParameterType(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_parameter // parameter
+
+```
+
+#### Return
+
+```json
+error error TBDparameterType parameter type
 ```
 
 
@@ -9060,66 +10505,6 @@ error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() _archetype does not
 
 ---
 
-#### addField(address,uint8,bytes32)
-
-
-**addField(address,uint8,bytes32)**
-
-
-Adds custom field to archetype
-
-```endpoint
-CALL addField(address,uint8,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // the archetype address
-_fieldName // the field name
-_fieldType // data type (enum)
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addCustomField() function
-```
-
-
----
-
-#### addFields(address,uint8[],bytes32[])
-
-
-**addFields(address,uint8[],bytes32[])**
-
-
-Adds the specified fields to the archetype. If one of the fields cannot be added, the operation aborts and returns that error code.
-
-```endpoint
-CALL addFields(address,uint8[],bytes32[])
-```
-
-#### Parameters
-
-```solidity
-_archetype // the archetype address
-_fieldNames // the field names
-_fieldTypes // the field types
-
-```
-
-#### Return
-
-```json
-BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
-```
-
-
----
-
 #### addJurisdiction(address,bytes2,bytes32)
 
 
@@ -9173,6 +10558,122 @@ _regions // an array of region identifiers from a IsoCountries contract
 
 ```json
 BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
+```
+
+
+---
+
+#### addParameter(address,uint8,bytes32)
+
+
+**addParameter(address,uint8,bytes32)**
+
+
+Adds parameter to archetype
+
+```endpoint
+CALL addParameter(address,uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_parameterName // the parameter name
+_parameterType // data type (enum)
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if successfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundany error returned from the Archetype.addParameter() function
+```
+
+
+---
+
+#### addParameters(address,uint8[],bytes32[])
+
+
+**addParameters(address,uint8[],bytes32[])**
+
+
+Adds the specified parameters to the archetype. If one of the parameters cannot be added, the operation aborts and returns that error code.
+
+```endpoint
+CALL addParameters(address,uint8[],bytes32[])
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_parameterNames // the parameter names
+_parameterTypes // the parameter types
+
+```
+
+#### Return
+
+```json
+BaseErrors.NO_ERROR() if succesfulBaseErrors.RESOURCE_NOT_FOUND() if archetype is not foundBaseErrors.INVALID_PARAM_STATE() if the lengths of the two arrays don't match
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
 ```
 
 
@@ -9395,92 +10896,6 @@ size size
 
 ---
 
-#### getFieldByArchetypeAtIndex(address,uint256)
-
-
-**getFieldByArchetypeAtIndex(address,uint256)**
-
-
-Gets field name by Archetype At index
-
-```endpoint
-CALL getFieldByArchetypeAtIndex(address,uint256)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_index // index
-
-```
-
-#### Return
-
-```json
-name name
-```
-
-
----
-
-#### getFieldByArchetypeData(address,bytes32)
-
-
-**getFieldByArchetypeData(address,bytes32)**
-
-
-Returns data about the field at with the specified name
-
-```endpoint
-CALL getFieldByArchetypeData(address,bytes32)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-_name // name
-
-```
-
-#### Return
-
-```json
-fieldType field type
-```
-
-
----
-
-#### getFieldsByArchetypeSize(address)
-
-
-**getFieldsByArchetypeSize(address)**
-
-
-Gets fields size for given Archetype
-
-```endpoint
-CALL getFieldsByArchetypeSize(address)
-```
-
-#### Parameters
-
-```solidity
-_archetype // archetype
-
-```
-
-#### Return
-
-```json
-size size
-```
-
-
----
-
 #### getJurisdictionAtIndexForArchetype(address,uint256)
 
 
@@ -9562,6 +10977,195 @@ _archetype // archetype address
 
 ```json
 the number of jurisdictions
+```
+
+
+---
+
+#### getParameterByArchetypeAtIndex(address,uint256)
+
+
+**getParameterByArchetypeAtIndex(address,uint256)**
+
+
+Gets parameter name by Archetype At index
+
+```endpoint
+CALL getParameterByArchetypeAtIndex(address,uint256)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_index // index
+
+```
+
+#### Return
+
+```json
+name name
+```
+
+
+---
+
+#### getParameterByArchetypeData(address,bytes32)
+
+
+**getParameterByArchetypeData(address,bytes32)**
+
+
+Returns data about the parameter at with the specified name
+
+```endpoint
+CALL getParameterByArchetypeData(address,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+_name // name
+
+```
+
+#### Return
+
+```json
+parameterType parameter type
+```
+
+
+---
+
+#### getParametersByArchetypeSize(address)
+
+
+**getParametersByArchetypeSize(address)**
+
+
+Gets parameter count for given Archetype
+
+```endpoint
+CALL getParametersByArchetypeSize(address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // archetype
+
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
 ```
 
 
@@ -10055,7 +11659,6 @@ _source // the source of the event
 
 
 ---
-
 
 
 
@@ -13575,6 +15178,67 @@ errorvaluenextIndex the next index, if there is one
 
 ---
 
+### Migratable Interface
+
+
+The Migratable Interface contract is found within the agreements bundle.
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
 ### Named Interface
 
 
@@ -14049,6 +15713,7 @@ _newOwner // The address to transfer ownership to.
 
 
 ---
+
 
 ### ProcessDefinition Interface
 
@@ -14766,7 +16431,7 @@ CALL execute(address)
 #### Parameters
 
 ```solidity
-_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmRuntimeDb)
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmServiceDb)
 
 ```
 
@@ -17381,6 +19046,62 @@ an error indicating success or failure
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 
 
@@ -17863,6 +19584,158 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### ProcessStateChangeEmitter
 
 
@@ -18129,6 +20002,219 @@ the bytes32 representation
 
 ---
 
+### Upgradeable
+
+
+The Upgradeable contract is found within the agreements bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### UserAccount Interface
 
 
@@ -18373,7 +20459,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmServiceDb
 
 ```
 
@@ -18407,7 +20493,7 @@ CALL completeActivity(bytes32,address)
 
 ```solidity
 _activityInstanceId // the task ID
-_service // the BpmService required for lookup and access to the BpmRuntimeDb
+_service // the BpmService required for lookup and access to the BpmServiceDb
 
 ```
 
@@ -19888,6 +21974,62 @@ BaseErrors.RESOURCE_ALREADY_EXISTS() if a model with the same ID and version alr
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### createProcessModel(bytes32,bytes32,uint8[3],bytes32,bytes32)
 
 
@@ -20343,6 +22485,136 @@ id - the ProcessDefinition IDname - the ProcessDefinition nameinterfaceId - the 
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
+### ProcessModelRepositoryDb Interface
+
+
+The ProcessModelRepositoryDb Interface contract is found within the bpm-model bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
 ## bpm-runtime
 
 ### AbstractProcessStateChangeEmitter
@@ -20387,6 +22659,33 @@ CALL notifyProcessStateChange()
 
 ---
 
+
+### ApplicationRegistryDb Interface
+
+
+The ApplicationRegistryDb Interface contract is found within the bpm-runtime bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
 
 ### BpmApi Interface Library
 
@@ -21284,6 +23583,62 @@ BaseErrors.RESOURCE_ALREADY_EXISTS() if an application with the given ID already
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### getApplicationAccessPathAtIndex(bytes32,uint256,uint8)
 
 
@@ -21391,6 +23746,72 @@ the number of applications
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
 #### setApplicationAccessPath(bytes32,bytes32,uint8,uint8)
 
 
@@ -21422,10 +23843,103 @@ BaseErrors.RESOURCE_NOT_FOUND() if the application does not exist, BaseErrors.NO
 
 ---
 
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### DefaultBpmService
 
 
 The DefaultBpmService contract is found within the bpm-runtime bundle.
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
 
 #### createDefaultProcessInstance(address,address,bytes32)
 
@@ -21571,6 +24085,27 @@ CALL getApplicationRegistry()
 
 ```json
 the ApplicationRegistry
+```
+
+
+---
+
+#### getBpmServiceDb()
+
+
+**getBpmServiceDb()**
+
+
+Returns a reference to the BpmServiceDb currently used by this BpmService
+
+```endpoint
+CALL getBpmServiceDb()
+```
+
+#### Return
+
+```json
+the BpmServiceDb
 ```
 
 
@@ -21801,22 +24336,67 @@ the address of the repository
 
 ---
 
-#### getRuntimeDb()
+#### getVersion()
 
 
-**getRuntimeDb()**
+**getVersion()**
 
 
-Returns a reference to the BpmRuntimeDb currently used by this BpmService
+Returns the version as 3-digit array
 
 ```endpoint
-CALL getRuntimeDb()
+CALL getVersion()
 ```
 
 #### Return
 
 ```json
-the BpmRuntimeDb
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
 ```
 
 
@@ -21953,6 +24533,43 @@ BaseErrors.NO_ERROR() if successful or an error code from initializing or execut
 
 ---
 
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
+```
+
+
+---
+
 ### DefaultProcessInstance
 
 
@@ -22046,7 +24663,7 @@ CALL execute(address)
 #### Parameters
 
 ```solidity
-_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmRuntimeDb)
+_service // the BpmService managing this ProcessInstance (required for changes to this ProcessInstance and access to the BpmServiceDb)
 
 ```
 
@@ -22314,6 +24931,62 @@ _address // the Organization contract's address
 
 ```json
 error code
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
 ```
 
 
@@ -22739,6 +25412,128 @@ active - whether the user is activated in the organization
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### isDestroyOnUpgrade()
+
+
+**isDestroyOnUpgrade()**
+
+
+To be implemented to signal whether this contract should be destroyed after a successful upgrade.
+
+```endpoint
+CALL isDestroyOnUpgrade()
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### migrateFrom(address)
+
+
+**migrateFrom(address)**
+
+
+Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
+
+```endpoint
+CALL migrateFrom(address)
+```
+
+#### Parameters
+
+```solidity
+predecessor // the address from which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### migrateTo(address)
+
+
+**migrateTo(address)**
+
+
+Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
+
+```endpoint
+CALL migrateTo(address)
+```
+
+#### Parameters
+
+```solidity
+successor // the address to which the state is migrated
+
+```
+
+#### Return
+
+```json
+result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
 #### organizationExists(bytes32)
 
 
@@ -22762,6 +25557,36 @@ _id // organization ID
 
 ```json
 bool exists
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
 ```
 
 
@@ -22797,6 +25622,33 @@ _interfaceId // the signature of the ERC165 interface
 
 ```json
 true if supported, false otherwise
+```
+
+
+---
+
+### AccountsManagerDb Interface
+
+
+The AccountsManagerDb Interface contract is found within the commons-auth bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -23566,6 +26418,62 @@ bool exists
 
 ---
 
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
 #### createUserAccount(address,bytes32)
 
 
@@ -23581,7 +26489,7 @@ CALL createUserAccount(address,bytes32)
 #### Parameters
 
 ```solidity
-_id // id (optional)
+_id // id (required)
 _owner // owner (optional)
 
 ```
@@ -23787,6 +26695,34 @@ id user account IDowner user account owner
 
 ---
 
+#### getUserAccountDataById(bytes32)
+
+
+**getUserAccountDataById(bytes32)**
+
+
+Gets hashed user account ID and user account address for the specified user account ID.
+
+```endpoint
+CALL getUserAccountDataById(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // the user account ID
+
+```
+
+#### Return
+
+```json
+error RESOURCE_NOT_FOUND or NO_ERRORaddr user account addresshashedId hashed user account ID
+```
+
+
+---
+
 #### getUserAccountsSize()
 
 
@@ -23803,6 +26739,72 @@ CALL getUserAccountsSize()
 
 ```json
 size size
+```
+
+
+---
+
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
 ```
 
 
@@ -23835,6 +26837,43 @@ BaseErrors.NULL_PARAM_NOT_ALLOWED if organization not given,
 BaseErrors.RESOURCE_NOT_FOUND if the user account is unknown,
 BaseErrors.INVALID_STATE if the given user account has the same ID, but different address as an already registered account,
 BaseErrors.NO_ERROR if successful
+```
+
+
+---
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
 ```
 
 
@@ -24043,6 +27082,62 @@ _address // the Organization contract's address
 
 ```json
 BaseErrors.INVALID_PARAM_VALUE() if address is empty, BaseErrors.RESOURCE_ALREADY_EXISTS() if the organization's ID is already registered, BaseErrors.NO_ERROR() if successful
+```
+
+
+---
+
+#### compareVersion(address)
+
+
+**compareVersion(address)**
+
+
+Compares this contract's version to the version of the contract at the specified address.
+
+```endpoint
+CALL compareVersion(address)
+```
+
+#### Parameters
+
+```solidity
+_other // the address to which this contract is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
+```
+
+
+---
+
+#### compareVersion(uint8[3])
+
+
+**compareVersion(uint8[3])**
+
+
+Compares this contract's version to the specified version.
+
+```endpoint
+CALL compareVersion(uint8[3])
+```
+
+#### Parameters
+
+```solidity
+_version // the version to which this contract's version is compared
+
+```
+
+#### Return
+
+```json
+0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
 ```
 
 
@@ -24438,6 +27533,57 @@ active - whether the user is activated in the organization
 
 ---
 
+#### getVersion()
+
+
+**getVersion()**
+
+
+Returns the version as 3-digit array
+
+```endpoint
+CALL getVersion()
+```
+
+#### Return
+
+```json
+the version as unit8[3]
+```
+
+
+---
+
+#### major()
+
+
+**major()**
+
+
+returns the major version number
+
+```endpoint
+CALL major()
+```
+
+
+---
+
+#### minor()
+
+
+**minor()**
+
+
+returns the minor version number
+
+```endpoint
+CALL minor()
+```
+
+
+---
+
 #### organizationExists(bytes32)
 
 
@@ -24461,6 +27607,58 @@ _id // organization ID
 
 ```json
 bool exists
+```
+
+
+---
+
+#### patch()
+
+
+**patch()**
+
+
+returns the patch version number
+
+```endpoint
+CALL patch()
+```
+
+
+---
+
+#### transferSystemOwnership(address)
+
+
+**transferSystemOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferSystemOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
+```
+
+
+---
+
+#### upgrade(address)
+
+
+**upgrade(address)**
+
+
+Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
+
+```endpoint
+CALL upgrade(address)
 ```
 
 
@@ -24796,6 +27994,33 @@ _interfaceId // the signature of the ERC165 interface
 
 ```json
 true if supported, false otherwise
+```
+
+
+---
+
+### EcosystemDb Interface
+
+
+The EcosystemDb Interface contract is found within the commons-auth bundle.
+
+#### transferOwnership(address)
+
+
+**transferOwnership(address)**
+
+
+Allows the current owner to transfer control of the contract to a new owner.
+
+```endpoint
+CALL transferOwnership(address)
+```
+
+#### Parameters
+
+```solidity
+_newOwner // The address to transfer ownership to.
+
 ```
 
 
@@ -32338,280 +35563,6 @@ CALL transferOwnership(address)
 ```solidity
 _newOwner // The address to transfer ownership to.
 
-```
-
-
----
-
-#### upgrade(address)
-
-
-**upgrade(address)**
-
-
-Checks the version and invokes migrateTo and migrateTo in order to transfer state (push then pull)
-
-```endpoint
-CALL upgrade(address)
-```
-
-
----
-
-### Migratable Interface
-
-
-The Migratable Interface contract is found within the commons-management bundle.
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Parameters
-
-```solidity
-predecessor // the address from which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Parameters
-
-```solidity
-successor // the address to which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-### Upgradeable
-
-
-The Upgradeable contract is found within the commons-management bundle.
-
-#### compareVersion(address)
-
-
-**compareVersion(address)**
-
-
-Compares this contract's version to the version of the contract at the specified address.
-
-```endpoint
-CALL compareVersion(address)
-```
-
-#### Parameters
-
-```solidity
-_other // the address to which this contract is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### compareVersion(uint8[3])
-
-
-**compareVersion(uint8[3])**
-
-
-Compares this contract's version to the specified version.
-
-```endpoint
-CALL compareVersion(uint8[3])
-```
-
-#### Parameters
-
-```solidity
-_version // the version to which this contract's version is compared
-
-```
-
-#### Return
-
-```json
-0 (equal), -1 (the other version is lower), or 1 (the other version is higher).
-```
-
-
----
-
-#### getVersion()
-
-
-**getVersion()**
-
-
-Returns the version as 3-digit array
-
-```endpoint
-CALL getVersion()
-```
-
-#### Return
-
-```json
-the version as unit8[3]
-```
-
-
----
-
-#### isDestroyOnUpgrade()
-
-
-**isDestroyOnUpgrade()**
-
-
-To be implemented to signal whether this contract should be destroyed after a successful upgrade.
-
-```endpoint
-CALL isDestroyOnUpgrade()
-```
-
-
----
-
-#### major()
-
-
-**major()**
-
-
-returns the major version number
-
-```endpoint
-CALL major()
-```
-
-
----
-
-#### migrateFrom(address)
-
-
-**migrateFrom(address)**
-
-
-Implements the migration of state from the specified predecessor to this contract. This method can be used to 'read' the state of the other contract which is probably easier to achieve.
-
-```endpoint
-CALL migrateFrom(address)
-```
-
-#### Parameters
-
-```solidity
-predecessor // the address from which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### migrateTo(address)
-
-
-**migrateTo(address)**
-
-
-Implements the migration of state this contract to the specified contract. This method can be used to 'write' the state from this contract to the success. It's probably a little less useful since it requires the successor contract to have appropriate functions to set state.
-
-```endpoint
-CALL migrateTo(address)
-```
-
-#### Parameters
-
-```solidity
-successor // the address to which the state is migrated
-
-```
-
-#### Return
-
-```json
-result the result of the operation, e.g. a constant from commons-base/BaseErrors.sol
-```
-
-
----
-
-#### minor()
-
-
-**minor()**
-
-
-returns the minor version number
-
-```endpoint
-CALL minor()
-```
-
-
----
-
-#### patch()
-
-
-**patch()**
-
-
-returns the patch version number
-
-```endpoint
-CALL patch()
 ```
 
 

@@ -26,12 +26,22 @@ curl -iX POST /agreements
 ```
 
 
+#### Success Response
+
+Success-Response:
+
+```json
+{
+	"address": "6EDC6101F0B64156ED867BAE925F6CD240635656"
+}
+```
+
 
 #### Success 200
 
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| address | String | <p>The address of the created Archetype</p>|
+| The | json | <p>address of the created Agreement</p>|
 
 
 
@@ -69,17 +79,28 @@ curl -i /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
 Success Object
 
 ```json
-{
- "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
- "name": "Agreement",
- "archetype": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
- "isPrivate": false,
- "parties": []
- "values": {
-    "custom-field-name": custom-field-value,
-    ...
-  }
-}
+				 {
+				  "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
+				  "name": "Agreement",
+				  "archetype": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
+				  "isPrivate": false,
+				  "eventLogHoardAddress": "0000000000000000000000000000000000000000000000000000000000000000",
+   				  "eventLogHoardSecret": "0000000000000000000000000000000000000000000000000000000000000000",
+				  "maxNumberOfEvents": 0,
+				  "legalState": 1,
+				  "formationProcessInstance": "413AC7610E6A4E0ACEB29596FFC52D243A2E7CD7",
+  				  "executionProcessInstance": "0000000000000000000000000000000000000000",
+				  "parties": [
+					  "address": "A072341D3BBD4FDD3CD5D0EBADB0EB37887E3311",
+					  "organizationName": "Drones Delight"
+					  "signatureTimestamp": 1529588821427,
+					  "completedBy": "BE98345FEDCD465D0EBADB0EB3789F234ECBD"
+				  ],
+				  "parameters": {
+				     "parameterName": "parameterValue",
+				     ...
+				   }
+				 }
 ```
 
 
@@ -91,10 +112,90 @@ Success Object
 | name | String | <p>Human readable name of the Active Agreement</p>|
 | archetype | String | <p>Address of the parent Archetype of the Active Agreement</p>|
 | isPrivate | Boolean | <p>Whether the encryption framework of the Active Agreement is operational or not</p>|
-| parties | String[] | <p>The addresses of the parties to the Active Agreement</p>|
-| values | Object[] | <p>The &quot;custom-field-name&quot; and values of the parameters.</p>|
+| eventLogHoardAddress | String | <p>Hoard address of where event log is stored</p>|
+| eventLogHoardSecret | String | <p>Hoard secret of where event log is stored</p>|
+| maxNumberOfEvents | Number | <p>Max number of fulfillment events that can be stored in the event log</p>|
+| legalState | Number | <p>Legal state of the agreement</p>|
+| formationProcessInstance | Number | <p>Address of the agreement's formation process instance</p>|
+| executionProcessInstance | Number | <p>Address of the agreement's execution process instance</p>|
+| parties | Object[] | <p>An array of objects with each party member's address, user id or organization name, signature timestamp, and address of the user that has signed for the party</p>|
+| parameters | Object[] | <p>The &quot;parameter-name&quot; and values of the parameters.</p>|
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Read Tasks of an Agreement
+
+<p>Retrieves completed task information for a single Agreement.</p>
+
+```endpoint
+GET /agreements/:address/tasks
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/tasks
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+ {
+	"agreementAddress": "391F69095A291E21079A78F0F67EE167D7628AE2",
+	"agreementName": "Agreement Name"
+	"processDefinitionAddress": "0506903B34830785168D840BB70D7D48D31A5C1F",
+	"processAddress": "5128E9E1776CB45F351E226A3DC476964A07BBC0",
+	"processName": "Ship",
+	"activityId": "buyItem",
+	"activityInstanceId": "DA3745AD5DCD2E53854ED699AD73E2C550BA5AB3E484AACCCC0FDBF959C8A3FF",
+	"created": 1528923353,
+	"performer": "36ADA22D3A4B841EFB73414CD97C35C0A660C1C2",
+	"completedBy": "36ADA22D3A4B841EFB73414CD97C35C0A660C1C2",
+	"state": 2,
+ }
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| agreementAddress | String | <p>Active Agreement's address</p>|
+| agreementName | String | <p>Human readable name of the Active Agreement</p>|
+| processDefinitionAddress | String | |
+| processAddress | String | |
+| processName | String | <p>Human readable name of process</p>|
+| activityId | String | <p>Human readable name of activity</p>|
+| activityInstanceId | String | <p>address of activity instance</p>|
+| created | Integer | <p>Unix timestamp of activity creation</p>|
+| performer | String | <p>Address of assignee</p>|
+| completedBy | String | <p>Address of contract that completed task</p>|
+| state | Integer | <p>Number that maps to the state of the task</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ### Read Agreements
@@ -151,6 +252,12 @@ Success Objects Array
 | hoardSecret | String | <p>The hashed hoard secret key</p>|
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ### Cancel an Agreement
@@ -222,7 +329,7 @@ curl -iX PUT /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/sign
 
 
 ```endpoint
-POST /agreements/:address/events/:eventName
+POST /agreements/:address/events
 ```
 
 
@@ -235,7 +342,7 @@ POST /agreements/:address/events/:eventName
 
 
 ```curl
-curl -iX POST /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/events/nameOfEvent
+curl -iX POST /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/events -d '{"eventName":"eventName"}'
 ```
 
 
@@ -273,7 +380,7 @@ Success Object
 
 ### Create an Archetype
 
-<p>Note: <code>fields</code> and <code>documents</code> are optional in the POST and can be added later via the below PUT requests.</p>
+
 
 ```endpoint
 POST /archetypes
@@ -293,12 +400,22 @@ curl -iX POST /archetypes
 ```
 
 
+#### Success Response
+
+Success-Response:
+
+```json
+{
+	"address": "6EDC6101F0B64156ED867BAE925F6CD240635656"
+}
+```
+
 
 #### Success 200
 
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| address | String | <p>The address of the created Archetype</p>|
+| The | json | <p>address of the created Archetype</p>|
 
 
 
@@ -342,7 +459,7 @@ Success Object
  "author": "6EDC6101F0B64156ED867BAE925F6CD240635656",
  "active": false,
  "isPrivate": false,
- "fields": [
+ "parameters": [
   {"name": "NumberOfTeenageDaughters", "type": 4},
   {"name": "ExitClause", "type": 2}
  ],
@@ -366,7 +483,7 @@ Success Object
 | author | String | <p>Controller contract of the user or organization that created the Archetype</p>|
 | active | Boolean | <p>Whether the Archetype can be used to create new Active Agreements or not</p>|
 | isPrivate | Boolean | <p>Whether the encryption framework of the Archetype is operational or not</p>|
-| fields | Object[] | <p>The &quot;name&quot; and &quot;type&quot; of all custom parameters used by the Archetype</p>|
+| parameters | Object[] | <p>The &quot;name&quot; and &quot;type&quot; of all custom parameters used by the Archetype</p>|
 | documents | Object[] | <p>The &quot;name&quot;, &quot;hoardAddress&quot; and &quot;secretKey&quot; (if any) sufficient to provide the information regarding the relevant documents associated with the Archetype</p>|
 | jurisdictions | Object[] | <p>The &quot;country&quot; and &quot;regions&quot; which the Archetype has been registered as relevant to. The &quot;country&quot; is registered as an ISO standard two character string and &quot;regions&quot; is an array of addresses relating to the controlling contracts for the region (see <a href="#">ISO standards manipulation</a> section).</p>|
 
@@ -407,7 +524,7 @@ Success Objects Array
   "author": "6EDC6101F0B64156ED867BAE925F6CD240635656",
   "active": false,
   "isPrivate": false,
-  "numberOfFields": 2,
+  "numberOfParameters": 2,
   "numberOfDocuments": 1,
   "countries": ["US","CA"]
  }
@@ -424,414 +541,21 @@ Success Objects Array
 | author | String | <p>Controller contract of the user or organization that created the Archetype</p>|
 | active | Boolean | <p>Whether the Archetype can be used to create new Active Agreements or not</p>|
 | isPrivate | Boolean | <p>Whether the encryption framework of the Archetype is operational or not</p>|
-| numberOfFields | Number | <p>The number of custom parameters used by the Archetype</p>|
+| numberOfParameters | Number | <p>The number of custom parameters used by the Archetype</p>|
 | numberOfDocuments | Number | <p>The number of documents registered against the Archetype</p>|
 | countries | String[] | <p>The jurisdictions in which the Archetype has been registered to be active</p>|
 
 
 
 
-### Update an Archetype
-
-<p>Note that the object sent should meet the definition located in the CreateOrganization section and should match the configurationSection endpoint given. Currently the following configurationFields are the <strong>only</strong> fields which can be updated</p> <ul> <li>configuration</li> <li>fields</li> <li>documents</li> </ul>
-
-```endpoint
-PUT /archetypes/:address/:configurationSection
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX PUT /archetypes/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/fields
-```
-
-
-
-#### 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| Success |  | |
-
-
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
-
-
-## Authorizations
-
-### Log in as a User
-
-
-
-```endpoint
-POST /login
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /login
-```
-
-
-#### Success Response
-
-Success Object
-
-```json
-{
-   "userData": {
-        address: "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
-        id: "username/id"
-    },
-    "orgData" {
-        address: "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
-        id: "organization id",
-        name: "organization Name"
-    },
-    "token": "longtokenstringneededforpostrequests"
-}
-```
-
-
-#### Success 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| userData | Object | <p>The &quot;address&quot; and &quot;id&quot; of the User</p>|
-| orgData | Object | <p>The &quot;address&quot; &quot;id&quot; and &quot;name&quot; of the User's organizations</p>|
-| token | String | <p>The user's authorization token for the session</p>|
-
-
-
-
-### Log out a User
-
-
-
-```endpoint
-POST /logout
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /logout
-```
-
-
-
-
-
-
-### Request password reset for a user account
-
-<p>Sends an email with a password recovery code to the given email address</p>
-
-```endpoint
-POST /password-recovery
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /password-recovery
-```
-
-
-
-
-
-
-### Register a User
-
-
-
-```endpoint
-POST /register
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /register
-```
-
-
-
-#### 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| Success |  | |
-
-
-
-#### 403
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| User |  | <p>Exists</p>|
-
-
-### Reset password for user account
-
-<p>Resets the user's password with the given password, if the recovery code is valid</p>
-
-```endpoint
-PUT /password-recovery/:recoveryCode
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX PUT /password-recovery/vdk7bd2esdf3234...
-```
-
-
-
-
-
-
-### Validates the given password recovery code
-
-<p>Checks if the given password recovery code is valid</p>
-
-```endpoint
-GET /password-recovery/:recoveryCode
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX GET /password-recovery/vdk7bd2esdf3234...
-```
-
-
-
-
-
-
-## Content
-
-### Create Dummy Content
-
-
-
-```endpoint
-POST /dummy
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /dummy
-```
-
-
-
-
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
-
-
-### Read Content Object
-
-
-
-```endpoint
-GET /hoard
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /hoard
-```
-
-
-
-
-
-
-## Models
-
-### Create Model
-
-
-
-```endpoint
-POST /models
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /models
-```
-
-
-
-
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
-
-
-### Create a process definition
-
-<p>Creates a process definition with info passed in the request body: { modelAddress: 'AC1E0E841141FFF510350D04696174C8B4BDF53A', id: 'myProcess1', name: 'My Process 1', hoardAddress: 'd71376de29b408f82974d4ca5685db9e6f415ea13c66b774a86429e80f341131', hoardSecret: '52f57f5997d5c1bb088e7de4720709179059ca394ef81247c7a691ea44924717', }</p>
-
-```endpoint
-POST /process
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /process
-```
-
-
-#### Success Response
-
-1EC5F9ABE8053D87526786F98957AC6631206E7C
-
-```json
-1EC5F9ABE8053D87526786F98957AC6631206E7C
-```
-
-
-#### Success 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| Address | text | <p>of process definition</p>|
-
-
-
-
-### Read Activities
-
-<p>Read all activities. Accepts an optional query string parameter <code>processInstance</code> to read only the activities with the given process addess.</p>
-
-```endpoint
-GET /activity-instances
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /activity-instances?processInstance=150D431B160790B2462D8CC683C87FEA2F1C3C61
-```
-
-
-
-
-
+## BPMModel
 
 ### Read All Process Definitions
 
 
 
 ```endpoint
-GET /definitions
+GET /bpm/process-definitions
 ```
 
 
@@ -844,7 +568,8 @@ GET /definitions
 
 
 ```curl
-curl -i /definitions
+curl -i /bpm/process-definitions
+curl -i /bpm/process-definitions?interfaceId=Default%20Formation%20Process
 ```
 
 
@@ -883,141 +608,19 @@ Success Objects Array
 
 
 
-
-### Read Execution Process Definition
-
-
-
-```endpoint
-GET /definitions/execution
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /definitions/execution
-```
-
-
-
-
-
-
-### Read Single Field Type
-
-
-
-```endpoint
-GET /fieldTypes/:id
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /fieldTypes/:id
-```
-
-
-
-
-
-
-### Read Field Types
-
-
-
-```endpoint
-GET /fieldTypes
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /fieldTypes
-```
-
-
-
-
-
-
-### Read Formation Process Definition
-
-
-
-```endpoint
-GET /definitions/formation
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /definitions/formation
-```
-
-
-#### Success Response
-
-Success Objects Array
-
-```json
-[
-    {
-        "modelAddress":"912A82D4C72847EF1EC76426544EAA992993EE20",
-        "processDefinitionAddress":"81A817870C6C6A209150FA26BC52D835CA6E17D2",
-        "id":"defaultFormationProcess",
-        "name":"Default Formation Process",
-        "interfaceId":"Agreement Formation",
-        "diagramAddress":"7D85BB76DB402B752F84792FF50B40483922673CF277CD2045D3D9637D4CE8F9",
-        "diagramSecret":"4AF3A863BF6F2AD79E4919F562252866CBDA58E3E5AA27E2C5C94BAE9931BE74"
-    }
-]
-```
-
-
-#### Success 200
+#### Error 4xx
 
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| object | Object[] | <p>Process Definition object</p>|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
-
-
-### Read Instance Count
+### Read Process Models
 
 
 
 ```endpoint
-GET /processInstanceCount
+GET /bpm/process-models
 ```
 
 
@@ -1030,33 +633,7 @@ GET /processInstanceCount
 
 
 ```curl
-curl -i /processInstanceCount
-```
-
-
-
-
-
-
-### Read Models
-
-
-
-```endpoint
-GET /models
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /models
+curl -iX GET /bpm/process-models
 ```
 
 
@@ -1093,10 +670,150 @@ Success Object Array
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+## BPMModel_BPMN_XML_needs_to_be_passed_in_the_request_body_as_plain_text_or_application_xml
+
+### Parse BPMN XML and from it create a process model and definition
+
+
+
+```endpoint
+POST /bpm/process-models
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /bpm/process-models
+curl -i /bpm/process-models?format=bpmn
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+    "model": {
+        "id": "model_10",
+        "address": "3650839FB751186AC9B1B2BBDD30E23D7926D6E6"
+    },
+    "processes": [
+        {
+            "id": "Process_1",
+            "address": "B19BA0D61DD95958C4B6B8F11B03477C24738D53",
+            "startActivity": "Task_0m3bxv3"
+            "interfaceId": "Agreement Formation",
+            "name": "Process Name",
+            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
+            "participants": "[{"id":"Lane_0dcbbm2","name":"Lane Label 1","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"seller"}]"
+        },
+        {
+            "id": "Process_2",
+            "address": "696133F794C0B87C0E40FEE4144648798C508379",
+            "startActivity": "Task_0a1ijkc"
+            "interfaceId": "Agreement Execution",
+            "name": "Process Name",
+            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
+            "participants": "[{"id":"Lane_0dcttm4","name":"Lane Label 2","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"buyer"}]"
+        }
+    ]
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| Address | Object | <p>of process model, process definition(s) and start activity id(s)</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+## BPMRuntime
+
+### Complete task identified by the activityInstanceId
+
+<p>Completes the activity identified by the activityInstanceId.</p>
+
+```endpoint
+PUT /tasks/:activityInstanceId/complete
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /task/:activityInstanceId/complete
+```
+
+
+
+
+
+
+### Read Activities
+
+<p>Read all activities.</p>
+
+```endpoint
+GET /activity-instances
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /activity-instances?processInstance=150D431B160790B2462D8CC683C87FEA2F1C3C61
+```
+
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### Read Tasks
 
-<p>Retrieves an array of tasks assigned to the user at address provided in the route.</p>
+<p>Retrieves an array of tasks assigned to the logged in user</p>
 
 ```endpoint
 GET /tasks
@@ -1150,12 +867,14 @@ Success Objects Array
 | NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
-### Begin a Business Process
+## Content
+
+### Read Content Object
 
 
 
 ```endpoint
-POST /startProcess
+GET /hoard
 ```
 
 
@@ -1168,115 +887,10 @@ POST /startProcess
 
 
 ```curl
-curl -iX POST /startProcess
+curl -i /hoard
 ```
 
 
-
-
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
-
-
-### Validate a Business Process
-
-
-
-```endpoint
-POST /validateProcess
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -iX POST /validateProcess
-```
-
-
-
-
-
-#### Error 4xx
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
-
-
-## Models_BPMN_XML_needs_to_be_passed_in_the_request_body_as_plain_text_or_application_xml
-
-### Parse BPMN XML and from it create a process model and definition
-
-
-
-```endpoint
-POST /bpmn/model
-```
-
-
-
-
-
-
-
-#### Example Requests
-
-
-```curl
-curl -i /bpmn/model
-```
-
-
-#### Success Response
-
-Success Object
-
-```json
-{
-    "model": {
-        "id": "model_10",
-        "address": "3650839FB751186AC9B1B2BBDD30E23D7926D6E6"
-    },
-    "processes": [
-        {
-            "id": "Process_1",
-            "address": "B19BA0D61DD95958C4B6B8F11B03477C24738D53",
-            "startActivity": "Task_0m3bxv3"
-            "interfaceId": "Agreement Formation",
-            "name": "Process Name",
-            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
-            "participants": "[{"id":"Lane_0dcbbm2","name":"Lane Label 1","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"seller"}]"
-        },
-        {
-            "id": "Process_2",
-            "address": "696133F794C0B87C0E40FEE4144648798C508379",
-            "startActivity": "Task_0a1ijkc"
-            "interfaceId": "Agreement Execution",
-            "name": "Process Name",
-            "modelAddress": "234AC325FEAD83822BCDDE83813223DEA3AD",
-            "participants": "[{"id":"Lane_0dcttm4","name":"Lane Label 2","tasks":[null],"conditionalPerformer":true,"dataStorageId":"agreement","dataPath":"buyer"}]"
-        }
-    ]
-}
-```
-
-
-#### Success 200
-
-| Name     | Type       | Description                           |
-|:---------|:-----------|:--------------------------------------|
-| Address | Object | <p>of process model, process definition(s) and start activity id(s)</p>|
 
 
 
@@ -1305,12 +919,22 @@ curl -iX POST /organizations
 ```
 
 
+#### Success Response
+
+Success-Response:
+
+```json
+{
+	"address": "6EDC6101F0B64156ED867BAE925F6CD240635656"
+}
+```
+
 
 #### Success 200
 
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| address | String | <p>Organization's Controller Contract</p>|
+| The | json | <p>address of the created Organization</p>|
 
 
 
@@ -1364,6 +988,12 @@ Success Objects Array
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### An Organization&#39;s Users
 
@@ -1392,16 +1022,16 @@ curl -i /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users
 Success Objects Array
 
 ```json
-[
- {
-  "address": "2BFCC5D3FD4CB5FF62CDF101CA9B1CE8F3E9C1DB",
-  "id": "AHZZMJvNp6",
-  "organization": "771190B939D92AC5C4E668602337DB3B4884B7FD",
-  "organizationId": "acmecorp739",
-  "organizationName": "ACME Corp",
-  "active": false
- }
-]
+   [
+    {
+     "address": "2BFCC5D3FD4CB5FF62CDF101CA9B1CE8F3E9C1DB",
+     "id": "AHZZMJvNp6",
+     "organization": "771190B939D92AC5C4E668602337DB3B4884B7FD",
+     "organizationId": "acmecorp739",
+     "organizationName": "ACME Corp",
+     "active": false
+    }
+	 ]
 ```
 
 
@@ -1417,6 +1047,12 @@ Success Objects Array
 | active | Boolean | <p>Whether the user is active with the organization</p>|
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ### Read a Single Organization
@@ -1460,13 +1096,19 @@ Success Object
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### Removes a user from Organization
 
 
 
 ```endpoint
-DELETE /organizations/:orgid/users/:userAccount
+DELETE /organizations/:orgId/users/:userAddress
 ```
 
 
@@ -1504,7 +1146,7 @@ curl -iX DELETE /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10
 
 
 ```endpoint
-PUT /organizations/:orgid/users/:userAccount
+PUT /organizations/:orgId/users/:userAddress
 ```
 
 
@@ -1539,12 +1181,12 @@ curl -iX PUT /organizations/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E/users/10DA7
 
 ## Runtime
 
-### Complete task identified by the given task id
+### Sign the agreement and complete the activity
 
-<p>Completes the activity identified by the activityInstanceId. The activityInstanceId needs to be passed as a param.</p>
+<p>Signs the agreement at the given address and then completes the activity identified by the activityInstanceId.</p>
 
 ```endpoint
-PUT /tasks/:id/complete
+PUT /tasks/:activityInstanceId/complete/:agreementAddress/sign
 ```
 
 
@@ -1557,7 +1199,7 @@ PUT /tasks/:id/complete
 
 
 ```curl
-curl -i /task/:id/complete
+curl -i /tasks/:activityInstanceId/complete/:agreementAddress/sign
 ```
 
 
@@ -1565,14 +1207,14 @@ curl -i /task/:id/complete
 
 
 
-## Standards
+## StaticData
 
 ### Read Countries
 
 
 
 ```endpoint
-GET /iso/countries
+GET /static-data/iso/countries
 ```
 
 
@@ -1585,7 +1227,7 @@ GET /iso/countries
 
 
 ```curl
-curl -i /iso/countries
+curl -i /static-data/iso/countries
 ```
 
 
@@ -1614,13 +1256,19 @@ Success Objects Array
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### Read Country
 
 <p>Retrieves the country whose <code>alpha2</code> code matches the one passed as parameter.</p>
 
 ```endpoint
-GET /iso/countries/:alpha2
+GET /static-data/iso/countries/:alpha2
 ```
 
 
@@ -1633,7 +1281,7 @@ GET /iso/countries/:alpha2
 
 
 ```curl
-curl -i /iso/countries/:alpha2
+curl -i /static-data/iso/countries/:alpha2
 ```
 
 
@@ -1660,13 +1308,19 @@ Success Object
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### Read Currencies
 
 
 
 ```endpoint
-GET /iso/currencies
+GET /static-data/iso/currencies
 ```
 
 
@@ -1679,7 +1333,7 @@ GET /iso/currencies
 
 
 ```curl
-curl -i /iso/currencies
+curl -i /static-data/iso/currencies
 ```
 
 
@@ -1713,13 +1367,19 @@ Success Objects Array
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ### Read Currency
 
 <p>Retrieves the currency whose <code>alpha3</code> code matches the one passed as parameter.</p>
 
 ```endpoint
-GET /iso/currencies/:alpha3
+GET /static-data/iso/currencies/:alpha3
 ```
 
 
@@ -1732,7 +1392,7 @@ GET /iso/currencies/:alpha3
 
 
 ```curl
-curl -i /iso/currencies/:alpha3
+curl -i /static-data/iso/currencies/:alpha3
 ```
 
 
@@ -1758,13 +1418,19 @@ Success Objects Array
 
 
 
+#### Error 4xx
 
-### Read a Country&#39;s Regions
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
-<p>Retrieves an array of regions belonging to the country whose <code>alpha2</code> code matches the one passed as parameter. Note that a region may have its <code>code2</code> OR <code>code3</code> property populated, NOT both. Thus to represent regions in the UI dropdown, we can use <code>&lt;alpha2&gt;-&lt;code2 or code3&gt;</code> followed by the name.</p>
+
+### Read Parameter Types
+
+
 
 ```endpoint
-GET /iso/countries/:alpha2/regions
+GET /static-data/parameter-types
 ```
 
 
@@ -1777,7 +1443,56 @@ GET /iso/countries/:alpha2/regions
 
 
 ```curl
-curl -i /iso/countries/:alpha2/regions
+curl -i /static-data/parameter-types
+```
+
+
+#### Success Response
+
+Success Objects Array
+
+```json
+[
+    {"parameterType": 0, "label": "Boolean"},
+    {"parameterType": 1, "label": "String"},
+    {"parameterType": 2, "label": "Number"},
+    {"parameterType": 3, "label": "Date"},
+    {"parameterType": 4, "label": "Monetary Amount"},
+    {"parameterType": 5, "label": "User/Organization"},
+    {"parameterType": 6, "label": "Contract Address"},
+    {"parameterType": 7, "label": "Signing Party"}
+]
+```
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Read a Country&#39;s Regions
+
+<p>Retrieves an array of regions belonging to the country whose <code>alpha2</code> code matches the one passed as parameter. Note that a region may have its <code>code2</code> OR <code>code3</code> property populated, NOT both. Thus to represent regions in the UI dropdown, we can use <code>&lt;alpha2&gt;-&lt;code2 or code3&gt;</code> followed by the name.</p>
+
+```endpoint
+GET /static-data/iso/countries/:alpha2/regions
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /static-data/iso/countries/:alpha2/regions
 ```
 
 
@@ -1815,15 +1530,21 @@ Success Objects Array
 
 
 
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
 
 ## Users
 
-### Read Single User
+### Update User Profile of currently logged in user
 
-<p>Retrieves a single users information.</p>
+<p>Updates a single users profile identified by the access token.</p>
 
 ```endpoint
-GET /users
+PUT /users/profile
 ```
 
 
@@ -1836,7 +1557,109 @@ GET /users
 
 
 ```curl
-curl -i /users/9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E
+curl -iX PUT /users/profile
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+	"address": "605401BB8B9E597CC40C35D1F0185DE94DBCE533",
+	"id": "johnsmith"
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| address | String | <p>Users's Controller Contract</p>|
+| id | String | <p>Users's human readable ID</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Log out a User
+
+
+
+```endpoint
+POST /users/logout
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /users/logout
+```
+
+
+
+
+
+
+### Request password reset for a user account
+
+<p>Sends an email with a password recovery code to the given email address</p>
+
+```endpoint
+POST /users/password-recovery
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /users/password-recovery
+```
+
+
+
+
+
+
+### Read User Profile of currently logged in user
+
+<p>Retrieves a single users profile identified by the access token.</p>
+
+```endpoint
+GET /users/profile
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /users/profile
 ```
 
 
@@ -1848,6 +1671,7 @@ Success Object
 {
  "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
  "id": "j.smith",
+ "email": "jsmith@monax.io",
  "organization": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
  "organizationId": "acmecorp92",
  "organizationName": "ACME Corp"
@@ -1860,12 +1684,19 @@ Success Object
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | address | String | <p>Users's Controller Contract</p>|
-| id | String | <p>Users's machine readable ID</p>|
+| id | String | <p>Users's human readable ID</p>|
+| email | String | <p>Users's email address</p>|
 | organization | String | <p>Organization's Controller Contract</p>|
 | organizationId | String | <p>Organization's machine readable ID</p>|
 | organizationName | String | <p>Organization's human readable name</p>|
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
 ### Read Users
@@ -1919,13 +1750,19 @@ Success Objects Array
 
 
 
+#### Error 4xx
 
-### Read User&#39;s Agreements
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
+### Create a New User
+
+<p>Creating a new user</p>
 
 ```endpoint
-GET /users/:address/agreements
+POST /users
 ```
 
 
@@ -1938,17 +1775,175 @@ GET /users/:address/agreements
 
 
 ```curl
-curl -iX POST /users/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/agreements
+curl -iX POST /users
 ```
 
+
+#### Success Response
+
+Success Object
+
+```json
+{
+	"address": "605401BB8B9E597CC40C35D1F0185DE94DBCE533",
+	"id": "johnsmith"
+}
+```
 
 
 #### Success 200
 
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
-| agreement | Object | <p>Agreement object array (see <a href="#">Agreements section</a>)</p>|
+| userData | Object | <p>The &quot;address&quot; and &quot;id&quot; of the User</p>|
 
 
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Reset password for user account
+
+<p>Resets the user's password with the given password, if the recovery code is valid</p>
+
+```endpoint
+PUT /users/password-recovery/:recoveryCode
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /users/password-recovery/vdk7bd2esdf3234...
+```
+
+
+
+
+
+
+### Log in as a User
+
+
+
+```endpoint
+POST /users/login
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /users/login
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+ {
+		"address": "41D6BC9143DF87A07F65FCAF642FB89E16D26548",
+		"id": "jsmith",
+		"createdAt": "2018-06-25T13:44:26.925Z"
+	}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| address | String | <p>The address of the user</p>|
+| id | String | <p>The id (username) of the user</p>|
+| A | String | <p>timestamp of the account creation</p>|
+
+
+
+
+### Validates the given password recovery code
+
+<p>Checks if the given password recovery code is valid</p>
+
+```endpoint
+GET /users/password-recovery/:recoveryCode
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX GET /users/password-recovery/vdk7bd2esdf3234...
+```
+
+
+
+
+
+
+### Validate user token
+
+<p>This route validates the JWT <code>access_token</code> which should be set as cookie in the request</p>
+
+```endpoint
+GET /users/token/validate
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX GET /users/token/validate
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+ {
+		"address": "41D6BC9143DF87A07F65FCAF642FB89E16D26548",
+		"id": "jsmith",
+	}
+```
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 

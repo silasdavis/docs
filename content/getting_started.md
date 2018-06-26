@@ -45,39 +45,30 @@ Lastly, we need to install [jq](https://stedolan.github.io/jq/download/) which i
 
 ### Create your own key and send us the information
 
-Monax keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the `monax-keys` tool. To install this run the following command:
+First you will need [Hyperledger Burrow](https://www.hyperledger.org/projects/hyperledger-burrow) which is the base blockchain node used for the Agreements Network.
 
 ```
-go get github.com/monax/bosmarmot/keys/cmd/monax-keys
+go get github.com/hyperledger/burrow/cmd/burrow
 ```
+burrow keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the `burrow keys` tool.
 
-Run monax-keys server on the machine you intend to run as validator and save the process ID in a variable.
-
-```
-monax-keys server &
-```
-
-Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you. If you would like to stop the server after your session and/or when you're not running burrow then run `pkill monax-keys`.
+Run burrow keys server on the machine you intend to run as validator and save the process ID in a variable.
 
 ```
-ADDR=$(monax-keys gen --no-pass)
+burrow keys server &
 ```
 
-**If and only if** you wish to give it a passphrase then remove the `--no-pass` flag and manually copy and paste the address outputted into a shell variable in the following manner. Adding a passphrase will ensure that the key is encrypted at rest on the disk of your machine.
+Next we generate a key with the below command. In the below command we do not give the key a passphrase to encrypt it on disk, but that option is up to you. If you would like to stop the server after your session and/or when you're not running burrow then run `pkill burrow`.
 
 ```
-monax-keys gen
-ADDR="COPY_AND_PASTE_THE_ADDRESS_OUTPUTTED"
+ADDR=$(burrow keys gen --no-password)
 ```
 
-Next also we will pass the new key's address into the `convert` command to give us the output we need.
+Next also we will pass the new key's address into the `export` command to give us the output we need.
 
 ```
-monax-keys convert --addr $ADDR | jq '{address: .address, pubKey: .pub_key[1]}' > validator_info.json
+burrow keys export --addr $ADDR | jq '{Address: .Address, PublicKey: .PublicKey }' > validator_info.json
 ```
-
-**N.B.** if you generated your key with a passphrase before running the above command you'll need to run `monax-keys unlock --addr $ADDR`.
-
 The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
 ```curl
@@ -112,8 +103,6 @@ burrow start \
     --validator-moniker ORGNAME-t2.agreements.network-validator \
     --validator-address $ADDR
 ```
-
-**If and only if** you have generated the key using a password and have restarted your `monax-keys` server since last unlocking the key, you will need to first unlock your key with `monax-keys unlock --addr $ADDR`.
 
 ### Operational Notes
 
