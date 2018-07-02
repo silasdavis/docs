@@ -38,10 +38,10 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  test_and_deploy:
     jobs:
       - build:
-          filter:
-            branch:
+          filters:
+            branches:
               only:
                 - staging
