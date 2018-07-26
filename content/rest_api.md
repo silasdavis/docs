@@ -52,6 +52,57 @@ Success-Response:
 | NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
 
 
+### Create a Agreement Collection
+
+<p>Creates an Active Agreement Collection.</p>
+
+```endpoint
+GET /agreement-collections
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /agreement-collections
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+	"id": "9FBC54D1E8224307DA7E74BC54D1E829764E2DE7AD0D8DF6EBC54D1E82ADBCFF"
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| name | String | <p>Active Agreement Collection name</p>|
+| author | String | <p>Address of the creator (user account or org), logged in user address will be used if none supplied</p>|
+| collectionType | Number | <p>Type of collection</p>|
+| packageId | String | <p>The packageId of the archetype package from which the collection was created</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
 ### Read an Agreement
 
 <p>Retrieves Active Agreement information for a single Agreement. Note: if the password provided is incorrect or a hoard reference which does not exist was passed to the posted Active Agreement this get will return a <code>401</code>.</p>
@@ -120,6 +171,122 @@ Success Object
 | executionProcessInstance | Number | <p>Address of the agreement's execution process instance</p>|
 | parties | Object[] | <p>An array of objects with each party member's address, user id or organization name, signature timestamp, and address of the user that has signed for the party</p>|
 | parameters | Object[] | <p>The &quot;parameter-name&quot; and values of the parameters.</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Read an Agreement Collection
+
+<p>Retrieves information for a single Agreement Collection.</p>
+
+```endpoint
+GET /agreement-collections/:id
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /agreement-collections/7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+	{
+		"id": "7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD",
+		"name": "Agreement Collection 1",
+		"author": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
+		"collectionType": 2,
+		"packageId": "9FBC54D1E8224307DA7E74BC54D1E829764E2DE7AD0D8DF6EBC54D1E82ADBCFF",
+		"agreements": [
+			{
+				"name": "Agreement 1",
+				"address": "E615D0EC4BB0EDDE615D0EC4BB0EB3D909F66890",
+				"archetype": "42B7AC86A84DD3AA054F567BCF5D27D9622FCD0B"
+			}
+		]
+  }
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| id | String | <p>Agreement Collection id</p>|
+| name | String | <p>Human readable name of the Agreement Collection</p>|
+| author | String | <p>Controller contract of the user or organization</p>|
+| collectionType | Number | <p>Type of collection</p>|
+| packageId | String | <p>The packageId of the archetype package from which the collection was created</p>|
+| agreements | Object[] | <p>Array of agreement objects included in the collection</p>|
+
+
+
+
+### Read Agreement Collections
+
+<p>Retrieves Active Agreement Collection information.</p>
+
+```endpoint
+GET /agreement-collections
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /agreement-collections
+```
+
+
+#### Success Response
+
+Success Objects Array
+
+```json
+[
+ {
+  "id": "9FBC54D1E8224307DA7E74BC54D1E829764E2DE7AD0D8DF6EBC54D1E82ADBCFF",
+  "name": "Agreement Collection 1",
+  "author": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
+  "collectionType": 2,
+  "packageId": "7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD"
+ }
+]
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| id | String | <p>Active Agreement Collection id</p>|
+| name | String | <p>Human readable name of the Active Agreement Collection</p>|
+| author | String | <p>Address of the creator (user account or org)</p>|
+| collectionType | Number | <p>Type of collection</p>|
+| packageId | String | <p>The packageId of the archetype package from which the collection was created.</p>|
 
 
 
@@ -329,7 +496,7 @@ curl -iX PUT /agreements/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890/sign
 
 
 ```endpoint
-POST /agreements/:address/events
+PUT /agreements/:address/events
 ```
 
 
@@ -378,6 +545,38 @@ Success Object
 
 ## Archetypes
 
+### Add an archetype to a package
+
+
+
+```endpoint
+PUT /archetype-packages/:id/archetype/:address
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX PUT /archetype-packages/7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD/archetype/707791D3BBD4FDDE615D0EC4BB0EB3D909F66890
+```
+
+
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
 ### Create an Archetype
 
 
@@ -416,6 +615,54 @@ Success-Response:
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | The | json | <p>address of the created Archetype</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Create an Archetype Package
+
+
+
+```endpoint
+POST /archetypes/packages
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -iX POST /archetype-packages
+```
+
+
+#### Success Response
+
+Success-Response:
+
+```json
+{
+	"id": "7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD"
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| The | json | <p>id of the created Archetype Package</p>|
 
 
 
@@ -486,6 +733,113 @@ Success Object
 | parameters | Object[] | <p>The &quot;name&quot; and &quot;type&quot; of all custom parameters used by the Archetype</p>|
 | documents | Object[] | <p>The &quot;name&quot;, &quot;hoardAddress&quot; and &quot;secretKey&quot; (if any) sufficient to provide the information regarding the relevant documents associated with the Archetype</p>|
 | jurisdictions | Object[] | <p>The &quot;country&quot; and &quot;regions&quot; which the Archetype has been registered as relevant to. The &quot;country&quot; is registered as an ISO standard two character string and &quot;regions&quot; is an array of addresses relating to the controlling contracts for the region (see <a href="#">ISO standards manipulation</a> section).</p>|
+
+
+
+
+### Read an Archetype Package
+
+<p>Retrieves information for a single archetype package.</p>
+
+```endpoint
+GET /archetype-packages/:id
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /archetype-packages/7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+  "id": "7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD",
+  "name": "Package1",
+  "description": "Package Description",
+	"author": "6EDC6101F0B64156ED867BAE925F6CD240635656",
+	"archetypes": [
+		{
+			"name": "Archetype 1",
+			"address": "4156ED867BAE4156ED867BAE925F6CD240635656"
+		},
+		{
+			"name": "Archetype 2",
+			"address": "406356867BAE4156ED867BAE925F6CD240635656"
+		}
+	]
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| id | String | <p>Archetype Package id</p>|
+| name | String | <p>Human readable name of the Archetype Package</p>|
+| description | String | <p>Human readable description of the Archetype Package</p>|
+| author | String | <p>Controller contract of the user or organization</p>|
+| archetypes | Object[] | <p>Array of archetypes with name and address pairs that created the Archetype Package</p>|
+
+
+
+
+### Read Archetype Packages
+
+<p>Retrieves archetype package information. Within the Agreements Network, Archetype Packages are collections of archetypes that are related in some way.</p>
+
+```endpoint
+GET /archetypes
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /archetype-packages
+```
+
+
+#### Success Response
+
+Success Objects Array
+
+```json
+[
+ {
+  "id": "7F2CA849A318E7FA2473B3442B7AC86A84DD3AA054F567BCF5D27D9622FCD0BD",
+  "name": "Package1",
+  "author": "6EDC6101F0B64156ED867BAE925F6CD240635656"
+ }
+]
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| id | String | <p>Archetype Package id</p>|
+| name | String | <p>Human readable name of the Archetype Pacakge</p>|
+| author | String | <p>Controller contract of the user or organization that created the package</p>|
 
 
 
@@ -605,6 +959,157 @@ Success Objects Array
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | object | Object[] | <p>Process Definition object</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Read Single Process Definition
+
+
+
+```endpoint
+GET /bpm/process-definitions/:address
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i /bpm/process-definitions/81A817870C6C6A209150FA26BC52D835CA6E17D2
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+{
+    "modelAddress":"912A82D4C72847EF1EC76426544EAA992993EE20",
+    "processDefinitionAddress":"81A817870C6C6A209150FA26BC52D835CA6E17D2",
+    "id":"defaultFormationProcess",
+    "name":"Default Formation Process",
+    "interfaceId":"Agreement Formation",
+    "diagramAddress":"7D85BB76DB402B752F84792FF50B40483922673CF277CD2045D3D9637D4CE8F9",
+    "diagramSecret":"4AF3A863BF6F2AD79E4919F562252866CBDA58E3E5AA27E2C5C94BAE9931BE74"
+}
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| modelAddress | String | <p>Address of the model the process definition was created under</p>|
+| processDefinitionAddress | String | <p>Address of the process definition</p>|
+| id | String | <p>Id of the process definition</p>|
+| name | String | <p>Human-readable name of the process definition</p>|
+| interfaceId | String | <p>'Agreement Formation' or 'Agreement Execution'</p>|
+| diagramAddress | String | <p>Hoard address for the xml file representing the process</p>|
+| diagramSecret | String | <p>Hoard secret for the xml file representing the process</p>|
+
+
+
+#### Error 4xx
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| NotLoggedIn |  | <p>The user making the request does not have a proper authentication token.</p>|
+
+
+### Read Diagram of Process Model
+
+<p>Reads the diagram of the specified process model in the requested MIME type. The 'Accept' header in the request should be set to either 'application/xml' or 'application/json'.</p>
+
+```endpoint
+GET /bpm/process-models/:address/diagram
+```
+
+
+
+
+
+
+
+#### Example Requests
+
+
+```curl
+curl -i -H "Accept: application/json" /bpm/process-models/912A82D4C72847EF1EC76426544EAA992993EE20/diagram
+```
+
+
+#### Success Response
+
+Success Object
+
+```json
+[
+    {
+        "id":"Process_1rywjij",
+        "name":"Process Name",
+        "interface":"Agreement Formation",
+        "participants":[{
+            "id":"Lane_1mjalez",
+            "name":"Assignee",
+            "tasks":[
+                "Task Name"
+            ],
+            "conditionalPerformer":true,
+            "dataStorageId":"agreement",
+            "dataPath":"Assignee"
+        }],
+        "tasks":[],
+        "userTasks":[{
+            "id":"Task Name",
+            "name":"Task Name",
+            "assignee":"Lane_1mjalez",
+            "activityType":0,
+            "taskType":1,
+            "behavior":1,
+            "multiInstance":false,
+            "application":"",
+            "subProcessModelId":"",
+            "subProcessDefinitionId":""
+        }],
+        "sendTasks":[],
+        "receiveTasks":[],
+        "serviceTasks":[],
+        "subProcesses":[],
+        "transitions":[]
+    }
+]
+```
+
+
+#### Success 200
+
+| Name     | Type       | Description                           |
+|:---------|:-----------|:--------------------------------------|
+| object | Object[] | <p>Object representing the process definition</p>|
+| id | String | <p>Id of the process definition</p>|
+| name | String | <p>Human-readable name of the process definition</p>|
+| interface | String | <p>'Agreement Formation' or 'Agreement Execution'</p>|
+| participants | Array | <p>Array of participant objects</p>|
+| tasks | Array | <p>Array of task objects</p>|
+| userTasks | Array | <p>Array of user tasks</p>|
+| sendTasks | Array | <p>Array of send tasks</p>|
+| receiveTasks | Array | <p>Array of receive tasks</p>|
+| serviceTasks | Array | <p>Array of service tasks</p>|
+| subProcesses | Array | <p>Array of subprocesses</p>|
+| transitions | Array | <p>Array of transitions</p>|
 
 
 
@@ -1568,7 +2073,6 @@ Success Object
 ```json
 {
 	"address": "605401BB8B9E597CC40C35D1F0185DE94DBCE533",
-	"id": "johnsmith"
 }
 ```
 
@@ -1578,7 +2082,6 @@ Success Object
 | Name     | Type       | Description                           |
 |:---------|:-----------|:--------------------------------------|
 | address | String | <p>Users's Controller Contract</p>|
-| id | String | <p>Users's human readable ID</p>|
 
 
 
@@ -1668,14 +2171,21 @@ curl -i /users/profile
 Success Object
 
 ```json
-{
- "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
- "id": "j.smith",
- "email": "jsmith@monax.io",
- "organization": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
- "organizationId": "acmecorp92",
- "organizationName": "ACME Corp"
-}
+			 {
+			  "address": "9F24307DA7E74BC54D1E829764E2DE7AD0D8DF6E",
+			  "id": "j.smith",
+			  "email": "jsmith@monax.io",
+			  "organization": "707791D3BBD4FDDE615D0EC4BB0EB3D909F66890",
+			  "organizationId": "acmecorp92",
+			  "organizationName": "ACME Corp",
+			  "firstName": "Joe",
+ 			  "lastName": "Smith",
+			  "country": "CA",
+			  "region": "1232SDFF3EC680332BEFDDC3CA12CBBD",
+			  "isProducer": false,
+			  "onboarding": true,
+			  "createdAt": ""
+			 }
 ```
 
 
@@ -1689,6 +2199,13 @@ Success Object
 | organization | String | <p>Organization's Controller Contract</p>|
 | organizationId | String | <p>Organization's machine readable ID</p>|
 | organizationName | String | <p>Organization's human readable name</p>|
+| firstName | String | <p>User's first name</p>|
+| lastName | String | <p>User's last name</p>|
+| country | String | <p>User's country code</p>|
+| region | String | <p>Contract address of user's region</p>|
+| isProducer | Boolean | <p>Boolean representing whether user account is producer type (as opposed to consumer type)</p>|
+| onboarding | Boolean | <p>Boolean representing whether user prefers to see onboarding screens</p>|
+| createdAt | String | <p>Timestamp of user account creation</p>|
 
 
 

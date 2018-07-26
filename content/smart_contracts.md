@@ -3032,6 +3032,35 @@ an error code indicating success or failure
 
 The ActiveAgreementRegistry Interface contract is found within the agreements bundle.
 
+#### addAgreementToCollection(bytes32,address)
+
+
+**addAgreementToCollection(bytes32,address)**
+
+
+Adds an agreement to given collection
+
+```endpoint
+CALL addAgreementToCollection(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // agreement address
+_collectionId // the bytes32 collection id
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() collection by given id does not exist
+```
+
+
+---
+
 #### compareVersion(address)
 
 
@@ -3088,22 +3117,25 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+#### createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)
 
 
-**create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])**
+**createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)**
 
 
 Creates an Active Agreement with the given parameters
 
 ```endpoint
-CALL create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+CALL createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)
 ```
 
 #### Parameters
 
 ```solidity
 _archetype // archetype
+_collectionId // id of agreement collection (optional)
+_hoardAddress // Address of agreement params in hoard
+_hoardSecret // Secret for hoard retrieval
 _name // name
 _parties // parties
 
@@ -3112,7 +3144,36 @@ _parties // parties
 #### Return
 
 ```json
-error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _name is null, or BaseErrors.RUNTIME_ERROR() if runtime errora return code indicating success or failure and the new activeAgreement's address, if successfully created
+error - BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype or _name is nullactiveAgreement - the new ActiveAgreement's address, if successfully created, 0x0 otherwise
+```
+
+
+---
+
+#### createAgreementCollection(string,address,uint8,bytes32)
+
+
+**createAgreementCollection(string,address,uint8,bytes32)**
+
+
+Creates a new agreement collection
+
+```endpoint
+CALL createAgreementCollection(string,address,uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_author // address of author
+_name // name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED(), BaseErrors.RESOURCE_ALREADY_EXISTS()id bytes32 id of package
 ```
 
 
@@ -3344,6 +3405,120 @@ size size
 
 ---
 
+#### getAgreementAtIndexInCollection(bytes32,uint256)
+
+
+**getAgreementAtIndexInCollection(bytes32,uint256)**
+
+
+Gets agreement address at index in colelction
+
+```endpoint
+CALL getAgreementAtIndexInCollection(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the collection
+_index // uint index
+
+```
+
+#### Return
+
+```json
+agreement address of archetype
+```
+
+
+---
+
+#### getAgreementCollectionAtIndex(uint256)
+
+
+**getAgreementCollectionAtIndex(uint256)**
+
+
+Gets collection id at index
+
+```endpoint
+CALL getAgreementCollectionAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // uint index
+
+```
+
+#### Return
+
+```json
+id bytes32 id
+```
+
+
+---
+
+#### getAgreementCollectionData(bytes32)
+
+
+**getAgreementCollectionData(bytes32)**
+
+
+Gets collection data by id
+
+```endpoint
+CALL getAgreementCollectionData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // bytes32 collection id
+
+```
+
+#### Return
+
+```json
+name stringauthor addresscollectionType type of collectionpackageId id of the archetype package
+```
+
+
+---
+
+#### getAgreementDataInCollection(bytes32,address)
+
+
+**getAgreementDataInCollection(bytes32,address)**
+
+
+Get agreement data by collection id and agreement address
+
+```endpoint
+CALL getAgreementDataInCollection(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // address of agreement
+_id // id of the collection
+
+```
+
+#### Return
+
+```json
+agreementName name of agreementarchetype address of archetype
+```
+
+
+---
+
 #### getAgreementParameterAtIndex(address,uint256)
 
 
@@ -3401,6 +3576,27 @@ _dataId // the data ID
 
 ---
 
+#### getArchetypeRegistry()
+
+
+**getArchetypeRegistry()**
+
+
+Returns the ArchetypeRegistry address
+
+```endpoint
+CALL getArchetypeRegistry()
+```
+
+#### Return
+
+```json
+address the ArchetypeRegistry
+```
+
+
+---
+
 #### getBpmService()
 
 
@@ -3422,6 +3618,27 @@ address the BpmService
 
 ---
 
+#### getNumberOfAgreementCollections()
+
+
+**getNumberOfAgreementCollections()**
+
+
+Gets number of agreement collections
+
+```endpoint
+CALL getNumberOfAgreementCollections()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
 #### getNumberOfAgreementParameters(address)
 
 
@@ -3438,6 +3655,34 @@ CALL getNumberOfAgreementParameters(address)
 
 ```json
 the number of parameters
+```
+
+
+---
+
+#### getNumberOfAgreementsInCollection(bytes32)
+
+
+**getNumberOfAgreementsInCollection(bytes32)**
+
+
+Gets number of agreements in given collection
+
+```endpoint
+CALL getNumberOfAgreementsInCollection(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the collection
+
+```
+
+#### Return
+
+```json
+size agreement count
 ```
 
 
@@ -3682,6 +3927,28 @@ CALL processStateChanged(address)
 
 ```solidity
 _pi // the process instance whose state changed
+
+```
+
+
+---
+
+#### setArchetypeRegistry(address)
+
+
+**setArchetypeRegistry(address)**
+
+
+Sets the ArchetypeRegistry reference
+
+```endpoint
+CALL setArchetypeRegistry(address)
+```
+
+#### Parameters
+
+```solidity
+_archetypeRegistry // the ArchetypeRegistry
 
 ```
 
@@ -5100,6 +5367,35 @@ error BaseErrors.NO_ERROR()
 
 ---
 
+#### addArchetypeToPackage(bytes32,address)
+
+
+**addArchetypeToPackage(bytes32,address)**
+
+
+Adds archetype to package
+
+```endpoint
+CALL addArchetypeToPackage(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_packageId // the bytes32 package id
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() package by given id does not exist
+```
+
+
+---
+
 #### addDocument(address,bytes32,bytes32,bytes32)
 
 
@@ -5303,16 +5599,16 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### create(bytes32,address,string,bool,address,address)
+#### createArchetype(bytes32,address,string,bool,address,address,bytes32)
 
 
-**create(bytes32,address,string,bool,address,address)**
+**createArchetype(bytes32,address,string,bool,address,address,bytes32)**
 
 
 Creates a archetype with the given parameters
 
 ```endpoint
-CALL create(bytes32,address,string,bool,address,address)
+CALL createArchetype(bytes32,address,string,bool,address,address,bytes32)
 ```
 
 #### Parameters
@@ -5324,6 +5620,7 @@ _executionProcess // the address of a ProcessDefinition that orchestrates the ag
 _formationProcess // the address of a ProcessDefinition that orchestrates the agreement formation
 _isPrivate // determines if the archetype's documents are encrypted
 _name // name
+_packageId // id of package this archetype is part of (optional)
 
 ```
 
@@ -5331,6 +5628,37 @@ _name // name
 
 ```json
 error - a return code indicating success or failurearchetype - the new archetype's address, if successfully created
+```
+
+
+---
+
+#### createArchetypePackage(string,string,address,bool)
+
+
+**createArchetypePackage(string,string,address,bool)**
+
+
+Adds a new archetype package
+
+```endpoint
+CALL createArchetypePackage(string,string,address,bool)
+```
+
+#### Parameters
+
+```solidity
+_author // address of author (user account of organization)
+_description // description
+_isPrivate // makes it a private package visible to only the author
+_name // name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED(), BaseErrors.RESOURCE_ALREADY_EXISTS()id bytes32 id of package
 ```
 
 
@@ -5385,6 +5713,35 @@ the archetype address
 
 ---
 
+#### getArchetypeAtIndexInPackage(bytes32,uint256)
+
+
+**getArchetypeAtIndexInPackage(bytes32,uint256)**
+
+
+Gets archetype address at index in package
+
+```endpoint
+CALL getArchetypeAtIndexInPackage(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the package
+_index // uint index
+
+```
+
+#### Return
+
+```json
+archetype address of archetype
+```
+
+
+---
+
 #### getArchetypeData(address)
 
 
@@ -5408,6 +5765,91 @@ _archetype // the archetype's address
 
 ```json
 name namedescription descriptionauthor authorformationProcessDefinitionexecutionProcessDefinition
+```
+
+
+---
+
+#### getArchetypeDataInPackage(bytes32,address)
+
+
+**getArchetypeDataInPackage(bytes32,address)**
+
+
+Get archetype data by package id and archetype address
+
+```endpoint
+CALL getArchetypeDataInPackage(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // address of archetype
+_id // id of the package
+
+```
+
+#### Return
+
+```json
+archetypeName name of archetype
+```
+
+
+---
+
+#### getArchetypePackageAtIndex(uint256)
+
+
+**getArchetypePackageAtIndex(uint256)**
+
+
+Gets package id at index
+
+```endpoint
+CALL getArchetypePackageAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // uint index
+
+```
+
+#### Return
+
+```json
+id bytes32 id
+```
+
+
+---
+
+#### getArchetypePackageData(bytes32)
+
+
+**getArchetypePackageData(bytes32)**
+
+
+Gets package data by id
+
+```endpoint
+CALL getArchetypePackageData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // bytes32 package id
+
+```
+
+#### Return
+
+```json
+name stringdescription stringauthor addressisPrivate bool
 ```
 
 
@@ -5573,6 +6015,55 @@ _key // the jurisdiction key
 
 ```json
 country the jurisdiction's countryregion the jurisdiction's region
+```
+
+
+---
+
+#### getNumberOfArchetypePackages()
+
+
+**getNumberOfArchetypePackages()**
+
+
+Gets number of archetype packages
+
+```endpoint
+CALL getNumberOfArchetypePackages()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getNumberOfArchetypesInPackage(bytes32)
+
+
+**getNumberOfArchetypesInPackage(bytes32)**
+
+
+Gets number of archetypes in given package
+
+```endpoint
+CALL getNumberOfArchetypesInPackage(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the package
+
+```
+
+#### Return
+
+```json
+size archetype count
 ```
 
 
@@ -5809,6 +6300,35 @@ returns the minor version number
 
 ```endpoint
 CALL minor()
+```
+
+
+---
+
+#### packageHasArchetype(bytes32,address)
+
+
+**packageHasArchetype(bytes32,address)**
+
+
+Determines whether given archetype address is in the package identified by the packageId
+
+```endpoint
+CALL packageHasArchetype(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // address of archetype
+_packageId // id of the package
+
+```
+
+#### Return
+
+```json
+hasArchetype bool representing if archetype is in package
 ```
 
 
@@ -9281,6 +9801,35 @@ an error code indicating success or failure
 
 The DefaultActiveAgreementRegistry Interface contract is found within the agreements bundle.
 
+#### addAgreementToCollection(bytes32,address)
+
+
+**addAgreementToCollection(bytes32,address)**
+
+
+Adds an agreement to given collection
+
+```endpoint
+CALL addAgreementToCollection(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // agreement address
+_collectionId // the bytes32 collection id
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() collection by given id does not exist
+```
+
+
+---
+
 #### compareVersion(address)
 
 
@@ -9337,22 +9886,23 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+#### createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)
 
 
-**create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])**
+**createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)**
 
 
 Creates an Active Agreement with the given parameters
 
 ```endpoint
-CALL create(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[])
+CALL createAgreement(address,bytes32,address,bytes32,bytes32,bytes32,bytes32,uint256,bool,address[],bytes32)
 ```
 
 #### Parameters
 
 ```solidity
 _archetype // archetype
+_collectionId // id of agreement collection (optional)
 _hoardAddress // Address of agreement params in hoard
 _hoardSecret // Secret for hoard retrieval
 _name // name
@@ -9364,6 +9914,35 @@ _parties // parties
 
 ```json
 error - BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if _archetype or _name is nullactiveAgreement - the new ActiveAgreement's address, if successfully created, 0x0 otherwise
+```
+
+
+---
+
+#### createAgreementCollection(string,address,uint8,bytes32)
+
+
+**createAgreementCollection(string,address,uint8,bytes32)**
+
+
+Creates a new agreement collection
+
+```endpoint
+CALL createAgreementCollection(string,address,uint8,bytes32)
+```
+
+#### Parameters
+
+```solidity
+_author // address of author
+_name // name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED(), BaseErrors.RESOURCE_ALREADY_EXISTS()id bytes32 id of package
 ```
 
 
@@ -9551,6 +10130,120 @@ size size
 
 ---
 
+#### getAgreementAtIndexInCollection(bytes32,uint256)
+
+
+**getAgreementAtIndexInCollection(bytes32,uint256)**
+
+
+Gets agreement address at index in colelction
+
+```endpoint
+CALL getAgreementAtIndexInCollection(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the collection
+_index // uint index
+
+```
+
+#### Return
+
+```json
+agreement address of archetype
+```
+
+
+---
+
+#### getAgreementCollectionAtIndex(uint256)
+
+
+**getAgreementCollectionAtIndex(uint256)**
+
+
+Gets collection id at index
+
+```endpoint
+CALL getAgreementCollectionAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // uint index
+
+```
+
+#### Return
+
+```json
+id bytes32 id
+```
+
+
+---
+
+#### getAgreementCollectionData(bytes32)
+
+
+**getAgreementCollectionData(bytes32)**
+
+
+Gets collection data by id
+
+```endpoint
+CALL getAgreementCollectionData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // bytes32 collection id
+
+```
+
+#### Return
+
+```json
+name stringauthor addresscollectionType type of collectionpackageId id of the archetype package
+```
+
+
+---
+
+#### getAgreementDataInCollection(bytes32,address)
+
+
+**getAgreementDataInCollection(bytes32,address)**
+
+
+Get agreement data by collection id and agreement address
+
+```endpoint
+CALL getAgreementDataInCollection(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_agreement // address of agreement
+_id // id of the collection
+
+```
+
+#### Return
+
+```json
+agreementName name of agreementarchetype address of archetype
+```
+
+
+---
+
 #### getAgreementParameterAtIndex(address,uint256)
 
 
@@ -9608,6 +10301,27 @@ _dataId // the parameter ID
 
 ---
 
+#### getArchetypeRegistry()
+
+
+**getArchetypeRegistry()**
+
+
+Returns the ArchetypeRegistry address
+
+```endpoint
+CALL getArchetypeRegistry()
+```
+
+#### Return
+
+```json
+address the ArchetypeRegistry
+```
+
+
+---
+
 #### getBpmService()
 
 
@@ -9629,6 +10343,27 @@ address the BpmService
 
 ---
 
+#### getNumberOfAgreementCollections()
+
+
+**getNumberOfAgreementCollections()**
+
+
+Gets number of agreement collections
+
+```endpoint
+CALL getNumberOfAgreementCollections()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
 #### getNumberOfAgreementParameters(address)
 
 
@@ -9645,6 +10380,34 @@ CALL getNumberOfAgreementParameters(address)
 
 ```json
 the number of parameters
+```
+
+
+---
+
+#### getNumberOfAgreementsInCollection(bytes32)
+
+
+**getNumberOfAgreementsInCollection(bytes32)**
+
+
+Gets number of agreements in given collection
+
+```endpoint
+CALL getNumberOfAgreementsInCollection(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the collection
+
+```
+
+#### Return
+
+```json
+size agreement count
 ```
 
 
@@ -9815,6 +10578,28 @@ CALL processStateChanged(address)
 
 ```solidity
 _processInstance // the process instance whose state has changed
+
+```
+
+
+---
+
+#### setArchetypeRegistry(address)
+
+
+**setArchetypeRegistry(address)**
+
+
+Sets the ArchetypeRegistry reference used to find archetypes in packages
+
+```endpoint
+CALL setArchetypeRegistry(address)
+```
+
+#### Parameters
+
+```solidity
+_archetypeRegistry // the ArchetypeRegistry
 
 ```
 
@@ -10474,6 +11259,35 @@ error BaseErrors.NO_ERROR()
 
 ---
 
+#### addArchetypeToPackage(bytes32,address)
+
+
+**addArchetypeToPackage(bytes32,address)**
+
+
+Adds archetype to package
+
+```endpoint
+CALL addArchetypeToPackage(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // the archetype address
+_packageId // the bytes32 package id
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.RESOURCE_NOT_FOUND() package by given id does not exist
+```
+
+
+---
+
 #### addDocument(address,bytes32,bytes32,bytes32)
 
 
@@ -10679,16 +11493,16 @@ _version // the version to which this contract's version is compared
 
 ---
 
-#### create(bytes32,address,string,bool,address,address)
+#### createArchetype(bytes32,address,string,bool,address,address,bytes32)
 
 
-**create(bytes32,address,string,bool,address,address)**
+**createArchetype(bytes32,address,string,bool,address,address,bytes32)**
 
 
 Creates a new archetype
 
 ```endpoint
-CALL create(bytes32,address,string,bool,address,address)
+CALL createArchetype(bytes32,address,string,bool,address,address,bytes32)
 ```
 
 #### Parameters
@@ -10700,6 +11514,7 @@ _executionProcess // the address of a ProcessDefinition that orchestrates the ag
 _formationProcess // the address of a ProcessDefinition that orchestrates the agreement formation
 _isPrivate // determines if the archetype's documents are encrypted
 _name // name
+_packageId // id of package this archetype is part of (optional)
 
 ```
 
@@ -10707,6 +11522,37 @@ _name // name
 
 ```json
 error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED() if either _name, _author, _formationProcess, or _executionProcess is nullarchetype - the new archetype's address, if successfully created
+```
+
+
+---
+
+#### createArchetypePackage(string,string,address,bool)
+
+
+**createArchetypePackage(string,string,address,bool)**
+
+
+Adds a new archetype package
+
+```endpoint
+CALL createArchetypePackage(string,string,address,bool)
+```
+
+#### Parameters
+
+```solidity
+_author // address of author (user account of organization)
+_description // description
+_isPrivate // makes it a private package visible to only the author
+_name // name
+
+```
+
+#### Return
+
+```json
+error BaseErrors.NO_ERROR(), BaseErrors.NULL_PARAM_NOT_ALLOWED(), BaseErrors.RESOURCE_ALREADY_EXISTS()id bytes32 id of package
 ```
 
 
@@ -10761,6 +11607,35 @@ archetype archetype
 
 ---
 
+#### getArchetypeAtIndexInPackage(bytes32,uint256)
+
+
+**getArchetypeAtIndexInPackage(bytes32,uint256)**
+
+
+Gets archetype address at index in package
+
+```endpoint
+CALL getArchetypeAtIndexInPackage(bytes32,uint256)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the package
+_index // uint index
+
+```
+
+#### Return
+
+```json
+archetype address of archetype
+```
+
+
+---
+
 #### getArchetypeData(address)
 
 
@@ -10784,6 +11659,91 @@ _archetype // the archetype address
 
 ```json
 name namedescription descriptionauthor authoractive activeformationProcessDefinitionexecutionProcessDefinition
+```
+
+
+---
+
+#### getArchetypeDataInPackage(bytes32,address)
+
+
+**getArchetypeDataInPackage(bytes32,address)**
+
+
+Get archetype data by package id and archetype address
+
+```endpoint
+CALL getArchetypeDataInPackage(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // address of archetype
+_id // id of the package
+
+```
+
+#### Return
+
+```json
+archetypeName name of archetype
+```
+
+
+---
+
+#### getArchetypePackageAtIndex(uint256)
+
+
+**getArchetypePackageAtIndex(uint256)**
+
+
+Gets package id at index
+
+```endpoint
+CALL getArchetypePackageAtIndex(uint256)
+```
+
+#### Parameters
+
+```solidity
+_index // uint index
+
+```
+
+#### Return
+
+```json
+id bytes32 id
+```
+
+
+---
+
+#### getArchetypePackageData(bytes32)
+
+
+**getArchetypePackageData(bytes32)**
+
+
+Gets package data by id
+
+```endpoint
+CALL getArchetypePackageData(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // bytes32 package id
+
+```
+
+#### Return
+
+```json
+name stringdescription stringauthor addressisPrivate bool
 ```
 
 
@@ -10954,6 +11914,55 @@ country the jurisdiction's countryregion the jurisdiction's region
 
 ---
 
+#### getNumberOfArchetypePackages()
+
+
+**getNumberOfArchetypePackages()**
+
+
+Gets number of archetype packages
+
+```endpoint
+CALL getNumberOfArchetypePackages()
+```
+
+#### Return
+
+```json
+size size
+```
+
+
+---
+
+#### getNumberOfArchetypesInPackage(bytes32)
+
+
+**getNumberOfArchetypesInPackage(bytes32)**
+
+
+Gets number of archetypes in given package
+
+```endpoint
+CALL getNumberOfArchetypesInPackage(bytes32)
+```
+
+#### Parameters
+
+```solidity
+_id // id of the package
+
+```
+
+#### Return
+
+```json
+size archetype count
+```
+
+
+---
+
 #### getNumberOfJurisdictionsForArchetype(address)
 
 
@@ -11114,6 +12123,35 @@ returns the minor version number
 
 ```endpoint
 CALL minor()
+```
+
+
+---
+
+#### packageHasArchetype(bytes32,address)
+
+
+**packageHasArchetype(bytes32,address)**
+
+
+Determines whether given archetype address is in the package identified by the packageId
+
+```endpoint
+CALL packageHasArchetype(bytes32,address)
+```
+
+#### Parameters
+
+```solidity
+_archetype // address of archetype
+_packageId // id of the package
+
+```
+
+#### Return
+
+```json
+hasArchetype bool representing if archetype is in package
 ```
 
 
