@@ -69,7 +69,7 @@ Next also we will pass the new key's address into the `export` command to give u
 ```
 burrow keys export --addr $ADDR | jq '{Address: .Address, PublicKey: .PublicKey }' > validator_info.json
 ```
-The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:join@agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
+The final step is to send validator_info.json to the [Network Validator Waiting List](mailto:validators+int+518+648375932040711564@lists.agreements.network) and keep a note of the validator key you will need to configure your node. When you send the email, we'd love to learn a bit about your organization and why you'd like to join the validator pool.
 
 ```curl
 ```
