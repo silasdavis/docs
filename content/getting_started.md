@@ -39,7 +39,7 @@ Network Validators assure the operational backbone for the network blockchain by
 
 ### Install Dependencies
 
-The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go. Secondly, you'll need [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) installed on your machine.
+The [Go](https://golang.org) programing language is used to build all the necessary tools. Please first install Go, [Git](https://gist.github.com/derhuerst/1b15ff4652a867391f03), and [Make](https://www.gnu.org/software/make/).
 
 Lastly, we need to install [jq](https://stedolan.github.io/jq/download/) which is an `sed` like tool that makes it easy and simple to work with json files as well as `curl` which is a command line utility to download files.
 
@@ -48,7 +48,12 @@ Lastly, we need to install [jq](https://stedolan.github.io/jq/download/) which i
 First you will need [Hyperledger Burrow](https://www.hyperledger.org/projects/hyperledger-burrow) which is the base blockchain node used for the Agreements Network.
 
 ```
-go get github.com/hyperledger/burrow/cmd/burrow
+# Fetch the source but do not build
+go get -d github.com/hyperledger/burrow/cmd/burrow 
+# Enter source directory in order to do a full build
+cd $GOPATH/src/github.com/hyperledger/burrow
+# Install Burrow with version metadata into $GOPATH/bin
+make install_db
 ```
 burrow keys is a simple tool for generating keys, along with producing and verifying signatures. These features are exposed through the `burrow keys` tool.
 
@@ -92,8 +97,8 @@ go get github.com/hyperledger/burrow/cmd/burrow
 Now that we have `burrow` available on our machine we will set it up to connect to the network. First, we'll need to download the `genesis.json` which sets the beginning of the network along with the `burrow.toml` that has all the key variables preconfigured. They are both available with a simple `curl` command.
 
 ```
-curl -L https://info.t3.agreements.network/genesis.json > genesis.json
-curl -L https://info.t3.agreements.network/burrow.toml > burrow.toml
+curl -L https://info.agreements.network/t3/genesis.json > genesis.json
+curl -L https://info.agreements.network/t3/burrow.toml > burrow.toml
 ```
 
 Now we are all set to boot our node and connect into the network. From the same directory where you saved your burrow.toml and genesis.json please run the below command. In the below command, you'll change `ORGNAME` to something which clearly identifies your node on the network.
